@@ -7,9 +7,11 @@ import {
   Image,
   View,
 } from 'react-native';
-export function MainScreen() {
-    const onTap = () => {
+
+export function MainScreen(props) {
+    const onTap = (nextScreen) => {
       console.log('Button touched!');
+      //props.navigation.navigate(nextScreen);
     };
     return (
       
@@ -77,7 +79,8 @@ export function MainScreen() {
   const styles = StyleSheet.create({
     back:{
       width:'100%',
-      height:'100%'
+      height:'100%',
+      backgroundColor: 'lightgrey'
   
     },
     container: {
@@ -108,7 +111,7 @@ export function MainScreen() {
       color: 'black',
     },
     title :{
-      fontSize: 40,
+      fontSize: 45,
       marginTop:20,
       color: 'black',
       fontWeight: 'bold',
@@ -135,4 +138,3 @@ export function MainScreen() {
       
     }
   });
-
