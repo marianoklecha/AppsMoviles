@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           justifyContent: 'left',
           padding: '3%',
+          marginTop: '6%'
         },
         UcaLogo: {
           width: 35,
