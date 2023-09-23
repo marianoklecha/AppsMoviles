@@ -82,10 +82,10 @@ export function MainScreen(props) {
   
     },
     container: {
-      flex: 1,
+      marginTop:'10%',
       justifyContent: 'center',
       marginHorizontal: '10%',
-      // backgroundColor: '#021B6F'
+      //backgroundColor: '#021B6F'
     },
     button: {
       padding: 12,
@@ -112,7 +112,7 @@ export function MainScreen(props) {
       color: 'black',
     },
     title :{
-      fontSize: 50,
+      fontSize: 55,
       marginTop:20,
       color: 'black',
       fontWeight: 'bold',
@@ -124,7 +124,7 @@ export function MainScreen(props) {
       alignItems: 'center',
       justifyContent: 'center',
       //backgroundColor: '#3FA7D6',
-      padding:'3%',
+      marginTop: '15%'
     },
     UcaLogo:{
       width: 50,
