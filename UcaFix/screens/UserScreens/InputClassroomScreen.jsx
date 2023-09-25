@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import Footer from './Footer';
-import styles from './styles'; 
+import Footer from '../Footer';
+import styles from '../styles'; 
 
 export function InputClassroomScreen(props) {
   const [aula, setAula] = useState('');
