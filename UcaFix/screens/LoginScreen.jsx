@@ -9,7 +9,6 @@ import {
   View,
   TextInput
 } from 'react-native';
-import Footer from './Footer';
 
 export function LoginScreen(props) {
     const [mail, setMail] = React.useState('');
@@ -53,7 +52,7 @@ export function LoginScreen(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('MainScreen')}>
+            onPress={() => props.navigation.navigate('AdminOUser')}>
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
 

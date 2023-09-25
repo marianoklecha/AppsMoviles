@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet,TouchableOpacity, Alert } from 'react-native';
-import Footer from './Footer';
+import Footer from '../Footer';
 
 
 const requestData = [
