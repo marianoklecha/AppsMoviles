@@ -1,15 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Keyboard, Platform, StyleSheet, Text, Easing, TextInput, TouchableOpacity, Image, View } from 'react-native';
+
+import { createStackNavigator, TransitionPresets, CardStyleInterpolators } from '@react-navigation/stack';
 import Footer from '../Footer';
 import styles from '../styles'; 
+import { Aula } from './Aula';
+import { EspacioComun } from './EspacioComun';
+import { ScrollView } from 'react-native-gesture-handler';
 
+
+const Stack = createStackNavigator();
+
+
+const config = {
+  animation: "timing",
+  config:{
+    duration: 1,
+    easing: Easing.linear
+  }
+}
 export function InputClassroomScreen(props) {
   const [aula, setAula] = useState('');
   const [motivo, setMotivo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
+  
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);
@@ -36,48 +51,29 @@ export function InputClassroomScreen(props) {
         <Text style={styles.title}>UCA FIX</Text>
       </View>
 
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.scrollViewContent}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      
+      
+
+      <Stack.Navigator
+        screenOptions={{
+          gestureEnabled: true,
+          gestureDirection: "horizontal",
+        
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+
+          transitionSpec:{
+            open: config,
+            close: config
+          }
+        }}
       >
-        <View style={styles.formContainer}>
-          <Text style={styles.inputTitle}>Número de aula</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder="Ej: 105"
-            placeholderTextColor="#8D8D8D"
-            onChangeText={(aula) => setAula(aula)}
-          />
+                   
+        <Stack.Screen name="Aula" component={Aula} options={{headerShown : false}}/>
+        <Stack.Screen name="EspacioComun" component={EspacioComun} options={{headerShown : false}}/>
 
-          <Text style={styles.inputTitle}>Motivo</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Ej: Silla rota, Pizarrón roto, Luz rota"
-            placeholderTextColor="#8D8D8D"
-            onChangeText={(motivo) => setMotivo(motivo)}
-          />
+      </Stack.Navigator>
 
-          <Text style={styles.inputTitle}>Descripción</Text>
-          <TextInput
-            style={styles.input}
-            multiline={true}
-            placeholder="Algo que quieras agregar"
-            placeholderTextColor="#8D8D8D"
-            onChangeText={(descripcion) => setDescripcion(descripcion)}
-          />
-
-          <TouchableOpacity style={styles.button}>
-            <Image
-              style={styles.tinyLogo}
-              source={{
-                uri: 'https://img.icons8.com/?size=256&id=59764&format=png',
-              }}
-            />
-            <Text style={styles.buttonText}>Cargar imagen/es</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
+      
 
       {!isKeyboardVisible && <Footer />}
     </View>
