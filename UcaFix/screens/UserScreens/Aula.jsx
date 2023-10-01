@@ -1,3 +1,4 @@
+import React from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View } from 'react-native';
 import styles from '../styles'; 
@@ -5,6 +6,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export const Aula = (props) => {
+  const [aula, setAula] = React.useState("");
+  const [motivo, setMotivo] = React.useState("");
+  const [descripcion, setDescripcion] = React.useState("");
+
     return(
       <ScrollView style= {{backgroundColor:"white"}}>
 
@@ -55,7 +60,7 @@ export const Aula = (props) => {
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonListo}>
+          <TouchableOpacity style={styles.buttonListo} onPress={() => props.navigation.navigate('FinalizarArreglo')}>
             <Text style={styles.buttonTextListo}>Listo</Text>
           </TouchableOpacity>
 
