@@ -1,0 +1,22 @@
+
+Comandos necesarios para que funcione la App:
+
+npm install @react-navigation/native @react-navigation/native-stack
+npm install react-native-dropdown-select-list
+npm install react-native-safe-area-context
+npm install react-native-keyboard-aware-scroll-view --save
+
+Fuentes que visitamos para desarrollar la App:
+
+chat.openai.com/auth/login
+https://htmlcolorcodes.com/es/
+https://icons8.com/icons/set/app-logo
+reactnavigation.org/docs/native-stack-navigator
+legacy.reactjs.org/docs/components-and-props.html
+reactnavigation.org/docs/devtools
+reactnative.dev/docs/button
+reactnative.dev/docs/textinput
+blog.logrocket.com/keyboardawarescrollview-keyboardavoidingview-react-native/
+https://www.youtube.com/watch?v=NenHL6nBR_4
+https://www.youtube.com/watch?v=PvjV96CNPqM
+https://www.npmjs.com/package/react-native-dropdown-select-list
