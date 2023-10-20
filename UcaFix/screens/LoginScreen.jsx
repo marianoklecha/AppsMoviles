@@ -7,16 +7,37 @@ import {
   Text,
   Image,
   View,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
 
 export function LoginScreen(props) {
-    const [mail, setMail] = React.useState('');
+    const [email, setMail] = React.useState('');
     const [password, setPassword] = React.useState('');
-    
-    const onTap = (nextScreen) => {
-      props.navigation.navigate(nextScreen);
+    console.log(JSON.stringify(props))
+
+    async function handleLogin(email, password, loginFunction) {
+      try{
+        const loginCheck = await fetch("http://localhost:3000/users/login?email=" + email + "&password=" + password)
+          if (loginCheck.ok) {
+              let data = await loginCheck.json()
+              loginFunction(data.id)
+              if(data.isAdmin == 0){
+                props.navigation.navigate('MainScreen', { name: data.name })
+              } else {
+                props.navigation.navigate('PaginaInicio')
+              }
+          }
+          else {
+              Alert.alert("No se encontró el usuario")
+              console.log(loginCheck.status)
+          }
+      }
+      catch(e){
+          console.log(e.stack)
+      }
     };
+  
     return (
       
       // 
@@ -52,7 +73,7 @@ export function LoginScreen(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('AdminOUser')}>
+            onPress={() => handleLogin(email, password, props.loginFn)}>
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>
 
