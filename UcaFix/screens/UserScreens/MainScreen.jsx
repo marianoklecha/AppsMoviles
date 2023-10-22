@@ -13,6 +13,7 @@ export function MainScreen(props) {
     const onTap = (nextScreen) => {
       props.navigation.navigate(nextScreen);
     };
+    const name = props.route.params.name; // Access the user's name from the prop
     return (
       
       // 
@@ -27,7 +28,7 @@ export function MainScreen(props) {
             <Text style={[styles.title]}>UCA FIX</Text>
         </View>
         <SafeAreaView style={styles.container}>
-          <Text style={[styles.text]}>Bienvenido/a!</Text> 
+          <Text style={[styles.text]}>Bienvenido/a!, {name}</Text> 
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => props.navigation.navigate('InputClassroomScreen')}>
