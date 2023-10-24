@@ -5,7 +5,8 @@ import { LoginScreen } from "./LoginScreen";
 import { AdminOUser } from "./AdminOUser";
 import { PaginaInicio } from "./AdminScreens/PaginaInicio";
 import { EspacioComun } from "./UserScreens/EspacioComun";
-import {FinalizarArreglo} from "./AdminScreens/FinalizarArreglo"
+import {FinalizarArreglo} from "./AdminScreens/FinalizarArreglo";
+import {ListaPedidos}from "./AdminScreens/ListaPedidos";
 
 export{
     MainScreen,
@@ -15,5 +16,6 @@ export{
     AdminOUser,
     PaginaInicio,
     EspacioComun,
-    FinalizarArreglo
+    FinalizarArreglo,
+    ListaPedidos,
 }
