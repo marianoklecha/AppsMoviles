@@ -13,14 +13,7 @@ export const Aula = (props) => {
     return(
       <ScrollView style= {{backgroundColor:"white"}}>
 
-      <View style = {styles.topBar}>
-        <TouchableOpacity style={[styles.topBarButton1]} onPress={() => props.navigation.navigate('Aula')}>
-            <Text style={styles.topBarButtonText1}>            Aulas            </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.topBarButton2]} onPress={() => props.navigation.navigate('EspacioComun')}>
-            <Text style={styles.topBarButtonText2}>Espacios comunes</Text>
-        </TouchableOpacity>
-      </View>
+      
         
       <KeyboardAwareScrollView contentContainerStyle={styles.scrollViewContent} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.formContainer}>

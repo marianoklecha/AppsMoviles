@@ -5,6 +5,8 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import styles from '../styles'; 
 
 export const EspacioComun = (props) => {
+    const [motivo, setMotivo] = React.useState("");
+    const [descripcion, setDescripcion] = React.useState("");
     const [biblioBanio, setBiblioBanio] = React.useState("");
     const [pisoEdificio, setPisoEdificio] = React.useState("");
     const data = [
@@ -33,18 +35,10 @@ export const EspacioComun = (props) => {
     ]
 
     return(
-        <View style= {{marginBottom: "31%"}}>
-        <View style = {styles.topBar}>
-        <TouchableOpacity style={[styles.topBarButton2]} onPress={() => props.navigation.navigate('Aula')}>
-            <Text style={styles.topBarButtonText2}>            Aulas            </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.topBarButton1]} onPress={() => props.navigation.navigate('EspacioComun')}>
-            <Text style={styles.topBarButtonText1}>Espacios comunes</Text>
-        </TouchableOpacity>
-      </View>
-
+        <View >
+        
         <KeyboardAwareScrollView
-        contentContainerStyle={styles.scrollViewContent}
+        contentContainerStyle={{...styles.scrollViewContent, backgroundColor: 'white' }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
          
