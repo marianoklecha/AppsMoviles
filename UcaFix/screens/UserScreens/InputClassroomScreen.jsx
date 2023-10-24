@@ -24,6 +24,7 @@ export function InputClassroomScreen(props) {
   const [motivo, setMotivo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [visible, setVisible] = useState(true); // Estado para controlar la visibilidad
   
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -51,25 +52,88 @@ export function InputClassroomScreen(props) {
         <Text style={styles.title}>UCA FIX</Text>
       </View>
 
-      
-      
+      <View style = {styles.topBar}>
+        <TouchableOpacity  style={visible ? styles.topBarButton1 : styles.topBarButton2} onPress={() => setVisible(true)}>
+            <Text 
+            style={visible ? styles.topBarButtonText1 : styles.topBarButtonText2}
+            >            Aulas            </Text>
+        </TouchableOpacity>
 
+        <TouchableOpacity style={visible ? styles.topBarButton2 : styles.topBarButton1} onPress={() => setVisible(false)}>
+            <Text style={visible ? styles.topBarButtonText2 : styles.topBarButtonText1}
+            >Espacios comunes</Text>
+        </TouchableOpacity>
+      </View>
+      
       <Stack.Navigator
-        screenOptions={{
-          gestureEnabled: true,
-          gestureDirection: "horizontal",
-        
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+  screenOptions={{
+    headerShown: false, // Ocultar la barra de navegación si lo deseas
+    cardStyleInterpolator: ({ current, next, layouts }) => {
+      return {
+        cardStyle: {
+          transform: [
+            {
+              translateX: current.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [layouts.screen.width, 0],
+              }),
+            },
+            {
+              translateX: next
+                ? next.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, -layouts.screen.width],
+                  })
+                : 0,
+            },
+          ],
+        },
+      };
+    },
+    transitionSpec: {
+      open: {
+        animation: "spring",
+        config: {
+          stiffness: 1000,
+          damping: 500,
+          mass: 3,
+          overshootClamping: true,
+          restSpeedThreshold: 0.001,
+          restDisplacementThreshold: 0.001,
+        },
+      },
+      close: {
+        animation: "spring",
+        config: {
+          stiffness: 1000,
+          damping: 500,
+          mass: 3,
+          overshootClamping: true,
+          restSpeedThreshold: 0.001,
+          restDisplacementThreshold: 0.001,
+        },
+      },
+    },
+  }}
+>
+      
+        {visible ?
+        <>
+          <Stack.Screen name="Aula" options={{headerShown : false}}>
+            {props => <Aula {...props}/>}
+          </Stack.Screen>
 
-          transitionSpec:{
-            open: config,
-            close: config
-          }
-        }}
-      >
+        </>
+        :
+        <>
+          <Stack.Screen name="EspacioComun" options={{headerShown : false}}>
+            {props => <EspacioComun {...props} />}
+          </Stack.Screen>
+
+        </>
+        }
                    
-        <Stack.Screen name="Aula" component={Aula} options={{headerShown : false}}/>
-        <Stack.Screen name="EspacioComun" component={EspacioComun} options={{headerShown : false}}/>
+       
 
       </Stack.Navigator>
 
