@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,PaginaInicio, FinalizarArreglo,ListaPedidos } from './screens';
+import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,PaginaInicio, FinalizarArreglo,ListaPedidos, PedidosResueltos } from './screens';
 
 
 
@@ -24,8 +24,8 @@ const App = () => {
           <Stack.Screen name="InputClassroomScreen" options={{headerShown : false}}>
             {props => <InputClassroomScreen {...props} userId={loggedInUser}/>}
           </Stack.Screen>
-          <Stack.Screen name="PedidosResultos" options={{headerShown : false}}>
-            {props => <PedidosResultos {...props} userId={loggedInUser}/>}
+          <Stack.Screen name="PedidosResueltos" options={{headerShown : false}}>
+            {props => <PedidosResueltos {...props} userId={loggedInUser}/>}
           </Stack.Screen>
           <Stack.Screen name="FinalizarArreglo" options={{headerShown : false}}>
             {props => <FinalizarArreglo {...props} userId={loggedInUser}/>}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   View,
+  Modal
 } from 'react-native';
 import Footer from '../Footer';
 
@@ -14,19 +15,47 @@ export function MainScreen(props) {
       props.navigation.navigate(nextScreen);
     };
     const name = props.route.params.name; // Access the user's name from the prop
+    const email = props.route.params.email;
+    const [filterModalVisible, setFilterModalVisible] = useState(false);
     return (
       
       // 
       <View style={styles.back}>
-        <View style={styles.TitleContainer}>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={filterModalVisible}
+          onRequestClose={() => setFilterModalVisible(!filterModalVisible)}
+          
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style ={styles.textoModal}>Mi Perfil</Text>
+              <Text style ={styles.textoModal2}>Usuario: {name}</Text>
+              <Text style ={styles.textoModal2}>Email: {email}</Text>
+              
+              <TouchableOpacity style={styles.buttonSesion} >
+                <Text style={styles.buttonTextSesion}>Cerrar sesión</Text>
+              </TouchableOpacity>
+            </View>
+            
+          </View>
+        </Modal>
+
+        <View style={styles.TitleContainer} >
         <Image
               style={styles.UcaLogo}
               source={{
                 uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
               }}
             />
-            <Text style={[styles.title]}>UCA FIX</Text>
+            <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
+              <Text style={[styles.title]} >UCA FIX</Text>
+            </TouchableOpacity>
+            
         </View>
+        
         <SafeAreaView style={styles.container}>
           <Text style={[styles.text]}>Bienvenido/a!, {name}</Text> 
           <TouchableOpacity
@@ -44,7 +73,7 @@ export function MainScreen(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('PedidosResultos')}>
+            onPress={() => props.navigation.navigate('PedidosResueltos')}>
             <Image
               style={styles.tinyLogo}
               source={{
@@ -95,7 +124,22 @@ export function MainScreen(props) {
       marginBottom: 30,
       flexDirection: 'row',
       borderRadius: 6,
-      backgroundColor: '#2F61AF'
+      backgroundColor: '#2F61AF',
+    },
+    buttonSesion: {
+      borderRadius: 6,
+      backgroundColor: '#A4A4A4',
+      
+      padding:'3%',
+      marginHorizontal: 50
+    },
+    buttonTextSesion: {
+      fontSize: 20,
+      color: "white",
+      fontWeight: "bold",
+      textAlign:"center",
+      padding:'2%',
+      
     },
     buttonText: {
       marginTop: 10,
@@ -134,11 +178,42 @@ export function MainScreen(props) {
       height: 50,
       marginTop:15,
     },
+    textoModal: {
+      color:"black",
+      textAlign: "center",
+      fontSize:30,
+      fontWeight: "bold",
+      marginBottom: '10%',
+      fontStyle: "italic"
+    }
+    ,
+    textoModal2: {
+      color:"black",
+      textAlign: "center",
+      fontSize:20,
+      marginBottom: '10%'
+    }
+    ,
     footerContainer:{
       flexDirection: 'row', 
       justifyContent: 'space-between',  // Align items to the right
       backgroundColor: '#2F61AF',
       padding:'2%',
       
-    }
+    },
+    modalContainer: {
+      
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    
+      
+    },
+    modalContent: {
+      marginVertical:"50%",
+      marginHorizontal:"5%",
+      backgroundColor: "#E1E1E1",
+      padding: '5%',
+      borderRadius: 10,
+      color: "black",
+    },
   });

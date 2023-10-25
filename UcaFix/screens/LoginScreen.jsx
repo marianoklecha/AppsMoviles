@@ -23,7 +23,7 @@ export function LoginScreen(props) {
               let data = await loginCheck.json()
               loginFunction(data.id)
               if(data.isAdmin == 0){
-                props.navigation.navigate('MainScreen', { name: data.name })
+                props.navigation.navigate('MainScreen', { name: data.name , email: data.email})
               } else {
                 props.navigation.navigate('PaginaInicio')
               }
