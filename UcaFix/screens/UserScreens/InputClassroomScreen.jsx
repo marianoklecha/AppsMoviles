@@ -1,30 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Platform, StyleSheet, Text, Easing, TextInput, TouchableOpacity, Image, View } from 'react-native';
+import { Keyboard, Animated, Text, Easing, TouchableOpacity, Image, View } from 'react-native';
 
-import { createStackNavigator, TransitionPresets, CardStyleInterpolators } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import Footer from '../Footer';
 import styles from '../styles'; 
 import { Aula } from './Aula';
 import { EspacioComun } from './EspacioComun';
-import { ScrollView } from 'react-native-gesture-handler';
 
+const FadeInView = (props) => {
+  const [fadeAnim] = useState(new Animated.Value(0));
 
-const Stack = createStackNavigator();
+  React.useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: props.visible ? 50 : 0,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  }, [props.visible]);
 
+  return (
+    <Animated.View
+      style={{
+        opacity: fadeAnim,
+        transform: [
+          {
+            translateY: fadeAnim.interpolate({
+              inputRange: [0, 50],
+              outputRange: [50, 0],
+            }),
+          },
+        ],
+        flex: 1,
+        display: props.visible ? 'flex' : 'none',
+      }}
+    >
+      {props.children}
+    </Animated.View>
+  );
+};
 
-const config = {
-  animation: "timing",
-  config:{
-    duration: 1,
-    easing: Easing.linear
-  }
-}
 export function InputClassroomScreen(props) {
-  const [aula, setAula] = useState('');
-  const [motivo, setMotivo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const [visible, setVisible] = useState(true); // Estado para controlar la visibilidad
+  const [visible, setVisible] = useState(true);
   
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -53,91 +70,28 @@ export function InputClassroomScreen(props) {
       </View>
 
       <View style = {styles.topBar}>
-        <TouchableOpacity  style={visible ? styles.topBarButton1 : styles.topBarButton2} onPress={() => setVisible(true)}>
+        <TouchableOpacity  style={visible ? styles.topBarButton1 : styles.topBarButton2} 
+        onPress={() => { if (!visible) { setVisible(true) }}}>
             <Text 
             style={visible ? styles.topBarButtonText1 : styles.topBarButtonText2}
             >            Aulas            </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={visible ? styles.topBarButton2 : styles.topBarButton1} onPress={() => setVisible(false)}>
+        <TouchableOpacity style={visible ? styles.topBarButton2 : styles.topBarButton1} 
+        onPress={() => { if (visible) { setVisible(false)}}}>
             <Text style={visible ? styles.topBarButtonText2 : styles.topBarButtonText1}
             >Espacios comunes</Text>
         </TouchableOpacity>
       </View>
-      
-      <Stack.Navigator
-  screenOptions={{
-    headerShown: false, // Ocultar la barra de navegación si lo deseas
-    cardStyleInterpolator: ({ current, next, layouts }) => {
-      return {
-        cardStyle: {
-          transform: [
-            {
-              translateX: current.progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [layouts.screen.width, 0],
-              }),
-            },
-            {
-              translateX: next
-                ? next.progress.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, -layouts.screen.width],
-                  })
-                : 0,
-            },
-          ],
-        },
-      };
-    },
-    transitionSpec: {
-      open: {
-        animation: "spring",
-        config: {
-          stiffness: 1000,
-          damping: 500,
-          mass: 3,
-          overshootClamping: true,
-          restSpeedThreshold: 0.001,
-          restDisplacementThreshold: 0.001,
-        },
-      },
-      close: {
-        animation: "spring",
-        config: {
-          stiffness: 1000,
-          damping: 500,
-          mass: 3,
-          overshootClamping: true,
-          restSpeedThreshold: 0.001,
-          restDisplacementThreshold: 0.001,
-        },
-      },
-    },
-  }}
->
-      
-        {visible ?
-        <>
-          <Stack.Screen name="Aula" options={{headerShown : false}}>
-            {props => <Aula {...props}/>}
-          </Stack.Screen>
+      <View style={{ flex: 1 }}>
+        <FadeInView visible={visible}>
+          <Aula {...props}></Aula>
+        </FadeInView>
 
-        </>
-        :
-        <>
-          <Stack.Screen name="EspacioComun" options={{headerShown : false}}>
-            {props => <EspacioComun {...props} />}
-          </Stack.Screen>
-
-        </>
-        }
-                   
-       
-
-      </Stack.Navigator>
-
-      
+        <FadeInView visible={!visible}>
+          <EspacioComun {...props}></EspacioComun>
+        </FadeInView>
+      </View>
 
       {!isKeyboardVisible && <Footer />}
     </View>

@@ -23,8 +23,10 @@ export function LoginScreen(props) {
               let data = await loginCheck.json()
               loginFunction(data.id)
               if(data.isAdmin == 0){
+                {/* Si no es admin vamos al screen BottomTabNavigator de usuario que pusimos en App.jsx*/}
                 props.navigation.navigate('MainScreen', { name: data.name , email: data.email})
               } else {
+                {/* Si es admin vamos al screen BottomTabNavigator de admin que pusimos en App.jsx*/}
                 props.navigation.navigate('PaginaInicio')
               }
           }
@@ -74,7 +76,7 @@ export function LoginScreen(props) {
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => handleLogin(email, password, props.loginFn)}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            <Text style={styles.buttonText}>Iniciar sesión</Text>
           </TouchableOpacity>
 
 
