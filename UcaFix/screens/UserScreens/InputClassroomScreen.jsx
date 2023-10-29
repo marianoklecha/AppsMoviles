@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Keyboard, Platform, StyleSheet, Text, Easing, TextInput, TouchableOpacity, Image, View } from 'react-native';
 
 import { createStackNavigator, TransitionPresets, CardStyleInterpolators } from '@react-navigation/stack';
-import Footer from '../Footer';
 import styles from '../styles'; 
 import { Aula } from './Aula';
 import { EspacioComun } from './EspacioComun';
@@ -139,7 +138,7 @@ export function InputClassroomScreen(props) {
 
       
 
-      {!isKeyboardVisible && <Footer />}
+      {!isKeyboardVisible }
     </View>
   );
 }

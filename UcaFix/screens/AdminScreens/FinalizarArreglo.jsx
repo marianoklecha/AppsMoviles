@@ -10,7 +10,7 @@ import {
   Image,
   View,
 } from 'react-native';
-import Footer from '../Footer';
+
 
 export function FinalizarArreglo(props) {
     const [comentario, setComentario] = React.useState("");
@@ -78,7 +78,6 @@ export function FinalizarArreglo(props) {
 
             </View>
             
-            <Footer/>
             
             </ScrollView>
             

@@ -7,14 +7,15 @@ import {
   Image,
   View,
 } from 'react-native';
-import Footer from '../Footer';
 
 export function MainScreen(props) {
     const onTap = (nextScreen) => {
       props.navigation.navigate(nextScreen);
     };
-    const name = props.route.params.name; // Access the user's name from the prop
+    const UserName = props;
+    console.log(UserName)
     return (
+      
       
       // 
       <View style={styles.back}>
@@ -28,7 +29,7 @@ export function MainScreen(props) {
             <Text style={[styles.title]}>UCA FIX</Text>
         </View>
         <SafeAreaView style={styles.container}>
-          <Text style={[styles.text]}>Bienvenido/a!, {name}</Text> 
+          <Text style={[styles.text]}>Bienvenido/a! </Text> 
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => props.navigation.navigate('InputClassroomScreen')}>
@@ -44,7 +45,7 @@ export function MainScreen(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('PedidosResultos')}>
+            onPress={() => props.navigation.navigate('PedidosResueltos')}>
             <Image
               style={styles.tinyLogo}
               source={{
@@ -70,7 +71,6 @@ export function MainScreen(props) {
           </SafeAreaView>
 
 
-          <Footer/>
           
       </View>
       

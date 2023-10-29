@@ -8,7 +8,7 @@ import {
   Image,
   Modal,
 } from 'react-native';
-import Footer from '../Footer';
+
 
 const requestData = [
   { id: 1, request: 'Pizarron Roto' ,building: 'Magno', completed: true, details: 'El pizzarron de la 102 magno esta roto y no tiene tiza', uploadedPicture: 'https://t4.ftcdn.net/jpg/04/01/91/89/360_F_401918904_dXxFbwo4QheU5ZkTtMFIJfPogcuJydwS.jpg' },
@@ -165,7 +165,6 @@ export function PedidosResueltos(props) {
         ))}
       </ScrollView>
 
-      <Footer />
     </View>
   );
 }

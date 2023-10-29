@@ -7,7 +7,10 @@ import { PaginaInicio } from "./AdminScreens/PaginaInicio";
 import { EspacioComun } from "./UserScreens/EspacioComun";
 import {FinalizarArreglo} from "./AdminScreens/FinalizarArreglo"
 import { ListaPedidos } from "./AdminScreens/ListaPedidos";
-
+import {MainTabNavigator} from "./UserScreens/MainTabNavigator";
+import {UserProfile} from "./UserScreens/UserProfile";
+import { AdminTabNavigator } from "./AdminScreens/AdminTabNavigator";
+import { AdminProfile } from "./AdminScreens/AdminProfile";
 export{
     MainScreen,
     InputClassroomScreen,
@@ -17,5 +20,9 @@ export{
     PaginaInicio,
     EspacioComun,
     FinalizarArreglo,
-    ListaPedidos
+    ListaPedidos,
+    MainTabNavigator,
+    UserProfile,
+    AdminTabNavigator,
+    AdminProfile,
 }

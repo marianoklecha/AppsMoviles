@@ -8,7 +8,6 @@ import {
   Image,
   Modal,
 } from 'react-native';
-import Footer from '../Footer';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
@@ -179,7 +178,6 @@ export function ListaPedidos(props) {
         ))}
       </ScrollView>
 
-      <Footer />
     </View>
   );
 }

@@ -7,7 +7,6 @@ import {
   Image,
   View,
 } from 'react-native';
-import Footer from '../Footer';
 
 export function PaginaInicio(props) {
     const onTap = (nextScreen) => {
@@ -65,8 +64,6 @@ export function PaginaInicio(props) {
 
           </SafeAreaView>
 
-
-          <Footer/>
           
       </View>
       
