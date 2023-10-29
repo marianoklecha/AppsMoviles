@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,PaginaInicio, FinalizarArreglo,ListaPedidos } from './screens';
+import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,PaginaInicio, FinalizarArreglo,ListaPedidos, PedidosResueltos } from './screens';
 
 
 
@@ -15,6 +15,18 @@ const App = () => {
       <Stack.Navigator>
         {loggedInUser ?
         <>
+        {
+          /*Acá conditionalRendering de si es admin o usuario*/
+
+          /* esadmin? TabNavigatorAdmin*/
+          /* => Adentro de este Tab poner una pantalla de StackNavigator
+           con todo lo del admin y otra solita para el perfil*/
+
+          /* sino: TabNavigatorUsuaeio */
+          /* => Adentro de este Tab poner una pantalla de StackNavigator
+          con todo lo del usuario y otra solita  para el perfil*/
+
+        } 
           <Stack.Screen name="PaginaInicio" options={{headerShown : false}}>
             {props => <PaginaInicio {...props} userId={loggedInUser}/>}
           </Stack.Screen>
@@ -24,8 +36,8 @@ const App = () => {
           <Stack.Screen name="InputClassroomScreen" options={{headerShown : false}}>
             {props => <InputClassroomScreen {...props} userId={loggedInUser}/>}
           </Stack.Screen>
-          <Stack.Screen name="PedidosResultos" options={{headerShown : false}}>
-            {props => <PedidosResultos {...props} userId={loggedInUser}/>}
+          <Stack.Screen name="PedidosResueltos" options={{headerShown : false}}>
+            {props => <PedidosResueltos {...props} userId={loggedInUser}/>}
           </Stack.Screen>
           <Stack.Screen name="FinalizarArreglo" options={{headerShown : false}}>
             {props => <FinalizarArreglo {...props} userId={loggedInUser}/>}

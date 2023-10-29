@@ -6,7 +6,7 @@ import { AdminOUser } from "./AdminOUser";
 import { PaginaInicio } from "./AdminScreens/PaginaInicio";
 import { EspacioComun } from "./UserScreens/EspacioComun";
 import {FinalizarArreglo} from "./AdminScreens/FinalizarArreglo"
-import { ListaPedidos } from "./AdminScreens/ListaPedidos";
+import { ListaPedidos } from "./AdminScreens/listaPedidos";
 
 export{
     MainScreen,
