@@ -13,7 +13,7 @@ const FadeInView = (props) => {
   React.useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: props.visible ? 50 : 0,
-      duration: 100,
+      duration: 300,
       useNativeDriver: true,
     }).start();
   }, [props.visible]);
@@ -42,7 +42,6 @@ const FadeInView = (props) => {
 export function InputClassroomScreen(props) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [visible, setVisible] = useState(true);
-  
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);
@@ -50,13 +49,11 @@ export function InputClassroomScreen(props) {
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
       setKeyboardVisible(false);
     });
-
     return () => {
       keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
   }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -93,9 +90,7 @@ export function InputClassroomScreen(props) {
         </FadeInView>
       </View>
 
-      {!isKeyboardVisible && <Footer />}
+      
     </View>
-  );
-}
-
-
+     );
+    }
