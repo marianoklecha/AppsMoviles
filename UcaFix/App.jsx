@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator } from './screens';
+import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab= createBottomTabNavigator();
@@ -38,6 +38,9 @@ const App = () => {
           </Stack.Screen>
           <Stack.Screen name="AdminTabNavigator" options={{headerShown : false}}>
             {props => <AdminTabNavigator {...props} userId={loggedInUser}/>}
+          </Stack.Screen>
+          <Stack.Screen name="MapaPedidos" options={{headerShown : false}}>
+            {props => <MapaPedidos {...props} userId={loggedInUser}/>}
           </Stack.Screen>
           <Stack.Screen name="AdminProfile" options={{headerShown : false}}>
             {props => <AdminProfile {...props} userId={loggedInUser}/>}

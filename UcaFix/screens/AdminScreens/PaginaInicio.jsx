@@ -40,7 +40,7 @@ export function PaginaInicio(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={onTap}>
+            onPress={() => props.navigation.navigate('MapaPedidos')}>
             <Image
               style={styles.tinyLogo}
               source={{
