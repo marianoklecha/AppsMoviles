@@ -15,6 +15,18 @@ const App = () => {
       <Stack.Navigator>
         {loggedInUser ?
         <>
+        {
+          /*Acá conditionalRendering de si es admin o usuario*/
+
+          /* esadmin? TabNavigatorAdmin*/
+          /* => Adentro de este Tab poner una pantalla de StackNavigator
+           con todo lo del admin y otra solita para el perfil*/
+
+          /* sino: TabNavigatorUsuaeio */
+          /* => Adentro de este Tab poner una pantalla de StackNavigator
+          con todo lo del usuario y otra solita  para el perfil*/
+
+        } 
           <Stack.Screen name="PaginaInicio" options={{headerShown : false}}>
             {props => <PaginaInicio {...props} userId={loggedInUser}/>}
           </Stack.Screen>

@@ -74,7 +74,7 @@ export function LoginScreen(props) {
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => handleLogin(email, password, props.loginFn)}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+            <Text style={styles.buttonText}>Iniciar sesión</Text>
           </TouchableOpacity>
 
 

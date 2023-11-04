@@ -42,7 +42,6 @@ const FadeInView = (props) => {
 export function InputClassroomScreen(props) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [visible, setVisible] = useState(true);
-
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);

@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
       backgroundColor: "white",
       flexDirection: "row",
       justifyContent: "space-evenly",
-      padding: "2%"
+      padding: "2%",
+      
     },
     topBarButton1:{
       padding: "2%",
@@ -148,6 +149,6 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       color: 'white',
       fontWeight: 'bold',
-    },
+    }
 });
 export default styles;
