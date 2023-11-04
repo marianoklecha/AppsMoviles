@@ -41,38 +41,35 @@ export function MapaPedidos(props) {
     setScale(1);
   };
 
+  // Define una lista de aulas con arreglos pendientes
+  const aulasConArreglosPendientes = [2]; // Modifica esto según tus datos reales
+
   const squares = [];
   const xgridSize = 14;
-  const YgridSize = 5; // Adjust as needed
+  const YgridSize = 5; // Ajusta según tus necesidades
 
   for (let i = 0; i < YgridSize; i++) {
     for (let j = 0; j < xgridSize; j++) {
-      if ((i === 0 && (j >= 3 && j<=10)) | (i === YgridSize-1 && (j >= 3 && j<=10))) {
-        squares.push(
-          <View
-            key={`${i}-${j}`}
-            style={{ ...styles.littleSquaresBlue }}
-          />
-        );
-      } else {
-        squares.push(
-          <View
-            key={`${i}-${j}`}
-            style={{ ...styles.littleSquares }}
-          />
-        );
-      }
+      const isAulaConArreglosPendientes = aulasConArreglosPendientes.includes(j);
+      const isBlueSquare = (i === 0 && (j >= 3 && j <= 10)) || (i === YgridSize - 1 && (j >= 3 && j <= 10));
+      const backgroundColor = isAulaConArreglosPendientes ? 'orange' : isBlueSquare ? 'blue' : 'white';
+
+      squares.push(
+        <View
+          key={`${i}-${j}`}
+          style={{ ...styles.littleSquares, backgroundColor }}
+        />
+      );
     }
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={resetScale} style={styles.resetButton}>
-      </TouchableOpacity>
+      <TouchableOpacity onPress={resetScale} style={styles.resetButton} />
       <View
         ref={mapContainerRef}
         {...panResponder.panHandlers}
-        style={{transform: [{ scale: scale }], ...styles.mapContainer}}
+        style={{ transform: [{ scale: scale }], ...styles.mapContainer }}
       >
         {squares}
       </View>
@@ -97,27 +94,17 @@ const styles = StyleSheet.create({
   square: {
     justifyContent: 'center',
     alignItems: 'center',
-
   },
-  mapContainer:{
-    width: 20*17,
-    height: 20*6,
+  mapContainer: {
+    width: 20 * 17,
+    height: 20 * 6,
     backgroundColor: 'blue',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  littleSquares:{
+  littleSquares: {
     width: 17,
     height: 17,
-    backgroundColor: 'white',
     margin: '1%',
-
   },
-  littleSquaresBlue:{
-    width: 17,
-    height: 17,
-    backgroundColor: 'blue',
-    margin: '1%',
-
-  }
 });
