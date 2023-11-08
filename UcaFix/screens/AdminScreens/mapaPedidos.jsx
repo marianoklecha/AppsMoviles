@@ -55,7 +55,7 @@ export function MapaPedidos(props) {
   );
   const sequenceAnimation = Animated.sequence(animations);
   // Define una lista de aulas con arreglos pendientes
-  const aulasConArreglosPendientes = ['0-1', '1-7','2-3','2-4']; // Ejemplo de aulas con arreglos pendientes
+  const aulasConArreglosPendientes = ['0-1', '2-6', '2-7','2-3']; // Ejemplo de aulas con arreglos pendientes
 
   const squares = [];
   const xgridSize = 14;
@@ -70,8 +70,11 @@ export function MapaPedidos(props) {
   
       if (isAulaConArreglosPendientes) {
         squares.push(
-          <TouchableOpacity style={{marginLeft:0}} key={key} onPress={() => props.navigation.navigate('ListaPedidos')}>
+          <TouchableOpacity style={{marginTop:3.1, marginHorizontal:3.4,  width: 17,
+            height: 17}}  >
             <Animated.View
+              key={key}
+              onPress={() => props.navigation.navigate('ListaPedidos')}
               style={{
                 ...styles.littleSquares,
                 backgroundColor,
