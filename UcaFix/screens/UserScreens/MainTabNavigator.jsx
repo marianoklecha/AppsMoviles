@@ -18,6 +18,7 @@ function TabNav(){
         <Stack.Screen name='InputClassroomScreen' component={InputClassroomScreen} options={{ headerShown: false }}/>
         <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }}/>
         <Stack.Screen name='PedidosResueltos' component={PedidosResueltos} options={{ headerShown: false }}/>
+        <Stack.Screen name='QRpageUser' component={QRpageUser} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

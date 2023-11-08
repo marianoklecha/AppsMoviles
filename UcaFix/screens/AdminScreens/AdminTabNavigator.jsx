@@ -10,6 +10,7 @@ import { FinalizarArreglo } from './FinalizarArreglo';
 import { MapaPedidos } from './MapaPedidos';
 import { ElegirEdificio } from './ElegirEdificio';
 import { PisosEdificio } from './PisosEdificio';
+import { QRpageAdmin } from './QRpageAdmin';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -25,7 +26,7 @@ function TabNav(){
         <Stack.Screen name='MapaPedidos' component={MapaPedidos} options={{ headerShown: false }}/>
         <Stack.Screen name='PisosEdificio' component={PisosEdificio} options={{ headerShown: false }}/>
         <Stack.Screen name='ElegirEdificio' component={ElegirEdificio} options={{ headerShown: false }}/>
-
+        <Stack.Screen name='QRpageAdmin' component={QRpageAdmin} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }

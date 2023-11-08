@@ -13,6 +13,8 @@ import { AdminTabNavigator } from "./AdminScreens/AdminTabNavigator";
 import { AdminProfile } from "./AdminScreens/AdminProfile";
 import { ElegirEdificio } from "./AdminScreens/ElegirEdificio";
 import { PisosEdificio } from "./AdminScreens/PisosEdificio";
+import { QRpageAdmin } from "./AdminScreens/QRpageAdmin";
+import { QRpageUser } from "./UserScreens/QRpageUser";
 
 export{
     MainScreen,
@@ -29,5 +31,7 @@ export{
     AdminTabNavigator,
     AdminProfile,
     ElegirEdificio,
-    PisosEdificio
+    PisosEdificio,
+    QRpageAdmin,
+    QRpageUser
 }

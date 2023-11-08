@@ -78,6 +78,7 @@ export function MapaPedidos(props) {
                 opacity: opacity,
               }}
             >
+             
             </Animated.View>
           </TouchableOpacity>
         );
