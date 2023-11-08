@@ -7,6 +7,8 @@ import { MainScreen } from './MainScreen';
 import { PedidosResueltos } from './PedidosResueltos';
 import { InputClassroomScreen } from './InputClassroomScreen';
 import { UserProfile } from './UserProfile';
+import { QRpageUser } from './QRpageUser';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
