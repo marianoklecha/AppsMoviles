@@ -11,6 +11,7 @@ import {MainTabNavigator} from "./UserScreens/MainTabNavigator";
 import {UserProfile} from "./UserScreens/UserProfile";
 import { AdminTabNavigator } from "./AdminScreens/AdminTabNavigator";
 import { AdminProfile } from "./AdminScreens/AdminProfile";
+import { ElegirEdificio } from "./AdminScreens/ElegirEdificio";
 export{
     MainScreen,
     InputClassroomScreen,
@@ -25,4 +26,5 @@ export{
     UserProfile,
     AdminTabNavigator,
     AdminProfile,
+    ElegirEdificio
 }

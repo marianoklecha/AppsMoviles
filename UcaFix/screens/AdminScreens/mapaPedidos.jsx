@@ -42,19 +42,20 @@ export function MapaPedidos(props) {
   const opacity = new Animated.Value(0);
   const animationConfig = {
     toValue: 1,         
-    duration: 1000,     
+    duration: 450,     
     useNativeDriver: true,
   };
   const animations = Array.from({ length: 5 }, (_, index) => {
     return Animated.timing(opacity, {
       ...animationConfig,
-      delay: index * animationConfig.duration, // Delay each animation by its index times the duration
     });
   });
-
+  const loopAnimation = Animated.loop(
+    Animated.sequence(animations), // Repeats the sequence animation 5 times
+  );
   const sequenceAnimation = Animated.sequence(animations);
   // Define una lista de aulas con arreglos pendientes
-  const aulasConArreglosPendientes = ['0-1', '1-7','2-3']; // Ejemplo de aulas con arreglos pendientes
+  const aulasConArreglosPendientes = ['0-1', '1-7','2-3','2-4']; // Ejemplo de aulas con arreglos pendientes
 
   const squares = [];
   const xgridSize = 14;
@@ -69,20 +70,20 @@ export function MapaPedidos(props) {
   
       if (isAulaConArreglosPendientes) {
         squares.push(
-          <Animated.View
-            key={key}
-            style={{
-              ...styles.littleSquares,
-              backgroundColor,
-              opacity: opacity,
-            }}
-          >
-            {/* You can also add a red circle or any other notification here */}
-          </Animated.View>
+          <TouchableOpacity style={{marginLeft:0}} key={key} onPress={() => props.navigation.navigate('ListaPedidos')}>
+            <Animated.View
+              style={{
+                ...styles.littleSquares,
+                backgroundColor,
+                opacity: opacity,
+              }}
+            >
+            </Animated.View>
+          </TouchableOpacity>
         );
         
         // Start the sequence animation
-        sequenceAnimation.start();
+        loopAnimation.start();
       } else {
         squares.push(
           <View
@@ -96,7 +97,7 @@ export function MapaPedidos(props) {
 
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity onPress={resetScale} style={styles.resetButton} /> */}
+      <TouchableOpacity onPress={resetScale} style={styles.resetButton} />
       <View
         ref={mapContainerRef}
         {...panResponder.panHandlers}

@@ -8,6 +8,7 @@ import { ListaPedidos } from './ListaPedidos';
 import { AdminProfile } from './AdminProfile';
 import { FinalizarArreglo } from './FinalizarArreglo';
 import { MapaPedidos } from './MapaPedidos';
+import { ElegirEdificio } from './ElegirEdificio';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -21,6 +22,7 @@ function TabNav(){
         <Stack.Screen name='AdminProfile' component={AdminProfile} options={{ headerShown: false }}/>
         <Stack.Screen name='FinalizarArreglo' component={FinalizarArreglo} options={{ headerShown: false }}/>
         <Stack.Screen name='MapaPedidos' component={MapaPedidos} options={{ headerShown: false }}/>
+        <Stack.Screen name='ElegirEdificio' component={ElegirEdificio} options={{ headerShown: false }}/>
 
     </Stack.Navigator>
   );
