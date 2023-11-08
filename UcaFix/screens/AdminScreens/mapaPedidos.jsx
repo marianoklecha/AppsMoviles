@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, StyleSheet, Text, PanResponder, Animated, TouchableOpacity } from 'react-native';
-
+import * as Animatable from 'react-native-animatable';
 export function MapaPedidos(props) {
   const [scale, setScale] = React.useState(1);
   const [previousPinchDistance, setPreviousPinchDistance] = React.useState(null);
@@ -42,7 +42,7 @@ export function MapaPedidos(props) {
   };
 
   // Define una lista de aulas con arreglos pendientes
-  const aulasConArreglosPendientes = ['0-1', '1-7']; // Ejemplo de aulas con arreglos pendientes
+  const aulasConArreglosPendientes = ['0-1', '1-7','2-3','2-4']; // Ejemplo de aulas con arreglos pendientes
 
   const squares = [];
   const xgridSize = 14;
@@ -55,18 +55,29 @@ export function MapaPedidos(props) {
       const isBlueSquare = (i === 0 && (j >= 3 && j <= 10)) || (i === YgridSize - 1 && (j >= 3 && j <= 10));
       const backgroundColor = isAulaConArreglosPendientes ? 'orange' : isBlueSquare ? 'blue' : 'white';
   
-      squares.push(
+      const square = isAulaConArreglosPendientes ? (
+        <Animatable.View
+          key={key}
+          animation="Slide" // Try different animations
+          duration={1000} // Set a duration in milliseconds
+          iterationCount="4" // You can adjust this based on your needs
+          style={{ ...styles.littleSquares, backgroundColor }}
+        >
+        </Animatable.View>
+      ) : (
         <View
           key={key}
           style={{ ...styles.littleSquares, backgroundColor }}
         />
       );
+
+      squares.push(square);
     }
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={resetScale} style={styles.resetButton} />
+      {/* <TouchableOpacity onPress={resetScale} style={styles.resetButton} /> */}
       <View
         ref={mapContainerRef}
         {...panResponder.panHandlers}
@@ -84,14 +95,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  resetButton: {
-    position: 'absolute',
-    backgroundColor: 'lightgray',
-    padding: 10,
-    borderRadius: 5,
-    height: '100%',
-    width: '100%',
-  },
+  // resetButton: {
+  //   position: 'absolute',
+  //   backgroundColor: 'lightgray',
+  //   padding: 10,
+  //   borderRadius: 5,
+  //   height: '100%',
+  //   width: '100%',
+  // },
   square: {
     justifyContent: 'center',
     alignItems: 'center',
