@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { View, StyleSheet, Text, PanResponder, Animated, TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 export function MapaPedidos(props) {
   const [scale, setScale] = React.useState(1);
   const [previousPinchDistance, setPreviousPinchDistance] = React.useState(null);
@@ -40,9 +39,22 @@ export function MapaPedidos(props) {
   const resetScale = () => {
     setScale(1);
   };
+  const opacity = new Animated.Value(0);
+  const animationConfig = {
+    toValue: 1,         
+    duration: 1000,     
+    useNativeDriver: true,
+  };
+  const animations = Array.from({ length: 5 }, (_, index) => {
+    return Animated.timing(opacity, {
+      ...animationConfig,
+      delay: index * animationConfig.duration, // Delay each animation by its index times the duration
+    });
+  });
 
+  const sequenceAnimation = Animated.sequence(animations);
   // Define una lista de aulas con arreglos pendientes
-  const aulasConArreglosPendientes = ['0-1', '1-7','2-3','2-4']; // Ejemplo de aulas con arreglos pendientes
+  const aulasConArreglosPendientes = ['0-1', '1-7','2-3']; // Ejemplo de aulas con arreglos pendientes
 
   const squares = [];
   const xgridSize = 14;
@@ -55,23 +67,30 @@ export function MapaPedidos(props) {
       const isBlueSquare = (i === 0 && (j >= 3 && j <= 10)) || (i === YgridSize - 1 && (j >= 3 && j <= 10));
       const backgroundColor = isAulaConArreglosPendientes ? 'orange' : isBlueSquare ? 'blue' : 'white';
   
-      const square = isAulaConArreglosPendientes ? (
-        <Animatable.View
-          key={key}
-          animation="Slide" // Try different animations
-          duration={1000} // Set a duration in milliseconds
-          iterationCount="4" // You can adjust this based on your needs
-          style={{ ...styles.littleSquares, backgroundColor }}
-        >
-        </Animatable.View>
-      ) : (
-        <View
-          key={key}
-          style={{ ...styles.littleSquares, backgroundColor }}
-        />
-      );
-
-      squares.push(square);
+      if (isAulaConArreglosPendientes) {
+        squares.push(
+          <Animated.View
+            key={key}
+            style={{
+              ...styles.littleSquares,
+              backgroundColor,
+              opacity: opacity,
+            }}
+          >
+            {/* You can also add a red circle or any other notification here */}
+          </Animated.View>
+        );
+        
+        // Start the sequence animation
+        sequenceAnimation.start();
+      } else {
+        squares.push(
+          <View
+            key={key}
+            style={{ ...styles.littleSquares, backgroundColor }}
+          />
+        );
+      }
     }
   }
 
