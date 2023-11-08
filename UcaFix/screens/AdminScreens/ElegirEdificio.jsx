@@ -29,7 +29,7 @@ export function ElegirEdificio(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('MapaPedidos')}>
+            onPress={() => props.navigation.navigate('PisosEdificio')}>
            <Image
               style={styles.tinyLogo}
               source={{
@@ -40,7 +40,7 @@ export function ElegirEdificio(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('MapaPedidos')}>
+            onPress={() => props.navigation.navigate('PisosEdificio')}>
             <Image
               style={styles.tinyLogo}
               source={{
@@ -51,7 +51,7 @@ export function ElegirEdificio(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('MapaPedidos')}>
+            onPress={() => props.navigation.navigate('PisosEdificio')}>
             <Image
               style={styles.tinyLogo}
               source={{
@@ -62,7 +62,7 @@ export function ElegirEdificio(props) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('MapaPedidos')}>
+            onPress={() => props.navigation.navigate('PisosEdificio')}>
             <Image
               style={styles.tinyLogo}
               source={{

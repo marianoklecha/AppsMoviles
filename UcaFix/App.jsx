@@ -39,6 +39,9 @@ const App = () => {
           <Stack.Screen name="AdminTabNavigator" options={{headerShown : false}}>
             {props => <AdminTabNavigator {...props} userId={loggedInUser}/>}
           </Stack.Screen>
+          <Stack.Screen name="PisosEdificio" options={{headerShown : false}}>
+            {props => <PisosEdificio {...props} userId={loggedInUser}/>}
+          </Stack.Screen>
           <Stack.Screen name="MapaPedidos" options={{headerShown : false}}>
             {props => <MapaPedidos {...props} userId={loggedInUser}/>}
           </Stack.Screen>
