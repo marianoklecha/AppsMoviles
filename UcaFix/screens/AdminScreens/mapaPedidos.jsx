@@ -3,6 +3,10 @@ import { View, StyleSheet, Text, PanResponder, Animated, TouchableOpacity } from
 export function MapaPedidos(props) {
   const [scale, setScale] = React.useState(1);
   const [previousPinchDistance, setPreviousPinchDistance] = React.useState(null);
+  const [translateX] = useState(new Animated.Value(0)); // Para el desplazamiento en X
+  const [translateY] = useState(new Animated.Value(0)); // Para el desplazamiento en Y
+  const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
+
   const mapContainerRef = useRef(null);
 
   const calculateDistance = (x0, y0, x1, y1) => {
@@ -14,7 +18,7 @@ export function MapaPedidos(props) {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onMoveShouldSetPanResponder: () => true,
-    onPanResponderMove: (event) => {
+    onPanResponderMove: (event, gestureState) => {
       if (event.nativeEvent.touches.length === 2) {
         const touch1 = event.nativeEvent.touches[0];
         const touch2 = event.nativeEvent.touches[1];
@@ -29,12 +33,26 @@ export function MapaPedidos(props) {
           setScale((prevScale) => prevScale * newScale);
         }
         setPreviousPinchDistance(pinchDistance);
+      } else if (event.nativeEvent.touches.length === 1) {
+        const dx = gestureState.dx;
+        const dy = gestureState.dy;
+  
+        // Ajusta la velocidad de arrastre disminuyendo en función de la escala actual
+        const adjustedDx = dx / scale;
+        const adjustedDy = dy / scale;
+  
+        translateX.setValue(adjustedDx + lastPosition.x);
+        translateY.setValue(adjustedDy + lastPosition.y);
       }
     },
     onPanResponderRelease: () => {
+      setLastPosition({ x: translateX._value, y: translateY._value });
       setPreviousPinchDistance(null);
     },
   });
+  
+  
+  
 
   const resetScale = () => {
     setScale(1);
@@ -71,17 +89,14 @@ export function MapaPedidos(props) {
       if (isAulaConArreglosPendientes) {
         squares.push(
           <TouchableOpacity style={{marginTop:3.1, marginHorizontal:3.4,  width: 17,
-            height: 17}}  >
+            height: 17}}  onPress={() => props.navigation.navigate('ListaPedidos')} key={key}>
             <Animated.View
-              key={key}
-              onPress={() => props.navigation.navigate('ListaPedidos')}
               style={{
                 ...styles.littleSquares,
                 backgroundColor,
                 opacity: opacity,
               }}
             >
-             
             </Animated.View>
           </TouchableOpacity>
         );
@@ -102,16 +117,22 @@ export function MapaPedidos(props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={resetScale} style={styles.resetButton} />
-      <View
+      <Animated.View
         ref={mapContainerRef}
         {...panResponder.panHandlers}
-        style={{ transform: [{ scale: scale }], ...styles.mapContainer }}
+        style={[
+          styles.mapContainer,
+          {
+            transform: [{ scale: scale }, { translateX }, { translateY }],
+          },
+        ]}
       >
         {squares}
-      </View>
+      </Animated.View>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -133,10 +154,12 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     width: 20 * 17,
-    height: 20 * 6,
+    height: 20 * 6 +2,
     backgroundColor: 'blue',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    paddingLeft:4,
+    paddingVertical:2
   },
   littleSquares: {
     width: 17,
