@@ -41,9 +41,9 @@ const FadeInView = (props) => {
 export function PisosEdificio(props) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [visible1, setVisible1] = useState(true);
-  const [visible2, setVisible2] = useState(true);
-  const [visible3, setVisible3] = useState(true);
-  const [visible4, setVisible4] = useState(true);
+  const [visible2, setVisible2] = useState(false);
+  const [visible3, setVisible3] = useState(false);
+  const [visible4, setVisible4] = useState(false);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);
@@ -70,27 +70,27 @@ export function PisosEdificio(props) {
 
       <View style = {styles.topBar}>
         <TouchableOpacity  style={visible1 ? styles.topBarButton1 : styles.topBarButton2} 
-        onPress={() => { if (!visible1) { setVisible1(true) ,setVisible2(false) ,setVisible3(false), setVisible4(false)}}}>
+        onPress={() => { setVisible1(true) ,setVisible2(false) ,setVisible3(false), setVisible4(false)}}>
             <Text 
             style={visible1 ? styles.topBarButtonText1 : styles.topBarButtonText2}
             >  Piso 1 </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={visible2 ? styles.topBarButton2 : styles.topBarButton1} 
-        onPress={() => { if (visible2) {  setVisible1(false) ,setVisible2(true) ,setVisible3(false), setVisible4(false)}}}>
-            <Text style={visible2 ? styles.topBarButtonText2 : styles.topBarButtonText1}
+        <TouchableOpacity style={visible2 ? styles.topBarButton1 : styles.topBarButton2} 
+        onPress={() => { setVisible1(false) ,setVisible2(true) ,setVisible3(false), setVisible4(false)}}>
+            <Text style={visible2 ? styles.topBarButtonText1 : styles.topBarButtonText2}
             > Piso 2  </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={visible3 ? styles.topBarButton2 : styles.topBarButton1} 
-        onPress={() => { if (visible3) {  setVisible1(false) ,setVisible2(false) ,setVisible3(true), setVisible4(false)}}}>
-            <Text style={visible3 ? styles.topBarButtonText2 : styles.topBarButtonText1}
+        <TouchableOpacity style={visible3 ? styles.topBarButton1 : styles.topBarButton2} 
+        onPress={() => { setVisible1(false) ,setVisible2(false) ,setVisible3(true), setVisible4(false)}}>
+            <Text style={visible3 ? styles.topBarButtonText1 : styles.topBarButtonText2}
             >  Piso 3  </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={visible4 ? styles.topBarButton2 : styles.topBarButton1} 
-        onPress={() => { if (visible4) {  setVisible1(false) ,setVisible2(false) ,setVisible3(false), setVisible4(true)}}}>
-            <Text style={visible4 ? styles.topBarButtonText2 : styles.topBarButtonText1}
+        <TouchableOpacity style={visible4 ? styles.topBarButton1 : styles.topBarButton2} 
+        onPress={() => { setVisible1(false) ,setVisible2(false) ,setVisible3(false), setVisible4(true)}}>
+            <Text style={visible4 ? styles.topBarButtonText1 : styles.topBarButtonText2}
             >  Piso 4 </Text>
         </TouchableOpacity>
       </View>
@@ -99,15 +99,15 @@ export function PisosEdificio(props) {
           <MapaPedidos {...props}></MapaPedidos>
         </FadeInView>
 
-        <FadeInView visible={!visible2}>
+        <FadeInView visible={visible2}>
           <MapaPedidos {...props}></MapaPedidos>
         </FadeInView>
 
-        <FadeInView visible={!visible3}>
+        <FadeInView visible={visible3}>
           <MapaPedidos {...props}></MapaPedidos>
         </FadeInView>
 
-        <FadeInView visible={!visible4}>
+        <FadeInView visible={visible4}>
           <MapaPedidos {...props}></MapaPedidos>
         </FadeInView>
       </View>
