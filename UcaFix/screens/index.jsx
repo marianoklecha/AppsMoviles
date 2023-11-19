@@ -11,6 +11,11 @@ import {MainTabNavigator} from "./UserScreens/MainTabNavigator";
 import {UserProfile} from "./UserScreens/UserProfile";
 import { AdminTabNavigator } from "./AdminScreens/AdminTabNavigator";
 import { AdminProfile } from "./AdminScreens/AdminProfile";
+import { ElegirEdificio } from "./AdminScreens/ElegirEdificio";
+import { PisosEdificio } from "./AdminScreens/PisosEdificio";
+import { QRpageAdmin } from "./AdminScreens/QRpageAdmin";
+import { QRpageUser } from "./UserScreens/QRpageUser";
+
 export{
     MainScreen,
     InputClassroomScreen,
@@ -25,4 +30,8 @@ export{
     UserProfile,
     AdminTabNavigator,
     AdminProfile,
+    ElegirEdificio,
+    PisosEdificio,
+    QRpageAdmin,
+    QRpageUser
 }

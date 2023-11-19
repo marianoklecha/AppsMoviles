@@ -49,7 +49,7 @@ export function MainScreen(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={onTap}>
+            onPress={() => props.navigation.navigate('QRpageUser')}>
            <Image
               style={styles.tinyLogo}
               source={{
