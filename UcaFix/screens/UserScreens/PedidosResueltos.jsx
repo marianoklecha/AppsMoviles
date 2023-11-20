@@ -63,7 +63,7 @@ export function PedidosResueltos(props) {
         </TouchableOpacity>
 
         <Modal
-          animationType="slide"
+          animationType="slide-up"
           transparent={true}
           visible={filterModalVisible}
           onRequestClose={() => setFilterModalVisible(!filterModalVisible)}
@@ -217,17 +217,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    // lo dejo nomas x si despues cambio de opnion
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding:10,
   },
   modalButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginBottom: 10,
     borderRadius: 10,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#D1D1D1',
   },
   activeModalButton: {
     paddingVertical: 10,
