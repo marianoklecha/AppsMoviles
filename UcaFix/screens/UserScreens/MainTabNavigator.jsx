@@ -30,6 +30,7 @@ function MyProfileTabNav(){
     <Stack.Navigator>
       <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }}/>
       <Stack.Screen name='MainScreen' component={MainScreen} options={{ headerShown: false }}/>
+      <Stack.Screen name='PedidosResueltos' component={PedidosResueltos} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
