@@ -73,18 +73,31 @@ export function MapaPedidos(props) {
   );
   const sequenceAnimation = Animated.sequence(animations);
   // Define una lista de aulas con arreglos pendientes
-  const aulasConArreglosPendientes = ['0-1', '2-6', '2-7','2-3']; // Ejemplo de aulas con arreglos pendientes
+  const aulasConArreglosPendientes = ['0-1', '2-6', '3-9','2-3']; // Ejemplo de aulas con arreglos pendientes
+  const aulasConUnoODosPedidosPendientes = ['0-1'];
+  const aulasConTresCuatroPedidosPendientes = ['2-6', '3-9'];
+  const aulasConCincoOMasPedidosPendientes = ['2-3'];
 
   const squares = [];
   const xgridSize = 14;
   const YgridSize = 5; // Ajusta según tus necesidades
+  const determinarColor = (key) => {
+    if(aulasConUnoODosPedidosPendientes.includes(key))
+      return '#FFE932'
+    else if (aulasConTresCuatroPedidosPendientes.includes(key))
+      return '#FF9932'
+    else
+      if (aulasConCincoOMasPedidosPendientes.includes(key))
+      return '#FF3232'
+
+  }
 
   for (let i = 0; i < YgridSize; i++) {
     for (let j = 0; j < xgridSize; j++) {
       const key = `${i}-${j}`;
       const isAulaConArreglosPendientes = aulasConArreglosPendientes.includes(key);
       const isBlueSquare = (i === 0 && (j >= 3 && j <= 10)) || (i === YgridSize - 1 && (j >= 3 && j <= 10));
-      const backgroundColor = isAulaConArreglosPendientes ? 'orange' : isBlueSquare ? 'blue' : 'white';
+      const backgroundColor = isAulaConArreglosPendientes ? determinarColor(key) : isBlueSquare ? 'blue' : 'white';
   
       if (isAulaConArreglosPendientes) {
         squares.push(
@@ -159,11 +172,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingLeft:4,
-    paddingVertical:2
+    paddingVertical:2,
   },
   littleSquares: {
     width: 17,
     height: 17,
-    margin: '1%',
+    margin: '1%'
   },
 });
