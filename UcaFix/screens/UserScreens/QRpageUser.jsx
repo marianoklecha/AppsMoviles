@@ -42,7 +42,7 @@ export function QRpageUser(props) {
             />
             <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('InputClassroomScreen')}>
+            onPress={() => props.navigation.navigate('InsertarPedido')}>
             <Text style={styles.buttonText}>Escanear</Text>
           </TouchableOpacity>
               
