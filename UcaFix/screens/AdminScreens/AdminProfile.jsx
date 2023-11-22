@@ -10,6 +10,7 @@ export function AdminProfile(props) {
     { id: 5, request: 'Proyector no funciona', building: 'Moro' },
     { id: 6, request: 'Proyector no funciona', building: 'Moro' },
     { id: 7, request: 'Proyector no funciona', building: 'Moro' },
+    { id: 8, request: 'Silla Rota', building: 'Moro' },
   ];
 
   const renderItem = ({ item }) => (
@@ -45,7 +46,8 @@ export function AdminProfile(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft:20,
+    paddingRight:20,
   },
   avatar: {
     width: 100,
