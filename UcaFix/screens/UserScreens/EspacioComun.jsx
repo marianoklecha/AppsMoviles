@@ -75,7 +75,7 @@ export const EspacioComun = (props) => {
           <Text style={[styles.inputTitle,{marginTop:"4%"}]}>Motivo</Text>
           <TextInput
             style={styles.input}
-            placeholder="Ej: Silla rota, Pizarrón roto, Luz rota"
+            placeholder=" Ej: Silla rota, Pizarrón roto, Luz rota"
             placeholderTextColor="#8D8D8D"
             onChangeText={(motivo) => setMotivo(motivo)}
           />
@@ -84,7 +84,7 @@ export const EspacioComun = (props) => {
           <TextInput
             style={styles.input}
             multiline={true}
-            placeholder="Algo que quieras agregar"
+            placeholder=" Algo que quieras agregar"
             placeholderTextColor="#8D8D8D"
             onChangeText={(descripcion) => setDescripcion(descripcion)}
           />

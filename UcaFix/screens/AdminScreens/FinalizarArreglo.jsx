@@ -20,7 +20,6 @@ export function FinalizarArreglo(props) {
     };
     return (
       <SafeAreaView style={styles.back}>
-            <ScrollView>
             <View style={styles.TitleContainer}>
             <Image
                 style={styles.UcaLogo}
@@ -30,6 +29,8 @@ export function FinalizarArreglo(props) {
                 />
                 <Text style={[styles.title]}>UCA FIX</Text>
             </View>
+            <ScrollView>
+            
             <View style={styles.tituloPagina}>
                 <Text style={styles.textoTituloPagina}>Arreglo en Proceso</Text>
             </View>
@@ -51,10 +52,10 @@ export function FinalizarArreglo(props) {
             <View style={styles.containerFinalizar}>
 
                 <View style={styles.tituloPagina}>
-                    <Text style={styles.textoTituloPagina}>Completar luego del arreglo</Text>
+                    <Text style={styles.textoTituloPagina}>Completar una vez realizado el arreglo</Text>
                 </View>
 
-                <Text style={[styles.inputTitle,{marginTop:"4%"}]}>Comentarios que quiera agregar</Text>
+                <Text style={[styles.inputTitle,{marginTop:"4%"}]}>Comentarios que quiera agregar:</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Escribir acá"
@@ -134,6 +135,7 @@ export function FinalizarArreglo(props) {
       flexDirection: 'row', 
       justifyContent: 'left',
       //backgroundColor: '#3FA7D6',
+      margin:10,
       padding: 10
     },
     UcaLogo:{
@@ -187,9 +189,10 @@ export function FinalizarArreglo(props) {
         marginTop:'5%',
       },
       textoTituloPagina:{
+        textAlign: "center",
         fontSize:25,
         color: "black",
-        fontWeight: "500"
+        fontWeight: "700"
       },
       tituloPedido:{
         fontSize:25,
@@ -233,5 +236,6 @@ export function FinalizarArreglo(props) {
         marginHorizontal:"5%",
         color: 'black',
         fontSize: 15,
+        marginBottom:10
       },
   });

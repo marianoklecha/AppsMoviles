@@ -54,7 +54,7 @@ export function PedidosResueltos(props) {
       </View>
 
       <View style={styles.filterContainer}>
-      <Text style={styles.subtitle}>TUS PEDIDOS</Text>
+      <Text style={styles.subtitle}>Tus Pedidos</Text>
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   TitleContainer: {
+    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -279,6 +280,7 @@ const styles = StyleSheet.create({
   },
   subtitle:{
     marginTop: 10,
+    marginLeft: 10,
     flex: 1,
     fontSize: 20,
     fontWeight: 'bold',

@@ -145,10 +145,10 @@ export function QRpageUser(props) {
       alignContent:"center",
     },
     qr:{
-      width: '50%',
-      height: '50%',
+      width: 200,
+      height: 200,
       marginTop:15,
-      marginLeft:60,
+      marginLeft:40,
       alignItems: 'center',
     },
     button: {
