@@ -8,6 +8,7 @@ import { PedidosResueltos } from './PedidosResueltos';
 import { InputClassroomScreen } from './InputClassroomScreen';
 import { UserProfile } from './UserProfile';
 import { QRpageUser } from './QRpageUser';
+import { InsertarPedido } from './scannerSelectQR/InsertarPedido';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -21,6 +22,8 @@ function TabNav(){
         <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }}/>
         <Stack.Screen name='PedidosResueltos' component={PedidosResueltos} options={{ headerShown: false }}/>
         <Stack.Screen name='QRpageUser' component={QRpageUser} options={{ headerShown: false }}/>
+        <Stack.Screen name='InsertarPedido' component={InsertarPedido} options={{ headerShown: false }}/>
+
     </Stack.Navigator>
   );
 }

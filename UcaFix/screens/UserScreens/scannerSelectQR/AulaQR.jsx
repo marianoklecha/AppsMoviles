@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View } from 'react-native';
-import styles from '../styles'; 
+import styles from '../../styles'; 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SelectList } from 'react-native-dropdown-select-list'
-
-export const Aula = (props) => {
-  const [aula, setAula] = React.useState("");
+export const AulaQR = (props) => {
+  // Set a default value for 'aula'
+  const [aula, setAula] = React.useState("105 Magno");
   const [motivo, setMotivo] = React.useState("");
   const [descripcion, setDescripcion] = React.useState("");
   const [Edificio, setEdificio] = React.useState("");
@@ -19,22 +19,20 @@ export const Aula = (props) => {
     {key:'5', value:'San José'},
 ]
 
-    return(
-      <ScrollView style= {{backgroundColor:"white"}}>
-
-      
-        
+  return (
+    <ScrollView style={{ backgroundColor: "white" }}>
       <KeyboardAwareScrollView contentContainerStyle={styles.scrollViewContent} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.formContainer}>
           <Text style={styles.inputTitle}>Número de aula</Text>
           <TextInput
             style={styles.input}
             keyboardType="numeric"
-            placeholder="Ej: 105"
+            placeholder="Ej: 105 Magno"
             placeholderTextColor="#8D8D8D"
             onChangeText={(aula) => setAula(aula)}
-          />    
-      <Text style={[styles.inputTitle,{marginTop:"4%"}]}>Edificio y Piso</Text>
+            value={aula} // Set the value prop to the state variable
+          />
+          <Text style={[styles.inputTitle,{marginTop:"4%"}]}>Edificio y Piso</Text>
             <SelectList 
                 search={true} 
                 setSelected={(val) => setEdificio(val)} 
@@ -46,7 +44,7 @@ export const Aula = (props) => {
                 dropdownItemStyles={{borderRadius:6,backgroundColor:"#E6E6E6",marginHorizontal:"4%",marginTop:"2%",color:"#8D8D8D"}}
                 dropdownTextStyles={{padding:4,color:"#8D8D8D"}}
                 data={data2} 
-                defaultOption={{ key:'1', value:'Seleccione' }}  
+                defaultOption={{ key:'3', value:'San Alberto Magno' }}  
                 save="value"/>
           <Text style={styles.inputTitle}>Motivo</Text>
           <TextInput
@@ -81,6 +79,6 @@ export const Aula = (props) => {
 
         </View>
       </KeyboardAwareScrollView>
-      </ScrollView>
-    );
+    </ScrollView>
+  );
 };
