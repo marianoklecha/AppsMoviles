@@ -3,6 +3,7 @@ import { Keyboard, Animated, Text, Easing, TouchableOpacity, Image, View } from 
 
 import { createStackNavigator } from '@react-navigation/stack';
 
+import styles from '../../styles';
 import { AulaQR } from './AulaQR';
 import { EspacioComunQR } from './EspacioComunQR';
 

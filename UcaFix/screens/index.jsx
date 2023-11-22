@@ -15,6 +15,7 @@ import { ElegirEdificio } from "./AdminScreens/ElegirEdificio";
 import { PisosEdificio } from "./AdminScreens/PisosEdificio";
 import { QRpageAdmin } from "./AdminScreens/QRpageAdmin";
 import { QRpageUser } from "./UserScreens/QRpageUser";
+import { InsertarPedido } from "./UserScreens/scannerSelectQR/InsertarPedido";
 
 export{
     MainScreen,
@@ -33,5 +34,6 @@ export{
     ElegirEdificio,
     PisosEdificio,
     QRpageAdmin,
-    QRpageUser
+    QRpageUser,
+    InsertarPedido
 }
