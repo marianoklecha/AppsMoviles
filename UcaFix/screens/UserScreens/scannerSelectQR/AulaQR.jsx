@@ -7,7 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 export const AulaQR = (props) => {
   // Set a default value for 'aula'
-  const [aula, setAula] = React.useState("105");
+  const [aula, setAula] = React.useState("105 Magno");
   const [motivo, setMotivo] = React.useState("");
   const [descripcion, setDescripcion] = React.useState("");
 
@@ -19,7 +19,7 @@ export const AulaQR = (props) => {
           <TextInput
             style={styles.input}
             keyboardType="numeric"
-            placeholder="Ej: 105"
+            placeholder="Ej: 105 Magno"
             placeholderTextColor="#8D8D8D"
             onChangeText={(aula) => setAula(aula)}
             value={aula} // Set the value prop to the state variable
