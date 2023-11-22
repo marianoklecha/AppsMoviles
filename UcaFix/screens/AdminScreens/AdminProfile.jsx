@@ -10,6 +10,7 @@ export function AdminProfile(props) {
     { id: 5, request: 'Proyector no funciona', building: 'Moro' },
     { id: 6, request: 'Proyector no funciona', building: 'Moro' },
     { id: 7, request: 'Proyector no funciona', building: 'Moro' },
+    { id: 8, request: 'Silla Rota', building: 'Moro' },
   ];
 
   const renderItem = ({ item }) => (
@@ -45,13 +46,14 @@ export function AdminProfile(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingLeft:20,
+    paddingRight:20,
   },
   avatar: {
     width: 100,
     height: 100,
     borderRadius: 75,
-    marginBottom: 20,
+    margin: 20,
   },
   userInfo: {
     alignItems: 'center',
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   requestItem: {
-    marginVertical: 5,
+    marginTop: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,

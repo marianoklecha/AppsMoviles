@@ -11,6 +11,7 @@ import { MapaPedidos } from './MapaPedidos';
 import { ElegirEdificio } from './ElegirEdificio';
 import { PisosEdificio } from './PisosEdificio';
 import { QRpageAdmin } from './QRpageAdmin';
+import { EstadisticasAula } from './EstadisticasAula';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,6 +40,14 @@ function MyProfileTabNav(){
     </Stack.Navigator>
   );
 }
+function EstadisticaTabAula(){
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name="EstadisticasAulas" component={EstadisticasAula} options={{ headerShown: false }}/>
+      <Stack.Screen name='PaginaInicio' component={PaginaInicio} options={{ headerShown: false }}/>
+    </Stack.Navigator>
+  );
+}
 
 export const AdminTabNavigator = (props) => {
   return (
@@ -56,6 +65,12 @@ export const AdminTabNavigator = (props) => {
                 style={{ width: size, height: size, tintColor: color }}
               />
             ), }}/>
+      <Tab.Screen name="Estadisticas" component={EstadisticaTabAula} options={{ headerShown: false, tabBarIcon: ({ color, size }) => (
+        <Image
+          source={{ uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuklEQVR4nO2TuwoCMRBFT6siPlB8YSF+3Db6hYJgI+Kj0ELRQvRLIoErhBBZs4tY7F4YCLOTc4bAQpnIGNXPYgotaANJXkFFFYIfdHeeVVAFFsAKqDv9FrDTvRswyiKoAUvn+1ZbW/hevWsa/JOgAazVfwIPnS34pPMZ6KfBQ4ImsFHPgqfAWNu+Zy/A4Bu4L3Df9g5MnLkecIyF+4LE2XAYmO0A3Ri4L7CZadti/MkFE5ic9T9BGfy8ANGeZ/uoTTYPAAAAAElFTkSuQmCC' }}
+          style={{ width: size, height: size, tintColor: color }}
+        />
+      ), }}/>
     </Tab.Navigator>
   );
 }
