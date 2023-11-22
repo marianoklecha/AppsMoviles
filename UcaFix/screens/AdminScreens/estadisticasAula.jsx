@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -35,7 +36,7 @@ export function EstadisticasAula(props) {
         <View style={styles.rowContainer}>
           <Text style={styles.additionalInfo}>Res: {item.cant_pedR}</Text>
           <Text style={styles.additionalInfo}>Pend: {item.cant_pedPen}</Text>
-          <Text style={styles.additionalInfo}>Porc: {item.porcentaje}%</Text>
+          <Text style={styles.additionalInfo}>Porc. comp: {item.porcentaje}%</Text>
         </View>
       </View>
       );
@@ -45,16 +46,15 @@ export function EstadisticasAula(props) {
       // 
       <View style={styles.back}>
 
-        <View style={styles.TitleContainer} >
+      <View style={styles.header}>
         <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
-              }}
-            />
-            <Text style={[styles.title]}>UCA FIX</Text>
-            
-        </View>
+          style={styles.UcaLogo}
+          source={{
+            uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC',
+          }}
+        />
+        <Text style={styles.title}>UCA FIX</Text>
+      </View>
         
         <SafeAreaView style={styles.container}>
 
@@ -67,6 +67,12 @@ export function EstadisticasAula(props) {
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         />
+
+      <Image
+        source={require('./grafico.png')}
+        style={styles.imagen}
+        
+      />
 
         </SafeAreaView>
 
@@ -141,10 +147,27 @@ export function EstadisticasAula(props) {
       //backgroundColor: '#3FA7D6',
       marginTop: '15%'
     },
-    UcaLogo:{
-      width: 50,
-      height: 50,
-      marginTop:15,
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'left',
+      padding: '3%',
+      marginTop: '4%',
+      
+    },
+    UcaLogo: {
+      width: 30,
+      height: 30,
+      marginLeft: '5%',
+      marginRight:5
+      
+    },
+    title: {
+      fontSize: 30,
+      marginTop: 5,
+      color: 'black',
+      fontWeight: 'bold',
+      marginBottom: '2%',
     },
     footerContainer:{
       flexDirection: 'row', 
@@ -178,6 +201,7 @@ export function EstadisticasAula(props) {
         fontSize: 16,
         color: 'black',
         fontWeight: 'bold',
+        marginTop: 2
       },
       additionalInfo: {
         fontSize: 14,
@@ -195,4 +219,10 @@ export function EstadisticasAula(props) {
         fontWeight: 'bold',
         textAlign: 'center',
       },
+      imagen:{
+        marginTop:30,
+        width: 280,
+        height: 200,
+        
+      }
   });

@@ -32,7 +32,7 @@ export const AulaQR = (props) => {
             onChangeText={(aula) => setAula(aula)}
             value={aula} // Set the value prop to the state variable
           />
-          <Text style={[styles.inputTitle,{marginTop:"4%"}]}>Edificio y Piso</Text>
+          <Text style={[styles.inputTitle]}>Edificio y Piso</Text>
             <SelectList 
                 search={true} 
                 setSelected={(val) => setEdificio(val)} 
@@ -46,7 +46,7 @@ export const AulaQR = (props) => {
                 data={data2} 
                 defaultOption={{ key:'3', value:'San Alberto Magno' }}  
                 save="value"/>
-          <Text style={styles.inputTitle}>Motivo</Text>
+          <Text style={[styles.inputTitle, {marginTop:10}]}>Motivo</Text>
           <TextInput
             style={styles.input}
             placeholder="Ej: Silla rota, Pizarrón roto, Luz rota"

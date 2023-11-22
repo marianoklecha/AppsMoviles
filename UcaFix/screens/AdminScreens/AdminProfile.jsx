@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 75,
-    marginBottom: 20,
+    margin: 20,
   },
   userInfo: {
     alignItems: 'center',
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   requestItem: {
-    marginVertical: 5,
+    marginTop: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
