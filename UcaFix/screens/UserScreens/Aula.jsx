@@ -5,6 +5,7 @@ import styles from '../styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SelectList } from 'react-native-dropdown-select-list'
+import { Camara } from '..';
 
 export const Aula = (props) => {
   const [aula, setAula] = React.useState("");
@@ -65,13 +66,16 @@ export const Aula = (props) => {
             onChangeText={(descripcion) => setDescripcion(descripcion)}
           />
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} 
+          onPress={() => props.navigation.navigate('Camara')}>
+
             <Image
               style={styles.buttonLogo}
               source={{
                 uri: 'https://img.icons8.com/?size=256&id=59764&format=png',
               }}
             />
+
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
 

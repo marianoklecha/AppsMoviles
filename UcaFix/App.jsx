@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR } from './screens';
+import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR,Camara } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab= createBottomTabNavigator();
@@ -80,6 +80,9 @@ const App = () => {
           </Stack.Screen>
           <Stack.Screen name="EspacioComunQR" options={{headerShown : false}}>
             {props => <EspacioComunQR {...props} userId={loggedInUser}/>}
+          </Stack.Screen>
+          <Stack.Screen name="Camara" options={{headerShown : false}}>
+            {props => <Camara {...props} userId={loggedInUser}/>}
           </Stack.Screen>
         </>
         :

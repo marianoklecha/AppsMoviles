@@ -22,9 +22,10 @@
     "react-native-gesture-handler": "^2.12.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-paper": "^5.10.5",
+    "react-native-permissions": "^4.1.1",
     "react-native-safe-area-context": "^4.7.2",
     "react-native-screens": "^3.25.0",
-    "react-native-vision-camera": "^3.6.6"
+    "react-native-vision-camera": "^3.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
