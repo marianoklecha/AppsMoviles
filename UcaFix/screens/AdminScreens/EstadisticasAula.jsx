@@ -17,11 +17,13 @@ export function EstadisticasAula(props) {
         { id: 4, building: 'Moro' , aula: 210, cant_pedR:5,cant_pedPen:0,porcentaje:100},
         { id: 5, building: 'Moro', aula: 340,cant_pedR: 2,cant_pedPen:20,porcentaje:10 },
       ];
-        const edificiosPedidosTotales = [
-            { edificio: 'Magno', pedidosTotales: 150 },
-            { edificio: 'Moro', pedidosTotales: 60 },
-            { edificio: 'San José', pedidosTotales: 20 },
-        ];
+      const edificiosPedidosTotales = [
+          { edificio: 'Magno', pedidosTotales: 150 },
+          { edificio: 'Moro', pedidosTotales: 60 },
+          { edificio: 'San José', pedidosTotales: 20 },
+      ];
+        
+    
     const onTap = (nextScreen) => {
       props.navigation.navigate(nextScreen);
     };
@@ -67,6 +69,9 @@ export function EstadisticasAula(props) {
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         />
+
+
+        
 
       <Image
         source={require('./grafico.png')}
