@@ -8,27 +8,71 @@ import {
   Image,
   View,
   Modal,
-  FlatList
+  FlatList,
+  Dimensions
 } from 'react-native';
+import { BarChart } from 'react-native-chart-kit';
+
+const MyBarChart = () => {
+  return (
+    <>
+      <BarChart
+        data={{
+          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          datasets: [
+            {
+              data: [20, 45, 28, 80, 99, 43],
+            },
+          ],
+        }}
+        width={Dimensions.get('window').width - 16}
+        height={220}
+        yAxisLabel={'Rs'}
+        chartConfig={{
+          backgroundColor: '#1cc910',
+          backgroundGradientFrom: '#eff3ff',
+          backgroundGradientTo: '#efefef',
+          decimalPlaces: 2,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+        }}
+        style={{
+          marginVertical: 8,
+          marginHorizontal:8,
+          borderRadius: 16,
+        }}
+      />
+    </>
+  );
+};
 
 export function EstadisticasAula(props) {
-    const aulasPedidos = [
-        { id: 1, building: 'Magno', aula: 160, cant_pedR:15,cant_pedPen:3,porcentaje:83 },
-        { id: 4, building: 'Moro' , aula: 210, cant_pedR:5,cant_pedPen:0,porcentaje:100},
-        { id: 5, building: 'Moro', aula: 340,cant_pedR: 2,cant_pedPen:20,porcentaje:10 },
-      ];
-      const edificiosPedidosTotales = [
-          { edificio: 'Magno', pedidosTotales: 150 },
-          { edificio: 'Moro', pedidosTotales: 60 },
-          { edificio: 'San José', pedidosTotales: 20 },
-      ];
-        
-    
+  const aulasPedidos = [
+      { id: 1, building: 'Magno', aula: 160, cant_pedR:15,cant_pedPen:3,porcentaje:83 },
+      { id: 4, building: 'Moro' , aula: 210, cant_pedR:5,cant_pedPen:0,porcentaje:100},
+      { id: 5, building: 'Moro', aula: 340,cant_pedR: 2,cant_pedPen:20,porcentaje:10 },
+    ];
+    const edificiosPedidosTotales = [
+        { edificio: 'Magno', pedidosTotales: 150 },
+        { edificio: 'Moro', pedidosTotales: 60 },
+        { edificio: 'San José', pedidosTotales: 20 },
+    ];
+    const data = {
+      labels: ["January", "February", "March", "April", "May", "June"],
+      datasets: [
+        {
+          data: [20, 45, 28, 80, 99, 43]
+        } ]};
+
     const onTap = (nextScreen) => {
       props.navigation.navigate(nextScreen);
     };
+    
     const UserName = props;
     console.log(UserName)
+    
     const renderItem = ({ item }) => (
         <View style={styles.requestItem}>
         <View style={styles.TitleRContainer}>
@@ -42,49 +86,37 @@ export function EstadisticasAula(props) {
         </View>
       </View>
       );
+
+
     return (
-      
-      
-      // 
       <View style={styles.back}>
+        <View style={styles.header}>
+          <Image style={styles.UcaLogo}
+            source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'}}
+          />
+          <Text style={styles.title}>UCA FIX</Text>
+        </View>
 
-      <View style={styles.header}>
-        <Image
-          style={styles.UcaLogo}
-          source={{
-            uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC',
-          }}
-        />
-        <Text style={styles.title}>UCA FIX</Text>
-      </View>
-        
+        <View>
+                  <MyBarChart />
+          </View>
+          
         <SafeAreaView style={styles.container}>
-
-        <View style={styles.containerPedidosComplet}>
-      <Text style={styles.completedRequestsLabel}>ESTADISTICAS PEDIDOS</Text>
-      </View>
-
-        <FlatList
-        data={aulasPedidos}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        />
+          <View style={styles.containerPedidosComplet}>
+            <Text style={styles.completedRequestsLabel}>ESTADISTICAS PEDIDOS</Text>
+          </View>
 
 
-        
+          <FlatList
+            data={aulasPedidos}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+          />
 
-      <Image
-        source={require('./grafico.png')}
-        style={styles.imagen}
-        
-      />
+          <Image source={require('./grafico.png')} style={styles.imagen}/>
 
         </SafeAreaView>
-
-
-          
       </View>
-      
     );
   };
   
