@@ -4,7 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR,Camara,Escaner } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { requestMultiple,requestNotifications,PERMISSIONS } from 'react-native-permissions';
+import messaging from '@react-native-firebase/messaging'
 
+messaging().getToken().then(t=>console.log(t))
+
+requestMultiple([PERMISSIONS.ANDROID.POST_NOTIFICATIONS]).then((statuses)=>{
+  console.log('notifs permissions:',statuses[PERMISSIONS.ANDROID.POST_NOTIFICATIONS])
+})
 const Tab= createBottomTabNavigator();
 const Stack = createStackNavigator();
 
