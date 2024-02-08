@@ -18,6 +18,7 @@ import { QRpageUser } from "./UserScreens/QRpageUser";
 import { InsertarPedido } from "./UserScreens/scannerSelectQR/InsertarPedido";
 import {Camara} from  "./UserScreens/Camara";
 import { Escaner } from "./UserScreens/Escaner";
+import { HistorialDePedidos } from "./AdminScreens/HistorialDePedidos";
 
 export{
     MainScreen,
@@ -39,5 +40,6 @@ export{
     QRpageUser,
     InsertarPedido,
     Camara,
-    Escaner
+    Escaner,
+    HistorialDePedidos
 }

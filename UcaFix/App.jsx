@@ -2,12 +2,16 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR,Camara,Escaner } from './screens';
+import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,HistorialDePedidos,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR,Camara,Escaner } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { requestMultiple,requestNotifications,PERMISSIONS } from 'react-native-permissions';
 import messaging from '@react-native-firebase/messaging'
 
 messaging().getToken().then(t=>console.log(t))
+
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log("Mensaje en background:", remoteMessage)
+})
 
 requestMultiple([PERMISSIONS.ANDROID.POST_NOTIFICATIONS]).then((statuses)=>{
   console.log('notifs permissions:',statuses[PERMISSIONS.ANDROID.POST_NOTIFICATIONS])
@@ -93,6 +97,9 @@ const App = () => {
           </Stack.Screen>
           <Stack.Screen name="Escaner" options={{headerShown : false}}>
             {props => <Escaner {...props} userId={loggedInUser}/>}
+          </Stack.Screen>
+          <Stack.Screen name="HistorialDePedidos" options={{headerShown : false}}>
+            {props => <HistorialDePedidos {...props} userId={loggedInUser}/>}
           </Stack.Screen>
         </>
         :
