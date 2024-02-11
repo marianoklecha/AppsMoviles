@@ -1,6 +1,6 @@
 import { type PrismaClient } from "@prisma/client"
 import UserRoute from "./user.route"
-import PostRoute from "./post.route"
+import PedidosRoute from "./pedidos.route"
 import { type Express } from "express"
 
 const addRoutes = (app: Express, prisma: PrismaClient) => {
@@ -10,8 +10,9 @@ const addRoutes = (app: Express, prisma: PrismaClient) => {
         })
     })
     // Acá van tus custom routers
+    app.use('/pedidos/', PedidosRoute(prisma))
     app.use('/users/', UserRoute(prisma))
-    app.use('/posts/', PostRoute(prisma))
+    
 }
 
 export default addRoutes

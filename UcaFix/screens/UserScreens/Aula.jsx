@@ -7,10 +7,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { Camara } from '..';
 
+const API_URL = "http://localhost:3000"
+
 export const Aula = (props) => {
   const [aula, setAula] = React.useState("");
-  const [motivo, setMotivo] = React.useState("");
-  const [descripcion, setDescripcion] = React.useState("");
+  const [title, setTitle] = React.useState("");
+  const [content, setContent] = React.useState("");
   const [Edificio, setEdificio] = React.useState("");
   const data2 = [
     {key:'1', value:'Seleccione', disabled:true},
@@ -19,6 +21,26 @@ export const Aula = (props) => {
     {key:'4', value:'Santo Tomás Moro'},
     {key:'5', value:'San José'},
 ]
+
+  const createPedido = async (title, content, image, fixed, authorID) => {
+    var pedido = await fetch(API_URL + '/pedidos/create', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title,
+        content,
+        image,
+        fixed,
+        authorID
+      })
+    })
+  }
+
+  const handleCreatePost = async () => {
+    await createPedido(title, content, "imagefdsfdsf", false, 1)
+  }
 
     return(
       <ScrollView style= {{backgroundColor:"white"}}>
@@ -49,12 +71,12 @@ export const Aula = (props) => {
                 data={data2} 
                 defaultOption={{ key:'1', value:'Seleccione' }}  
                 save="value"/>
-          <Text style={[styles.inputTitle, {marginTop:6}]}>Motivo</Text>
+          <Text style={[styles.inputTitle, {marginTop:6}]}>title</Text>
           <TextInput
             style={styles.input}
             placeholder="Ej: Silla rota, Pizarrón roto, Luz rota"
             placeholderTextColor="#8D8D8D"
-            onChangeText={(motivo) => setMotivo(motivo)}
+            onChangeText={(title) => setTitle(title)}
           />
 
           <Text style={styles.inputTitle}>Descripción</Text>
@@ -63,7 +85,7 @@ export const Aula = (props) => {
             multiline={true}
             placeholder="Algo que quieras agregar"
             placeholderTextColor="#8D8D8D"
-            onChangeText={(descripcion) => setDescripcion(descripcion)}
+            onChangeText={(content) => setContent(content)}
           />
 
           <TouchableOpacity style={styles.button} 
@@ -79,7 +101,7 @@ export const Aula = (props) => {
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonListo} onPress={() => props.navigation.navigate('MainScreen')}>
+          <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePost()}>
             <Text style={styles.buttonTextListo}>Listo</Text>
           </TouchableOpacity>
 
