@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "994301697509",
+    "project_id": "ucafix-b4e1b",
+    "storage_bucket": "ucafix-b4e1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994301697509:android:abf6d4f89aaf095a2c230c",
+        "android_client_info": {
+          "package_name": "com.ucafix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8Z-MbzVMsrxEx6Fv2NsyUNjmLUGLIWyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

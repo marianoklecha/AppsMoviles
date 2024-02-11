@@ -5,6 +5,8 @@ npm install @react-navigation/native @react-navigation/native-stack
 npm install react-native-dropdown-select-list
 npm install react-native-safe-area-context
 npm install react-native-keyboard-aware-scroll-view --save
+npm install react-native-vision-camera
+npm install react-native-permissions
 
 Fuentes que visitamos para desarrollar la App:
 

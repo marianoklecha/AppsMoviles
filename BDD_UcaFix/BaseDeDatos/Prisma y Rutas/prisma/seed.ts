@@ -22,6 +22,20 @@ const userData: Prisma.UserCreateInput[] = [
     isAdmin: true,
   },
 ]
+const edificioData: Prisma.EdificioCreateInput[] = [
+  {
+    nombre: 'Magno',
+  },
+  {
+    nombre: 'Moro',
+  },
+  {
+    nombre: 'Santa Maria',
+  },
+  {
+    nombre: 'San Jose',
+  },
+]
 
 async function main() {
   console.log(`Start seeding ...`)
@@ -30,6 +44,11 @@ async function main() {
       data: u,
     })
     console.log(`Created user with id: ${user.id}`)
+  }
+  for (const edif of edificioData){
+    const edificio= await prisma.edificio.create({
+      data: edif,
+    })
   }
 
   console.log(`Seeding finished.`)

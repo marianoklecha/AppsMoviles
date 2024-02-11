@@ -16,6 +16,9 @@ import { PisosEdificio } from "./AdminScreens/PisosEdificio";
 import { QRpageAdmin } from "./AdminScreens/QRpageAdmin";
 import { QRpageUser } from "./UserScreens/QRpageUser";
 import { InsertarPedido } from "./UserScreens/scannerSelectQR/InsertarPedido";
+import {Camara} from  "./UserScreens/Camara";
+import { Escaner } from "./UserScreens/Escaner";
+import { HistorialDePedidos } from "./AdminScreens/HistorialDePedidos";
 
 export{
     MainScreen,
@@ -35,5 +38,8 @@ export{
     PisosEdificio,
     QRpageAdmin,
     QRpageUser,
-    InsertarPedido
+    InsertarPedido,
+    Camara,
+    Escaner,
+    HistorialDePedidos
 }
