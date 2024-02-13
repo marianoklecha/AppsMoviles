@@ -11,6 +11,7 @@ const API_URL = "http://localhost:3000";
 
 export function Aula (props) {
   const [aula, setAula] = React.useState("");
+  const [piso,setPiso]= React.useState("");
   const [title, setTitle] =  React.useState("");
   const [content, setContent] =  React.useState("");
   const [edificios, setEdificios] =  React.useState([]);
@@ -43,7 +44,7 @@ export function Aula (props) {
   console.log(edificios)
   
 
-  const createPedido = async (title,aula,edificioId, content, image, fixed, authorID) => {
+  const createPedido = async (title,aula,piso,edificioId, content, image, fixed, authorID) => {
 
     try {
       const response = await fetch(API_URL + '/pedidos/create', {
@@ -54,6 +55,7 @@ export function Aula (props) {
         body: JSON.stringify({
           title,
           aula,
+          piso,
           edificioId,
           content,
           image,
@@ -67,6 +69,7 @@ export function Aula (props) {
         setAula("");
         setTitle("");
         setContent("");
+        setPiso("");
         setSelectedEdificio(null);
       } else {
         Alert.alert('Error', 'Failed to submit your request. Please try again.');
@@ -79,7 +82,7 @@ export function Aula (props) {
 
   const handleCreatePost = async () => {
     // Check if any of the fields are empty
-    if (!aula || !selectedEdificio || !title || !content) {
+    if (!aula || !piso || !selectedEdificio || !title || !content) {
       Alert.alert('Pedido Incompleto', 'Porfavor llenar todos los campos antes de hacer un pedido.');
       return; // Exit function early if any field is empty
     }
@@ -95,7 +98,7 @@ export function Aula (props) {
   
     // If all fields are filled, proceed with making the request
     console.log(selectedEdificio)
-    await createPedido(title,aula,edificioId, content, "imagefdsfdsf", false, propsUserData.id);
+    await createPedido(title,aula,piso,edificioId, content, "imagefdsfdsf", false, propsUserData.id);
   };
 
   return (
@@ -110,7 +113,16 @@ export function Aula (props) {
             placeholderTextColor="#8D8D8D"
             onChangeText={(aula) => setAula(aula)}
             value={aula}
-          />    
+          />   
+          <Text style={styles.inputTitle}>Piso</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            placeholder="Ej: 1"
+            placeholderTextColor="#8D8D8D"
+            onChangeText={(piso) => setPiso(piso)}
+            value={piso}
+          />   
           <Text style={[styles.inputTitle]}>Edificio</Text>
           <SelectList 
             search={true} 
@@ -127,7 +139,7 @@ export function Aula (props) {
             save="value"
             value={selectedEdificio}
           />
-          <Text style={[styles.inputTitle, { marginTop:6 }]}>title</Text>
+          <Text style={[styles.inputTitle, { marginTop:6 }]}>titulo</Text>
           <TextInput
             style={styles.input}
             placeholder="Ej: Silla rota, Pizarrón roto, Luz rota"

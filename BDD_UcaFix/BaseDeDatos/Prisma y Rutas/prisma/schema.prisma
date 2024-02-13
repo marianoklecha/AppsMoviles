@@ -29,6 +29,7 @@ model Pedido {
   createdAt DateTime @default(now())
   title     String?
   aula      String?
+  piso      String?
   edificio  Edificio? @relation(fields: [edificioId], references: [id])
   edificioId  Int?      @default(0)
   content   String?

@@ -5,11 +5,12 @@ const PedidosRoute = (prisma: PrismaClient) => {
     const router = Router()
 
     router.post('/create', async (req, res) => {
-        const {title,aula,edificioId, content, image, fixed, authorID} = req.body
+        const {title,aula,piso,edificioId, content, image, fixed, authorID} = req.body
         const result = await prisma.pedido.create({
             data: {
                 title: title,
                 aula: aula,
+                piso: piso,
                 edificio: {
                     connect:{
                         id: edificioId

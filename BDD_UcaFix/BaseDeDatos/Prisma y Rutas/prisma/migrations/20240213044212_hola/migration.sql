@@ -22,6 +22,7 @@ CREATE TABLE "Pedido" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "title" TEXT,
     "aula" TEXT,
+    "piso" TEXT,
     "edificioId" INTEGER DEFAULT 0,
     "content" TEXT,
     "image" TEXT,
