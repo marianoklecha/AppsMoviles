@@ -1,4 +1,4 @@
-import { PrismaClient, type Prisma } from "@prisma/client";
+import { type PrismaClient, type Prisma } from "@prisma/client";
 import { Router, type Express } from "express";
 
 const PedidosRoute = (prisma: PrismaClient) => {
