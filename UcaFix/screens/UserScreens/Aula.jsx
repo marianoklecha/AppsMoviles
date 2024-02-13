@@ -61,6 +61,13 @@ export const Aula = (props) => {
   };
 
   const handleCreatePost = async () => {
+    // Check if any of the fields are empty
+    if (!aula || !Edificio || !title || !content) {
+      Alert.alert('Pedido Incompleto', 'Porfavor llenar todos los campos antes de hacer un pedido.');
+      return; // Exit function early if any field is empty
+    }
+  
+    // If all fields are filled, proceed with making the request
     await createPedido(title, content, "imagefdsfdsf", false, propsUserData.id);
   };
 
