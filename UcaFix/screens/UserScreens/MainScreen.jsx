@@ -13,8 +13,11 @@ export function MainScreen(props) {
     const onTap = (nextScreen) => {
       props.navigation.navigate(nextScreen);
     };
-    const UserName = props;
-    console.log(UserName)
+
+    console.log("### MainScreen ###")
+    console.log(props.route.params.userData)
+    
+    
     return (
       
       

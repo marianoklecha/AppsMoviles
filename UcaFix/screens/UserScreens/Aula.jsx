@@ -14,6 +14,11 @@ export const Aula = (props) => {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
   const [Edificio, setEdificio] = React.useState("");
+
+  console.log("### Aula ###")
+  const propsUserData = props.route.params.userData;
+  console.log(propsUserData)
+
   const data2 = [
     {key:'1', value:'Seleccione', disabled:true},
     {key:'2', value:'Santa María'},
@@ -39,7 +44,7 @@ export const Aula = (props) => {
   }
 
   const handleCreatePost = async () => {
-    await createPedido(title, content, "imagefdsfdsf", false, 1)
+    await createPedido(title, content, "imagefdsfdsf", false, props.data.id)
   }
 
     return(

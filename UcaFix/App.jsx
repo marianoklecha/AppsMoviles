@@ -21,6 +21,8 @@ const Stack = createStackNavigator();
 
 const App = () => {
   const [loggedInUser, setLoggedInUser] = React.useState(null);
+  console.log("### APP ###")
+  console.log(loggedInUser)
   return (
     <NavigationContainer>
       <Stack.Navigator>

@@ -14,16 +14,35 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
-function TabNav(){
-  return(
+function TabNav({ route }) {
+  const { userData } = route.params;
+  
+  return (
     <Stack.Navigator>
-      <Stack.Screen name='MainScreen' component={MainScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='InputClassroomScreen' component={InputClassroomScreen} options={{ headerShown: false }}/>
-        <Stack.Screen name='UserProfile' component={UserProfile} options={{ headerShown: false }}/>
-        <Stack.Screen name='PedidosResueltos' component={PedidosResueltos} options={{ headerShown: false }}/>
-        <Stack.Screen name='QRpageUser' component={QRpageUser} options={{ headerShown: false }}/>
-        <Stack.Screen name='InsertarPedido' component={InsertarPedido} options={{ headerShown: false }}/>
-
+      <Stack.Screen 
+        name='MainScreen' component={MainScreen} options={{ headerShown: false }}
+        initialParams={{ userData }}
+      />
+      <Stack.Screen 
+        name='InputClassroomScreen' component={InputClassroomScreen} options={{ headerShown: false }}
+        initialParams={{ userData }}
+      />
+      <Stack.Screen 
+        name='UserProfile' component={UserProfile} options={{ headerShown: false }}
+        initialParams={{ userData }}
+      />
+      <Stack.Screen 
+        name='PedidosResueltos' component={PedidosResueltos} options={{ headerShown: false }}
+        initialParams={{ userData }}
+      />
+      <Stack.Screen 
+        name='QRpageUser' component={QRpageUser} options={{ headerShown: false }}
+        initialParams={{ userData }}
+      />
+      <Stack.Screen 
+        name='InsertarPedido' component={InsertarPedido} options={{ headerShown: false }}
+        initialParams={{ userData }}
+      />
     </Stack.Navigator>
   );
 }
@@ -39,8 +58,9 @@ function MyProfileTabNav(){
 }
 
 export const MainTabNavigator = (props) => {
-  const Username = props.route.params.name;
-  console.log(Username)
+  console.log("### Maintab ###")
+  const propsUserData = props.route.params.userData;
+  console.log(propsUserData)
   return (
     
     <Tab.Navigator>
@@ -49,7 +69,7 @@ export const MainTabNavigator = (props) => {
                 source={{ uri: 'https://img.icons8.com/fluency/48/home-page.png' }}
                 style={{ width: size, height: size, tintColor: color }}
               />
-            ),}}initialParams={{ name: Username }}/>
+            ),}} initialParams={{ userData: propsUserData }}/>
       <Tab.Screen name="Perfil" component={MyProfileTabNav} options={{ headerShown: false, tabBarIcon: ({ color, size }) => (
               <Image
                 source={{ uri: 'https://img.icons8.com/fluency/48/gender-neutral-user--v1.png' }}

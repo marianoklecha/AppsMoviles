@@ -21,9 +21,9 @@ export function LoginScreen(props) {
         const loginCheck = await fetch("http://localhost:3000/users/login?email=" + email + "&password=" + password)
           if (loginCheck.ok) {
               let data = await loginCheck.json()
-              loginFunction(data.id)
+              loginFunction(data)
               if(data.isAdmin == 0){
-                props.navigation.navigate('MainTabNavigator', { name: data.name })
+                props.navigation.navigate('MainTabNavigator', { userData: data })
               } else {
                 props.navigation.navigate('AdminTabNavigator')
               }
