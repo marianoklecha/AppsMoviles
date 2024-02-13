@@ -28,6 +28,9 @@ model Pedido {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   title     String?
+  aula      String?
+  edificio  Edificio? @relation(fields: [edificioId], references: [id])
+  edificioId  Int?      @default(0)
   content   String?
   image     String?
   fixed     Boolean
@@ -58,6 +61,7 @@ model Edificio{
   nombre String?
   espacioComunes EspacioComun[]
   aulas Aula[]
+  pedido Pedido[]
 }
 
 

@@ -24,10 +24,10 @@ const userData: Prisma.UserCreateInput[] = [
 ]
 const edificioData: Prisma.EdificioCreateInput[] = [
   {
-    nombre: 'Magno',
+    nombre: 'San Alberto Magno',
   },
   {
-    nombre: 'Moro',
+    nombre: 'Santo Tomas Moro',
   },
   {
     nombre: 'Santa Maria',

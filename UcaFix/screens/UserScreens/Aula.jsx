@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
 import styles from '../styles'; 
@@ -9,25 +9,42 @@ import { Camara } from '..';
 
 const API_URL = "http://localhost:3000";
 
-export const Aula = (props) => {
+export function Aula (props) {
   const [aula, setAula] = React.useState("");
-  const [title, setTitle] = React.useState("");
-  const [content, setContent] = React.useState("");
-  const [Edificio, setEdificio] = React.useState("");
+  const [title, setTitle] =  React.useState("");
+  const [content, setContent] =  React.useState("");
+  const [edificios, setEdificios] =  React.useState([]);
+  const [selectedEdificio, setSelectedEdificio] =  React.useState(null);
+
+  const propsUserData = props.route.params.userData;
+
+  useEffect(() => {
+    fetchEdificios();
+  }, []);
+
+  const fetchEdificios = async () => {
+    try {
+      const response = await fetch(API_URL + "/edificios/getEdificios");
+      if (response.ok) {
+        const data = await response.json();
+        setEdificios(data);
+      } else {
+        Alert.alert("Error", "Failed to fetch Edificios");
+      }
+    } catch (error) {
+      console.error("Error fetching Edificios: ", error);
+      Alert.alert("Error", "An unexpected error occurred");
+    }
+  };
+
 
   console.log("### Aula ###");
-  const propsUserData = props.route.params.userData;
   console.log(propsUserData);
+  console.log(edificios)
+  
 
-  const data2 = [
-    {key:'1', value:'Seleccione', disabled:true},
-    {key:'2', value:'Santa María'},
-    {key:'3', value:'San Alberto Magno'},
-    {key:'4', value:'Santo Tomás Moro'},
-    {key:'5', value:'San José'},
-  ];
+  const createPedido = async (title,aula,edificioId, content, image, fixed, authorID) => {
 
-  const createPedido = async (title, content, image, fixed, authorID) => {
     try {
       const response = await fetch(API_URL + '/pedidos/create', {
         method: "POST",
@@ -36,6 +53,8 @@ export const Aula = (props) => {
         },
         body: JSON.stringify({
           title,
+          aula,
+          edificioId,
           content,
           image,
           fixed,
@@ -45,13 +64,11 @@ export const Aula = (props) => {
 
       if (response.ok) {
         Alert.alert('Pedido Exitoso', 'Tu pedido ha sido realizado correctamente');
-        // Clear input fields after successful request
         setAula("");
         setTitle("");
         setContent("");
-        setEdificio("");
+        setSelectedEdificio(null);
       } else {
-        // Handle unsuccessful request
         Alert.alert('Error', 'Failed to submit your request. Please try again.');
       }
     } catch (error) {
@@ -62,13 +79,23 @@ export const Aula = (props) => {
 
   const handleCreatePost = async () => {
     // Check if any of the fields are empty
-    if (!aula || !Edificio || !title || !content) {
+    if (!aula || !selectedEdificio || !title || !content) {
       Alert.alert('Pedido Incompleto', 'Porfavor llenar todos los campos antes de hacer un pedido.');
       return; // Exit function early if any field is empty
     }
+    let edificioId = null;
+  
+    // Loop through the edificios array to find the matching edificio
+    for (const edificio of edificios) {
+      if (edificio.nombre === selectedEdificio) {
+        edificioId = edificio.id;
+      }
+    }
+    console.log(edificioId)
   
     // If all fields are filled, proceed with making the request
-    await createPedido(title, content, "imagefdsfdsf", false, propsUserData.id);
+    console.log(selectedEdificio)
+    await createPedido(title,aula,edificioId, content, "imagefdsfdsf", false, propsUserData.id);
   };
 
   return (
@@ -84,10 +111,10 @@ export const Aula = (props) => {
             onChangeText={(aula) => setAula(aula)}
             value={aula}
           />    
-          <Text style={[styles.inputTitle]}>Edificio y Piso</Text>
+          <Text style={[styles.inputTitle]}>Edificio</Text>
           <SelectList 
             search={true} 
-            setSelected={(val) => setEdificio(val)} 
+            setSelected={setSelectedEdificio}
             boxStyles={{ paddingVertical:"5%", borderRadius:10, backgroundColor:"#F9F9F9", borderWidth:0, color:"#8D8D8D" }}
             searchPlaceholder='Búsqueda'
             notFoundText='Edificio no encontrado'
@@ -95,10 +122,10 @@ export const Aula = (props) => {
             dropdownStyles={{ borderRadius:6, borderWidth:0, backgroundColor:"#F9F9F9", color:"#8D8D8D" }}
             dropdownItemStyles={{ borderRadius:6, backgroundColor:"#E6E6E6", marginHorizontal:"4%", marginTop:"2%", color:"#8D8D8D" }}
             dropdownTextStyles={{ padding:4, color:"#8D8D8D" }}
-            data={data2} 
+            data={edificios.map(edificio => ({ key: edificio.id.toString(), value: edificio.nombre, id: edificio.id }))}
             defaultOption={{ key:'1', value:'Seleccione' }}  
             save="value"
-            value={Edificio}
+            value={selectedEdificio}
           />
           <Text style={[styles.inputTitle, { marginTop:6 }]}>title</Text>
           <TextInput
