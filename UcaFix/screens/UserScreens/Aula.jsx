@@ -1,17 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
-import styles from '../styles'; 
+import styles from '../styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { Camara } from '..';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { Camera, useCameraDevice } from 'react-native-vision-camera';
+import storage from '@react-native-firebase/storage'; // Import Firebase storage module
 
 const API_URL = "http://localhost:3000";
 
 export function Aula (props) {
+  const camera = useRef(null);
+  const device = useCameraDevice('back');
+  const [showCamera, setShowCamera] = useState(false);
+  const [hasPermission, setHasPermission] = useState(false)
+  const [imageSource, setImageSource] = useState('');
+  const [uploading, setUploading] = useState(false); // State to track upload progress
+
+
   const [aula, setAula] = React.useState("");
   const [piso,setPiso]= React.useState("");
   const [title, setTitle] =  React.useState("");
@@ -23,7 +32,66 @@ export function Aula (props) {
 
   useEffect(() => {
     fetchEdificios();
+    requestMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
+      if (statuses[PERMISSIONS.ANDROID.CAMERA] === 'granted') {
+        setHasPermission(true)
+        setShowCamera(true)
+      }
+      else {
+        Alert.alert('Falta permiso de cámara')
+      }
+    })
   }, []);
+
+  const uploadImage = async (path) => {
+    setUploading(true);
+    const reference = storage().ref(`images/${Date.now()}`);
+    const task = reference.putFile(path);
+
+    // Track upload progress
+    task.on('state_changed', (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(`Upload is ${progress}% done`);
+    });
+
+    try {
+      await task;
+      console.log('Image uploaded successfully');
+      const url = await reference.getDownloadURL();
+      console.log('Image URL:', url);
+      return url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      Alert.alert('Error', 'Failed to upload image to Firebase Storage');
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const capturePhoto = async () => {
+    if (camera.current !== null) {
+      const photo = await camera.current.takePhoto();
+      setImageSource(photo.path);
+      setShowCamera(false);
+      console.log(photo.path);
+
+      // Upload the captured photo to Firebase Storage
+      const imageUrl = await uploadImage(photo.path);
+
+      // Proceed with creating the pedido only if image upload was successful
+      if (imageUrl) {
+        // Your existing code...
+        await createPedido(title, aula, piso, edificioId, content, imageUrl, false, propsUserData.id);
+      } else {
+        Alert.alert('Error', 'Failed to upload image. Please try again.');
+      }
+    }
+  };
+
+  if (device == null) {
+    return <Text>Camera not available</Text>;
+  }
 
   const fetchEdificios = async () => {
     try {
@@ -168,6 +236,65 @@ export function Aula (props) {
             />
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
+
+          <View style={styles.container}>
+      {showCamera ? (
+        <>
+          <Camera
+            ref={camera}
+            style={StyleSheet.absoluteFill}
+            device={device}
+            isActive={showCamera && hasPermission}
+            photo={true}
+            orientation='portrait'
+          />
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.camButton}
+              onPress={() => capturePhoto()}
+            />
+          </View>
+        </>
+      ) : (
+        <>
+          {imageSource !== '' ? (
+            <Image
+              style={styles.image}
+              source={{
+                uri: `file://'${imageSource}`,
+              }}
+            />
+          ) : null}
+
+          <View style={styles.backButton}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => setShowCamera(true)}>
+              <Text style={{ color: 'white', fontWeight: '500' }}>Back</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                style={styles.retakeButton}
+                onPress={() => setShowCamera(true)}>
+                <Text style={{ color: '#77c3ec', fontWeight: '500' }}>
+                  Retake
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.usePhotoButton}
+                onPress={() => setShowCamera(true)}>
+                <Text style={{ color: 'white', fontWeight: '500' }}>
+                  Use Photo
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </>
+      )}
+    </View>
 
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePost()}>
             <Text style={styles.buttonTextListo}>Listo</Text>
