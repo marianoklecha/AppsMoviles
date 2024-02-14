@@ -118,11 +118,11 @@ export const EspacioComun = (props) => {
                 save="value"
               />
 
-            <Text style={styles.inputTitle}>Piso</Text>
+            <Text style={[styles.inputTitle, { marginTop:15 }]}>Piso</Text>
             <TextInput
               style={styles.input}
               keyboardType="numeric"
-              placeholder="Ej: 1"
+              placeholder="     Ej: 1"
               placeholderTextColor="#8D8D8D"
               onChangeText={(piso) => setPiso(piso)}
               value={piso}
@@ -144,10 +144,10 @@ export const EspacioComun = (props) => {
             value={selectedEdificio}
           />
 
-          <Text style={[styles.inputTitle, { marginTop:6 }]}>titulo</Text>
+          <Text style={[styles.inputTitle, { marginTop:15 }]}>Motivo del pedido</Text>
           <TextInput
             style={styles.input}
-            placeholder="Ej: Silla rota, Pizarrón roto, Luz rota"
+            placeholder="     Ej: Silla rota, Pizarrón roto, Luz rota"
             placeholderTextColor="#8D8D8D"
             onChangeText={(title) => setTitle(title)}
             value={title}
@@ -157,7 +157,7 @@ export const EspacioComun = (props) => {
           <TextInput
             style={styles.input}
             multiline={true}
-            placeholder="Algo que quieras agregar"
+            placeholder="     Algo que quieras agregar"
             placeholderTextColor="#8D8D8D"
             onChangeText={(content) => setContent(content)}
             value={content}

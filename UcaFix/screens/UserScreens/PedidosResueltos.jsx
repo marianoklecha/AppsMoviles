@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,35 +7,61 @@ import {
   TouchableOpacity,
   Image,
   Modal,
+  Alert,
 } from 'react-native';
 
+const API_URL = "http://localhost:3000";
 
-const requestData = [
-  { id: 1, request: 'Pizarron Roto' ,building: 'Magno', completed: true, details: 'El pizzarron de la 102 magno esta roto y no tiene tiza', uploadedPicture: 'https://t4.ftcdn.net/jpg/04/01/91/89/360_F_401918904_dXxFbwo4QheU5ZkTtMFIJfPogcuJydwS.jpg' },
-  { id: 2, request: 'Baño sin traba ' ,building: ' Magno', completed: false, details: 'No puedo cargar porque los enchufes no funcionan', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png' },
-  { id: 3, request: 'Biblioteca Enchufes', building: 'Biblioteca', completed: false, details: 'Details for request 3', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png' },
-  { id: 4, request: 'Silla Rota ' ,building: 'Moro', completed: true, details: 'Details for request 4', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png' },
-  { id: 5, request: 'Proyector no funciona ' ,building: 'Moro', completed: true, details: 'Details for request 5', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png' },
-  { id: 6, request: 'Proyector no funciona ' ,building: 'Moro', completed: true, details: 'Details for request 5', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png' },
-  { id: 7, request: 'Proyector no funciona ' ,building: 'Moro', completed: true, details: 'Details for request 5', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png' },
-];
 export function PedidosResueltos(props) {
+  const [pedidos, setPedidos] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filter, setFilter] = useState('all');
+
+  const propsUserData = props.route.params.userData;
+
+  useEffect(() => {
+    fetchPedidos();
+  }, []);
+
+  const fetchPedidos = async () => {
+    try {
+      const response = await fetch(API_URL + `/pedidos/getPedidosByUser?authorId=` + propsUserData.id);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(data);
+      } else {
+        Alert.alert("Error", "Failed to fetch pedidos");
+      }
+    } catch (error) {
+      console.error("Error fetching pedidos: ", error);
+      Alert.alert("Error", "An unexpected error occurred");
+    }
+  };
 
   const handleRequestClick = (item) => {
     setSelectedRequest(selectedRequest === item.id ? null : item.id);
   };
 
-  const filteredRequests = requestData.filter((item) => {
+  const filteredRequests = pedidos.filter((item) => {
     if (filter === 'all') {
       return true;
-    } else if (filter === 'completed') {
-      return item.completed;
-    } else if (filter === 'notCompleted') {
-      return !item.completed;
-    } else if (item.building === filter) {
+    } else if (item.fixed === true && filter === 'fixed') {
+      return true;
+    } else if (item.fixed === false && filter === 'notFixed') {
+      return true;
+    }else if (item.edificioId === 1 && filter === 1) {
+      return true;
+    } else if (item.edificioId === 2 && filter === 2) {
+      return true;
+    }else if (item.edificioId === 3 && filter === 3) {
+      return true;
+    }else if (item.edificioId === 4 && filter === 4) {
+      return true;
+    } else if (item.aula === "Biblioteca" && filter === "Biblioteca") {
+      return true;
+    } else if (item.aula === "Baño" && filter === "Baño") {
       return true;
     }
     return false;
@@ -43,6 +69,7 @@ export function PedidosResueltos(props) {
 
   return (
     <View style={styles.back}>
+      {/* Header code */}
       <View style={styles.TitleContainer}>
         <Image
           style={styles.UcaLogo}
@@ -53,8 +80,10 @@ export function PedidosResueltos(props) {
         <Text style={[styles.title]}>UCA FIX</Text>
       </View>
 
+      {/* Filter code */}
       <View style={styles.filterContainer}>
-      <Text style={styles.subtitle}>Tus Pedidos</Text>
+        <Text style={styles.subtitle}>Tus Pedidos</Text>
+        {/* Filter button */}
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
@@ -62,15 +91,17 @@ export function PedidosResueltos(props) {
           <Text style={styles.filterButtonText}>Filter</Text>
         </TouchableOpacity>
 
+        {/* Filter modal */}
         <Modal
           animationType="slide-up"
           transparent={true}
           visible={filterModalVisible}
           onRequestClose={() => setFilterModalVisible(!filterModalVisible)}
         >
+          {/* Modal content */}
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <TouchableOpacity
+            <TouchableOpacity
                 style={filter === 'all' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
                   setFilter('all');
@@ -80,45 +111,54 @@ export function PedidosResueltos(props) {
                 <Text style={styles.modalButtonText}>All</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={filter === 'completed' ? styles.activeModalButton : styles.modalButton}
+                style={filter === 'fixed' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
-                  setFilter('completed');
+                  setFilter(true);
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
-                <Text style={styles.modalButtonText}>Completed</Text>
+                <Text style={styles.modalButtonText}>Terminado</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={filter === 'notCompleted' ? styles.activeModalButton : styles.modalButton}
+                style={filter === 'notFixed' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
-                  setFilter('notCompleted');
+                  setFilter('notFixed');
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
-                <Text style={styles.modalButtonText}>Not Completed</Text>
+                <Text style={styles.modalButtonText}>No Terminado</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={filter === 'Magno' ? styles.activeModalButton : styles.modalButton}
+                style={filter === 'San Alberto Magno' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
-                  setFilter('Magno');
+                  setFilter(1);
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
-                <Text style={styles.modalButtonText}>Magno</Text>
+                <Text style={styles.modalButtonText}>San Alberto Magno</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={filter === 'Moro' ? styles.activeModalButton : styles.modalButton}
+                style={filter === 2 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
-                  setFilter('Moro');
+                  setFilter(2);
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
-                <Text style={styles.modalButtonText}>Moro</Text>
+                <Text style={styles.modalButtonText}>Santo Tomas Moro</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={filter === 'SanJose' ? styles.activeModalButton : styles.modalButton}
+                style={filter === 3 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
-                  setFilter('SanJose');
+                  setFilter(3);
+                  setFilterModalVisible(!filterModalVisible);
+                }}
+              >
+                <Text style={styles.modalButtonText}>Santa Maria</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={filter === 4 ? styles.activeModalButton : styles.modalButton}
+                onPress={() => {
+                  setFilter(4);
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
@@ -133,11 +173,21 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>Biblioteca</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={filter === 'Baño' ? styles.activeModalButton : styles.modalButton}
+                onPress={() => {
+                  setFilter('Baño');
+                  setFilterModalVisible(!filterModalVisible);
+                }}
+              >
+                <Text style={styles.modalButtonText}>Baño</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
       </View>
 
+      {/* List of requests */}
       <ScrollView style={styles.scrollView} >
         {filteredRequests.map((item) => (
           <TouchableOpacity
@@ -145,29 +195,32 @@ export function PedidosResueltos(props) {
             onPress={() => handleRequestClick(item)}
             style={styles.requestItem}
           >
+            {/* Status indicator */}
             <View style={[styles.statusIndicator, { backgroundColor: item.completed ? 'green' : 'red' }]} />
+            {/* Request information */}
             <View style={styles.requestInfo}>
-              <Text style={styles.requestText}>{` ${item.request}`}</Text>
+              <Text style={styles.requestText}>{` ${item.title}`}</Text>
+              {/* Expanded details */}
               {selectedRequest === item.id && (
                 <View style={styles.detailsContainer}>
                   <Image
                     style={styles.UcaLogo}
                     source={{
-                      uri: item.uploadedPicture
+                      uri: item.image
                     }}
                   />
-                  <Text style={styles.requestText}>{` ${item.building}`}</Text>
-                  <Text style={styles.detailsText}>{item.details}</Text>
+                  <Text style={styles.requestText}>{` ${item.aula}`}</Text>
+                  <Text style={styles.detailsText}>{item.content}</Text>
                 </View>
               )}
             </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
-
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   statusIndicator: {

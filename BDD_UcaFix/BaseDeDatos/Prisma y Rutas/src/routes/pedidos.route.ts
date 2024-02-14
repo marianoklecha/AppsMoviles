@@ -35,6 +35,24 @@ const PedidosRoute = (prisma: PrismaClient) => {
         res.json(pedidos)
       })
 
+    router.get('/getPedidosByUser', async (req, res) => {
+        const authorId = req.query.authorId as string | undefined;
+            if (authorId === undefined) {
+                return res.status(400).json({ error: 'Author ID is required' });
+            }
+
+        const pedido = await prisma.pedido.findMany({
+            where: {
+                authorId: parseInt(authorId),
+            }
+        });
+        if(!pedido){
+            res.status(400).send("No se encuentra usuario")
+            return
+        }
+        res.json(pedido)
+        })
+
     return router
 }
 

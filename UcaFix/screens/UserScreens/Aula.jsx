@@ -6,6 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { Camara } from '..';
+import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+import { Camera, useCameraDevice } from 'react-native-vision-camera';
 
 const API_URL = "http://localhost:3000";
 
@@ -139,7 +141,7 @@ export function Aula (props) {
             save="value"
             value={selectedEdificio}
           />
-          <Text style={[styles.inputTitle, { marginTop:6 }]}>titulo</Text>
+          <Text style={[styles.inputTitle, { marginTop:16 }]}>Motivo del pedido</Text>
           <TextInput
             style={styles.input}
             placeholder="Ej: Silla rota, Pizarrón roto, Luz rota"
