@@ -15,7 +15,7 @@ export function Aula(props) {
   const device = useCameraDevice('back');
   const [showCamera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(false)
-  const [imageSource, setImageSource] = useState('');
+  const [imageSource, setImageSource] = useState("");
   const [uploading, setUploading] = useState(false); // State to track upload progress
 
   const [aula, setAula] = useState("");
@@ -25,7 +25,8 @@ export function Aula(props) {
   const [edificios, setEdificios] = useState([]);
   const [selectedEdificio, setSelectedEdificio] = useState(null);
   const [imageURL, setImageURL] = useState(null);
-
+  let url = "";
+ 
   const propsUserData = props.route.params.userData;
 
   useEffect(() => {
@@ -39,8 +40,13 @@ export function Aula(props) {
     })
   }, []);
 
+  useEffect(() => {
+    console.log("Updated image source:", imageSource);
+  }, [imageSource]); // Log when imageSource changes
+
   const uploadImageToFirebaseStorage = async (imageUri) => {
     try {
+      
       setUploading(true);
       const reference = storage().ref(`images/${Date.now()}`);
       const task = reference.putFile(imageUri);
@@ -53,9 +59,15 @@ export function Aula(props) {
 
       await task;
       console.log('Image uploaded successfully');
-      const url = await reference.getDownloadURL();
+      url = await reference.getDownloadURL();
       console.log('Image URL:', url);
-      setImageURL(url); // Set the imageURL state
+      /*setImageURL(url); // Set the imageURL state
+
+      while (imageURL == null) {
+        await new Promise(resolve => setTimeout(resolve, 100)); // Wait for 100 milliseconds
+        setImageURL(url); // Set the imageURL state
+        console.log(url)
+      }*/
     } catch (error) {
       console.error('Error uploading image:', error);
       Alert.alert('Error', 'Failed to upload image to Firebase Storage');
@@ -66,13 +78,18 @@ export function Aula(props) {
 
   const capturePhoto = async () => {
     if (camera.current !== null) {
-      const photo = await camera.current.takePhoto();
-      setImageSource(photo.path);
-      setShowCamera(false);
-      console.log(photo.path);
+      const photo = await camera.current.takePhoto({
+        enableShutterSound: false,
+      });
 
+      //console.log(photo.path);
+      await setImageSource(photo.path);
+      
+      console.log(photo.path)
+      setShowCamera(false);
+      
       // Upload the captured photo to Firebase Storage
-      await uploadImageToFirebaseStorage(photo.path);
+      //await uploadImageToFirebaseStorage(photo.path);
     }
   };
 
@@ -91,13 +108,33 @@ export function Aula(props) {
     }
   };
 
-  const createPedido = async () => {
-    // Check if any of the fields are empty
-    if (!aula || !piso || !selectedEdificio || !title || !content || !imageURL) {
+  const handleCreatePedido = async () => {
+    if (!aula || !piso || !selectedEdificio || !title || !content) {
       Alert.alert('Pedido Incompleto', 'Por favor, llene todos los campos y cargue una imagen antes de hacer un pedido.');
       return;
     }
+  
+    if (!imageSource) {
+      Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
+      return;
+    }
+  
+    await uploadImageToFirebaseStorage(imageSource); // Wait for image upload to complete
+    // Wait until imageURL is not null
+    
+    console.log(imageURL); // This should now have the correct value
+  
+    if (url === null) {
+      Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
+      return;
+    }
+  
+    await createPedido();
+  };
+  
 
+  const createPedido = async () => {
+    
     let edificioId = null;
 
     // Loop through the edificios array to find the matching edificio
@@ -120,7 +157,7 @@ export function Aula(props) {
           piso,
           edificioId,
           content,
-          image: imageURL,
+          image: url,
           fixed: false,
           authorID: propsUserData.id
         })
@@ -133,7 +170,9 @@ export function Aula(props) {
         setContent("");
         setPiso("");
         setSelectedEdificio(null);
-        setImageURL(null); // Reset imageURL state after successfully submitting pedido
+        url = "";
+
+        
       } else {
         Alert.alert('Error', 'Failed to submit your request. Please try again.');
       }
@@ -210,7 +249,7 @@ export function Aula(props) {
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonListo} onPress={() => createPedido()}>
+          <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
             <Text style={styles.buttonTextListo}>Listo</Text>
           </TouchableOpacity>
 
