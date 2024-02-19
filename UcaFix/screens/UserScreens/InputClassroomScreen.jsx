@@ -6,6 +6,7 @@ import Footer from '../Footer';
 import styles from '../styles'; 
 import { Aula } from './Aula';
 import { EspacioComun } from './EspacioComun';
+import { Camara } from './Camara';
 
 const FadeInView = (props) => {
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -42,6 +43,16 @@ const FadeInView = (props) => {
 export function InputClassroomScreen(props) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [cameraVisible, setCameraVisible] = useState(false);
+  const [imageSource, setImageSource] = useState("");
+
+  useEffect(() => {
+    console.log("Updated image source INPUTCLASSROOM:", imageSource);
+  }, [imageSource]); // Log when imageSource changes
+
+  const toggleCamera = (input) => {
+    setCameraVisible(input);
+  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -81,15 +92,17 @@ export function InputClassroomScreen(props) {
             >Espacios comunes</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1}}>
         <FadeInView visible={visible}>
-          <Aula {...props}></Aula>
+          <Aula {...props} onPressCameraButton={toggleCamera} imageSource={imageSource}></Aula>
         </FadeInView>
 
         <FadeInView visible={!visible}>
-          <EspacioComun {...props}></EspacioComun>
+          <EspacioComun {...props} ></EspacioComun>
         </FadeInView>
       </View>
+
+      {cameraVisible && <Camara setImageSource={setImageSource} onPressCameraButton={toggleCamera}/>}
 
       
     </View>

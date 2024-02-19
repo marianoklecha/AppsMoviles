@@ -166,10 +166,14 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%'
     },
-    cameraContainer : {
-      zIndex:1,
-      position: "absolute"
-    }
+    cameraContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 999, // Ensure camera view is on top
+    },
 
 });
 export default styles;

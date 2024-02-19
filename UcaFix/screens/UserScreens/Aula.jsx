@@ -10,12 +10,12 @@ import styles from '../styles';
 
 const API_URL = "http://localhost:3000";
 
-export function Aula(props) {
+export function Aula({ onPressCameraButton, imageSource, ...props }) {
   const camera = useRef(null);
   const device = useCameraDevice('back');
   const [showCamera, setShowCamera] = useState(false);
-  const [hasPermission, setHasPermission] = useState(false)
-  const [imageSource, setImageSource] = useState("");
+  const [hasPermission, setHasPermission] = useState(false);
+  const [localImageSource, setLocalImageSource] = useState("");
   const [uploading, setUploading] = useState(false); // State to track upload progress
 
   const [aula, setAula] = useState("");
@@ -30,6 +30,13 @@ export function Aula(props) {
   const propsUserData = props.route.params.userData;
 
   useEffect(() => {
+    setLocalImageSource(prevImageSource => {
+      console.log("Updated image source Aula:", imageSource);
+      return imageSource;
+    });
+  }, [imageSource]);
+
+  useEffect(() => {
     fetchEdificios();
     requestMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
       if (statuses[PERMISSIONS.ANDROID.CAMERA] === 'granted') {
@@ -39,10 +46,6 @@ export function Aula(props) {
       }
     })
   }, []);
-
-  useEffect(() => {
-    console.log("Updated image source:", imageSource);
-  }, [imageSource]); // Log when imageSource changes
 
   const uploadImageToFirebaseStorage = async (imageUri) => {
     try {
@@ -61,35 +64,11 @@ export function Aula(props) {
       console.log('Image uploaded successfully');
       url = await reference.getDownloadURL();
       console.log('Image URL:', url);
-      /*setImageURL(url); // Set the imageURL state
-
-      while (imageURL == null) {
-        await new Promise(resolve => setTimeout(resolve, 100)); // Wait for 100 milliseconds
-        setImageURL(url); // Set the imageURL state
-        console.log(url)
-      }*/
     } catch (error) {
       console.error('Error uploading image:', error);
       Alert.alert('Error', 'Failed to upload image to Firebase Storage');
     } finally {
       setUploading(false);
-    }
-  };
-
-  const capturePhoto = async () => {
-    if (camera.current !== null) {
-      const photo = await camera.current.takePhoto({
-        enableShutterSound: false,
-      });
-
-      //console.log(photo.path);
-      await setImageSource(photo.path);
-      
-      console.log(photo.path)
-      setShowCamera(false);
-      
-      // Upload the captured photo to Firebase Storage
-      //await uploadImageToFirebaseStorage(photo.path);
     }
   };
 
@@ -114,12 +93,12 @@ export function Aula(props) {
       return;
     }
   
-    if (!imageSource) {
+    if (!localImageSource) {
       Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
       return;
     }
   
-    await uploadImageToFirebaseStorage(imageSource); // Wait for image upload to complete
+    await uploadImageToFirebaseStorage(localImageSource); // Wait for image upload to complete
     // Wait until imageURL is not null
     
     console.log(imageURL); // This should now have the correct value
@@ -241,7 +220,7 @@ export function Aula(props) {
 
           {/* Button to open camera */}
           <TouchableOpacity style={styles.button}
-            onPress={() => setShowCamera(true)}>
+            onPress={() => onPressCameraButton(true)}>
             <Image
               style={styles.buttonLogo}
               source={{ uri: 'https://img.icons8.com/?size=256&id=59764&format=png' }}
@@ -252,30 +231,9 @@ export function Aula(props) {
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
             <Text style={styles.buttonTextListo}>Listo</Text>
           </TouchableOpacity>
-          
-          {/* Camera View */}
-          {showCamera ? (
-            <View style={[styles.cameraContainer, StyleSheet.absoluteFillObject]}>
-              <Camera
-                ref={camera}
-                style={StyleSheet.absoluteFill}
-                device={device}
-                isActive={showCamera && hasPermission}
-                photo={true}
-                orientation='portrait'
-              />
-
-              {/* Button to capture photo */}
-              <TouchableOpacity
-                style={styles.captureButton}
-                onPress={() => capturePhoto()}
-              >
-                
-              </TouchableOpacity>
-            </View>
-          ) : null}
-        </View>
+          </View>
       </KeyboardAwareScrollView>
+        
     </ScrollView>
   );
 };
