@@ -153,6 +153,9 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
         setPiso("");
         setSelectedEdificio(null);
         url = "";
+        setLocalImageSource("");
+        setImageURL(null);
+        let url = "";
 
         
       } else {
@@ -238,7 +241,7 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
             <View style={styles.imagePreviewContainer}>
               <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
               <Image source={{
-                uri: `file://'${imageSource}`,
+                uri: `file://'${localImageSource}`,
               }} style={styles.imagePreview} />
             </View>
           )}

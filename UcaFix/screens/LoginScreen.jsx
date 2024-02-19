@@ -25,7 +25,7 @@ export function LoginScreen(props) {
               if(data.isAdmin == 0){
                 props.navigation.navigate('MainTabNavigator', { userData: data })
               } else {
-                props.navigation.navigate('AdminTabNavigator')
+                props.navigation.navigate('AdminTabNavigator', { userData: data })
               }
           }
           else {

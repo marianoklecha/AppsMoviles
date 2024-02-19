@@ -17,39 +17,53 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 
-function TabNav(){
+function TabNav({ route }){
+  const { userData } = route.params;
   return(
     <Stack.Navigator>
-      <Stack.Screen name='PaginaInicio' component={PaginaInicio} options={{ headerShown: false }}/>
-        <Stack.Screen name='ListaPedidos' component={ListaPedidos} options={{ headerShown: false }}/>
-        <Stack.Screen name='AdminProfile' component={AdminProfile} options={{ headerShown: false }}/>
-        <Stack.Screen name='FinalizarArreglo' component={FinalizarArreglo} options={{ headerShown: false }}/>
-        <Stack.Screen name='MapaPedidos' component={MapaPedidos} options={{ headerShown: false }}/>
-        <Stack.Screen name='PisosEdificio' component={PisosEdificio} options={{ headerShown: false }}/>
-        <Stack.Screen name='ElegirEdificio' component={ElegirEdificio} options={{ headerShown: false }}/>
-        <Stack.Screen name='QRpageAdmin' component={QRpageAdmin} options={{ headerShown: false }}/>
+      <Stack.Screen name='PaginaInicio' component={PaginaInicio} options={{ headerShown: false }} 
+      initialParams={{ userData }}/>
+        <Stack.Screen name='ListaPedidos' component={ListaPedidos} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        <Stack.Screen name='AdminProfile' component={AdminProfile} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        <Stack.Screen name='FinalizarArreglo' component={FinalizarArreglo} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        <Stack.Screen name='MapaPedidos' component={MapaPedidos} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        <Stack.Screen name='PisosEdificio' component={PisosEdificio} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        <Stack.Screen name='ElegirEdificio' component={ElegirEdificio} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        <Stack.Screen name='QRpageAdmin' component={QRpageAdmin} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
     </Stack.Navigator>
   );
 }
 
-function MyProfileTabNav(){
+function MyProfileTabNav({ route }){
+  const { userData } = route.params;
   return(
     <Stack.Navigator>
-      <Stack.Screen name="AdminProfile" component={AdminProfile} options={{ headerShown: false }}/>
-      <Stack.Screen name='PaginaInicio' component={PaginaInicio} options={{ headerShown: false }}/>
+      <Stack.Screen name="AdminProfile" component={AdminProfile} initialParams={{ userData }} options={{ headerShown: false }}/>
+      <Stack.Screen name='PaginaInicio' component={PaginaInicio} initialParams={{ userData }} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
-function EstadisticaTabAula(){
+function EstadisticaTabAula({ route }){
+  const { userData } = route.params;
   return(
     <Stack.Navigator>
-      <Stack.Screen name="EstadisticasAulas" component={EstadisticasAula} options={{ headerShown: false }}/>
-      <Stack.Screen name='PaginaInicio' component={PaginaInicio} options={{ headerShown: false }}/>
+      <Stack.Screen name="EstadisticasAulas" component={EstadisticasAula} initialParams={{ userData }} options={{ headerShown: false }}/>
+      <Stack.Screen name='PaginaInicio' component={PaginaInicio} initialParams={{ userData }} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
 
 export const AdminTabNavigator = (props) => {
+  console.log("### AdminTab ###")
+  const propsUserData = props.route.params.userData;
+  console.log(propsUserData)
   return (
     
     <Tab.Navigator>
@@ -58,19 +72,19 @@ export const AdminTabNavigator = (props) => {
                 source={{ uri: 'https://img.icons8.com/fluency/48/home-page.png' }}
                 style={{ width: size, height: size, tintColor: color }}
               />
-            ),}}/>
+            ),}} initialParams={{ userData: propsUserData }}/>
       <Tab.Screen name="Perfil" component={MyProfileTabNav} options={{ headerShown: false, tabBarIcon: ({ color, size }) => (
               <Image
                 source={{ uri: 'https://img.icons8.com/fluency/48/gender-neutral-user--v1.png' }}
                 style={{ width: size, height: size, tintColor: color }}
               />
-            ), }}/>
+            ), }} initialParams={{ userData: propsUserData }}/>
       <Tab.Screen name="Estadisticas" component={EstadisticaTabAula} options={{ headerShown: false, tabBarIcon: ({ color, size }) => (
         <Image
           source={{ uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuklEQVR4nO2TuwoCMRBFT6siPlB8YSF+3Db6hYJgI+Kj0ELRQvRLIoErhBBZs4tY7F4YCLOTc4bAQpnIGNXPYgotaANJXkFFFYIfdHeeVVAFFsAKqDv9FrDTvRswyiKoAUvn+1ZbW/hevWsa/JOgAazVfwIPnS34pPMZ6KfBQ4ImsFHPgqfAWNu+Zy/A4Bu4L3Df9g5MnLkecIyF+4LE2XAYmO0A3Ri4L7CZadti/MkFE5ic9T9BGfy8ANGeZ/uoTTYPAAAAAElFTkSuQmCC' }}
           style={{ width: size, height: size, tintColor: color }}
         />
-      ), }}/>
+      ), }} initialParams={{ userData: propsUserData }}/>
     </Tab.Navigator>
   );
 }
