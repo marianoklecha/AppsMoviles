@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
+import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Alert, Modal, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
@@ -11,10 +11,6 @@ import styles from '../styles';
 const API_URL = "http://localhost:3000";
 
 export function Aula({ onPressCameraButton, imageSource, ...props }) {
-  const camera = useRef(null);
-  const device = useCameraDevice('back');
-  const [showCamera, setShowCamera] = useState(false);
-  const [hasPermission, setHasPermission] = useState(false);
   const [localImageSource, setLocalImageSource] = useState("");
   const [uploading, setUploading] = useState(false); // State to track upload progress
 
@@ -25,6 +21,8 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
   const [edificios, setEdificios] = useState([]);
   const [selectedEdificio, setSelectedEdificio] = useState(null);
   const [imageURL, setImageURL] = useState(null);
+  const [loading, setLoading] = useState(false); // State to track loading
+
   let url = "";
  
   const propsUserData = props.route.params.userData;
@@ -38,14 +36,17 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
 
   useEffect(() => {
     fetchEdificios();
-    requestMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
-      if (statuses[PERMISSIONS.ANDROID.CAMERA] === 'granted') {
-        setHasPermission(true);
-      } else {
-        Alert.alert('Falta permiso de cámara');
-      }
-    })
   }, []);
+
+  useEffect(() => {
+    if (loading) {
+      // Start loading indicator
+      setLoading(true);
+    } else {
+      // Stop loading indicator
+      setLoading(false);
+    }
+  }, [loading]);
 
   const uploadImageToFirebaseStorage = async (imageUri) => {
     try {
@@ -97,6 +98,8 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
       Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
       return;
     }
+
+    setLoading(true); // Start loading indicator
   
     await uploadImageToFirebaseStorage(localImageSource); // Wait for image upload to complete
     // Wait until imageURL is not null
@@ -155,9 +158,11 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
       } else {
         Alert.alert('Error', 'Failed to submit your request. Please try again.');
       }
+      setLoading(false); // Stop loading indicator
     } catch (error) {
       console.error('Error submitting request:', error);
       Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
+      setLoading(false); // Stop loading indicator
     }
   };
 
@@ -225,14 +230,40 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
               style={styles.buttonLogo}
               source={{ uri: 'https://img.icons8.com/?size=256&id=59764&format=png' }}
             />
-            <Text style={styles.buttonText}>Cargar imagen/es</Text>
+            <Text style={styles.buttonText}>Cargar imagen</Text>
           </TouchableOpacity>
 
+          {/* Mini preview of the photo */}
+          {localImageSource !== "" && (
+            <View style={styles.imagePreviewContainer}>
+              <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
+              <Image source={{
+                uri: `file://'${imageSource}`,
+              }} style={styles.imagePreview} />
+            </View>
+          )}
+
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
-            <Text style={styles.buttonTextListo}>Listo</Text>
+            <Text style={styles.buttonTextListo}>Finalizar pedido</Text>
           </TouchableOpacity>
           </View>
+
+          <Modal
+        animationType="fade"
+        transparent={true}
+        visible={loading}
+        onRequestClose={() => setLoading(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ActivityIndicator size="large" color="#3C99FF" />
+            <Text style={styles.loadingText}>Espere...</Text>
+          </View>
+        </View>
+      </Modal>
       </KeyboardAwareScrollView>
+
+      
         
     </ScrollView>
   );

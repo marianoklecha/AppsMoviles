@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         scrollViewContent: {
           flexGrow: 1,
           padding: '3%',
-          backgroundColor: 'white'
+          backgroundColor: '#E9E9E9'
         },
         formContainer: {
           backgroundColor: '#E9E9E9',
@@ -63,6 +63,12 @@ const styles = StyleSheet.create({
           fontSize: 18,
           color: 'black',
           fontWeight: 'bold',
+        },
+        buttonVistaPrevia: {
+          textAlign: "center",
+          fontSize: 15,
+          color: 'black',
+          fontWeight: "600",
         },
         buttonLogo: {
           width: 40,
@@ -140,7 +146,7 @@ const styles = StyleSheet.create({
     },
     buttonListo: {
       padding: 10,
-      marginHorizontal:"30%",
+      marginHorizontal:"20%",
       borderRadius: 6,
       backgroundColor: '#69D377',
     },
@@ -173,6 +179,33 @@ const styles = StyleSheet.create({
       right: 0,
       bottom: 0,
       zIndex: 999, // Ensure camera view is on top
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    },
+    modalContent: {
+      backgroundColor: '#fff', // White background for the content
+      padding: 20,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    loadingText: {
+      marginTop: 10,
+      fontSize: 16,
+      color: "black"
+    },
+    imagePreviewContainer: {
+      marginBottom: 15,
+      alignItems: 'center',
+    },
+    imagePreview: {
+      width: 200,
+      height: 200,
+      borderRadius: 10,
+      marginTop: 10,
     },
 
 });

@@ -98,7 +98,7 @@ export function InputClassroomScreen(props) {
         </FadeInView>
 
         <FadeInView visible={!visible}>
-          <EspacioComun {...props} ></EspacioComun>
+          <EspacioComun {...props} onPressCameraButton={toggleCamera} imageSource={imageSource}></EspacioComun>
         </FadeInView>
       </View>
 

@@ -1,30 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Alert } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list'
-import styles from '../styles'; 
+import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Alert, Modal, ActivityIndicator } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SelectList } from 'react-native-dropdown-select-list';
+import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+import { Camera, useCameraDevice } from 'react-native-vision-camera';
+import storage from '@react-native-firebase/storage'; // Import Firebase storage module
+import styles from '../styles';
 
 const API_URL = "http://localhost:3000";
 
-export const EspacioComun = (props) => {
-    const [motivo, setMotivo] = useState("");
-    const [descripcion, setDescripcion] = useState("");
-    const [biblioBanio, setBiblioBanio] = useState("");
+export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => {
+    const [localImageSource, setLocalImageSource] = useState("");
+    const [uploading, setUploading] = useState(false); // State to track upload progress
+
     const [aula, setAula] = useState("");
     const [piso, setPiso] = useState("");
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [edificios, setEdificios] = useState([]);
     const [selectedEdificio, setSelectedEdificio] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
+    const [loading, setLoading] = useState(false); // State to track loading
+
+    let url = "";
+
     const propsUserData = props.route.params.userData;
+
     const data = [
       {key:'1', value:'Seleccione', disabled:true},
       {key:'2', value:'Biblioteca'},
       {key:'3', value:'Baño'},
     ]
+
+    useEffect(() => {
+      setLocalImageSource(prevImageSource => {
+        console.log("Updated image source Aula:", imageSource);
+        return imageSource;
+      });
+    }, [imageSource]);
+
     useEffect(() => {
       fetchEdificios();
     }, []);
+
+    useEffect(() => {
+      if (loading) {
+        // Start loading indicator
+        setLoading(true);
+      } else {
+        // Stop loading indicator
+        setLoading(false);
+      }
+    }, [loading]);
   
     const fetchEdificios = async () => {
       try {
@@ -40,9 +68,45 @@ export const EspacioComun = (props) => {
         Alert.alert("Error", "An unexpected error occurred");
       }
     };
+
+    const uploadImageToFirebaseStorage = async (imageUri) => {
+      try {
+        
+        setUploading(true);
+        const reference = storage().ref(`images/${Date.now()}`);
+        const task = reference.putFile(imageUri);
   
-    const createPedido = async (title, aula, piso, edificioId, content, image, fixed, authorID) => {
-      
+        // Track upload progress
+        task.on('state_changed', (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress}% done`);
+        });
+  
+        await task;
+        console.log('Image uploaded successfully');
+        url = await reference.getDownloadURL();
+        console.log('Image URL:', url);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        Alert.alert('Error', 'Failed to upload image to Firebase Storage');
+      } finally {
+        setUploading(false);
+      }
+    };
+    
+  
+    const createPedido = async () => {
+    
+      let edificioId = null;
+  
+      // Loop through the edificios array to find the matching edificio
+      for (const edificio of edificios) {
+        if (edificio.nombre === selectedEdificio) {
+          edificioId = edificio.id;
+          break;
+        }
+      }
+  
       try {
         const response = await fetch(API_URL + '/pedidos/create', {
           method: "POST",
@@ -55,9 +119,9 @@ export const EspacioComun = (props) => {
             piso,
             edificioId,
             content,
-            image,
-            fixed,
-            authorID
+            image: url,
+            fixed: false,
+            authorID: propsUserData.id
           })
         });
   
@@ -68,29 +132,45 @@ export const EspacioComun = (props) => {
           setContent("");
           setPiso("");
           setSelectedEdificio(null);
+          url = "";
+  
+          
         } else {
           Alert.alert('Error', 'Failed to submit your request. Please try again.');
         }
+        setLoading(false); // Stop loading indicator
       } catch (error) {
         console.error('Error submitting request:', error);
         Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
+        setLoading(false); // Stop loading indicator
       }
     };
   
-    const handleCreatePost = async () => {
-      if ( !piso || !selectedEdificio || !title || !content) {
-        Alert.alert('Pedido Incompleto', 'Por favor llenar todos los campos antes de hacer un pedido.');
+
+    const handleCreatePedido = async () => {
+      if (!aula || !piso || !selectedEdificio || !title || !content) {
+        Alert.alert('Pedido Incompleto', 'Por favor, llene todos los campos y cargue una imagen antes de hacer un pedido.');
         return;
       }
-      let edificioId = null;
     
-      for (const edificio of edificios) {
-        if (edificio.nombre === selectedEdificio) {
-          edificioId = edificio.id;
-        }
+      if (!localImageSource) {
+        Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
+        return;
+      }
+  
+      setLoading(true); // Start loading indicator
+    
+      await uploadImageToFirebaseStorage(localImageSource); // Wait for image upload to complete
+      // Wait until imageURL is not null
+      
+      console.log(imageURL); // This should now have the correct value
+    
+      if (url === null) {
+        Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
+        return;
       }
     
-      await createPedido(title, aula, piso, edificioId, content, "imagefdsfdsf", false, propsUserData.id);
+      await createPedido();
     };
     
 
@@ -98,7 +178,7 @@ export const EspacioComun = (props) => {
         <View >
         
         <KeyboardAwareScrollView
-        contentContainerStyle={{...styles.scrollViewContent, backgroundColor: 'white' }}
+        contentContainerStyle={{...styles.scrollViewContent, backgroundColor: '#E9E9E9' }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
          
@@ -163,20 +243,44 @@ export const EspacioComun = (props) => {
             value={content}
           />
 
-          <TouchableOpacity style={styles.button}>
+          {/* Button to open camera */}
+          <TouchableOpacity style={styles.button}
+            onPress={() => onPressCameraButton(true)}>
             <Image
               style={styles.buttonLogo}
-              source={{
-                uri: 'https://img.icons8.com/?size=256&id=59764&format=png',
-              }}
+              source={{ uri: 'https://img.icons8.com/?size=256&id=59764&format=png' }}
             />
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePost()}>
+          {/* Mini preview of the photo */}
+          {localImageSource !== "" && (
+            <View style={styles.imagePreviewContainer}>
+              <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
+              <Image source={{
+                uri: `file://'${imageSource}`,
+              }} style={styles.imagePreview} />
+            </View>
+          )}
+
+          <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
             <Text style={styles.buttonTextListo}>Listo</Text>
           </TouchableOpacity>
+          </View>
+
+          <Modal
+        animationType="fade"
+        transparent={true}
+        visible={loading}
+        onRequestClose={() => setLoading(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ActivityIndicator size="large" color="#3C99FF" />
+            <Text style={styles.loadingText}>Espere...</Text>
+          </View>
         </View>
+      </Modal>
       </KeyboardAwareScrollView>
       </View>
     );

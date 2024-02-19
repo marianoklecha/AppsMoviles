@@ -90,7 +90,7 @@ export function Camara(props) {
             <View style={styles.buttons}>
               <TouchableOpacity
                 style={styles.retakeButton}
-                onPress={() => {setShowCamera(true); setImageSource("");
+                onPress={() => {setShowCamera(true); props.setImageSource("");
                   props.setImageSource("");}}>
                 <Text style={{ color: '#77c3ec', fontWeight: '500' }}>
                   Sacar de nuevo
