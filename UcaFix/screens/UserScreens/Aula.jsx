@@ -252,7 +252,7 @@ export function Aula(props) {
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
             <Text style={styles.buttonTextListo}>Listo</Text>
           </TouchableOpacity>
-
+          
           {/* Camera View */}
           {showCamera ? (
             <View style={[styles.cameraContainer, StyleSheet.absoluteFillObject]}>
@@ -270,7 +270,7 @@ export function Aula(props) {
                 style={styles.captureButton}
                 onPress={() => capturePhoto()}
               >
-                <Text style={styles.captureButtonText}>Capture</Text>
+                
               </TouchableOpacity>
             </View>
           ) : null}

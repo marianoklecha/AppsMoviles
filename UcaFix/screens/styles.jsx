@@ -149,6 +149,27 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       color: 'white',
       fontWeight: 'bold',
+    },
+    captureButton: {
+      width: 70,
+        height: 70,
+        borderRadius: 35,
+        borderWidth: 5,
+        borderColor: "white",
+        backgroundColor: "white",
+        marginBottom: 15
+    },
+    preview: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%'
+    },
+    cameraContainer : {
+      zIndex:1,
+      position: "absolute"
     }
+
 });
 export default styles;
