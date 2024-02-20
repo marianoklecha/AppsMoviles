@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
 
 export function AdminProfile(props) {
-  const userName = 'camila';
-  const userEmail = 'camila@uca.edu.ar';
+  const propsUserData = props.route.params.userData;
+  const userName = propsUserData.name;
+  const userEmail = propsUserData.email;
   const completedRequests = [
     { id: 1, request: 'Pizarron Roto', building: 'Magno' },
     { id: 4, request: 'Silla Rota', building: 'Moro' },

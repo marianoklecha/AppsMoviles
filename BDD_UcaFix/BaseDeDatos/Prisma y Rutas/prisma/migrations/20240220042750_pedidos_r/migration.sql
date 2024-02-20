@@ -12,6 +12,8 @@ CREATE TABLE "PedidoResuelto" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "pedidoId" INTEGER DEFAULT 0,
     "adminId" INTEGER DEFAULT 0,
+    "comments" TEXT,
+    "imageFixed" TEXT,
     CONSTRAINT "PedidoResuelto_pedidoId_fkey" FOREIGN KEY ("pedidoId") REFERENCES "Pedido" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "PedidoResuelto_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );

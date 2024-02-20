@@ -52,8 +52,19 @@ const PedidosRoute = (prisma: PrismaClient) => {
         }
         res.json(pedido)
         })
+    router.get('/getPedidosPendientes', async (req, res) => {
+        const pedidos = await prisma.pedido.findMany({
+            where: {
+                fixed: false,
+            }
+        });
+        res.json(pedidos)
+    })
+        
+        
 
     return router
+    
 }
 
 export default PedidosRoute

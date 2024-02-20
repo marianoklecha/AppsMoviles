@@ -22,6 +22,8 @@ model PedidoResuelto{
   pedidoId Int?     @default(0)
   admin     User?     @relation(fields: [adminId], references: [id])   
   adminId   Int?      @default(0)
+  comments  String? 
+  imageFixed     String?
 
 }
 model Pedido {

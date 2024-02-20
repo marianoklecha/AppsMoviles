@@ -3,6 +3,7 @@ import UserRoute from "./user.route"
 import PedidosRoute from "./pedidos.route"
 import EdificiosRoute from "./edificios.route"
 import { type Express } from "express"
+import PedidoResueltoRoute from "./pedidoResuelto.route"
 
 const addRoutes = (app: Express, prisma: PrismaClient) => {
     app.get('/', (req, res) => {
@@ -14,6 +15,7 @@ const addRoutes = (app: Express, prisma: PrismaClient) => {
     app.use('/pedidos/', PedidosRoute(prisma))
     app.use('/users/', UserRoute(prisma))
     app.use('/edificios/',EdificiosRoute(prisma))
+    app.use('/pedidoResuelto/',PedidoResueltoRoute(prisma))
     
 }
 
