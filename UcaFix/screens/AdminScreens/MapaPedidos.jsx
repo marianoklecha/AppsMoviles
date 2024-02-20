@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, Text, PanResponder, Animated, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, PanResponder, Animated, TouchableOpacity, Alert } from 'react-native';
 
 const API_URL = "http://localhost:3000";
 
@@ -11,6 +11,10 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
   const [translateX] = useState(new Animated.Value(0));
   const [translateY] = useState(new Animated.Value(0));
   const [lastPosition, setLastPosition] = useState({ x: 0, y: -2 });
+  
+
+  const touchStartTimeRef = useRef(null); // Using a ref instead of state
+  const blinkAnimation = useRef(new Animated.Value(0)).current;
 
   const mapContainerRef = useRef(null);
 
@@ -18,6 +22,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
 
   useEffect(() => {
     setLocalEdificioId(edificioId);
+    startBlinkAnimation();
   }, [edificioId]);
 
   useEffect(() => {
@@ -25,6 +30,37 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
       fetchPedidos();
     }
   }, [localEdificioId]);
+
+  useEffect(() => {
+    if (pedidos.length > 0) {
+      generateSquares();
+      startBlinkAnimation();
+    }
+  }, [pedidos]);
+
+  useEffect(() => {
+    startBlinkAnimation();
+  }, [edificioId,selectedFloor,props]); // Start blinking animation whenever edificioId changes
+  
+  const startBlinkAnimation = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(blinkAnimation, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(blinkAnimation, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  };
+  
+
+  
 
   const fetchPedidos = async () => {
     try {
@@ -41,12 +77,6 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
       Alert.alert("Error", "An unexpected error occurred");
     }
   };
-
-  useEffect(() => {
-    if (pedidos.length > 0) {
-      generateSquares();
-    }
-  }, [pedidos]);
 
   const generateSquares = () => {
     const floors = {
@@ -93,12 +123,9 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
         const backgroundColor = getBackgroundColor(count);
         if (aula === 'Baño' || aula === 'Biblioteca') {
           return (
-            <View key={aula} style={[styles.square, { backgroundColor }]} onTouchEnd={() => {
-              console.log('Square pressed:', aula, edificioId);
-              props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId } });
-            }}>
+            <Animated.View key={aula} style={[styles.square, { backgroundColor, opacity: count > 0 ? blinkAnimation : 1 }]} onTouchStart={() => { touchStartTimeRef.current = Date.now() }} onTouchEnd={(event) => handleTouchEnd(event, aula, edificioId)}>
               <Text style={styles.squareText}>{aula}</Text>
-            </View>
+            </Animated.View>
           );
         }
       });
@@ -106,12 +133,9 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
       squares = Object.entries(floors[selectedFloor]).map(([aula, count]) => {
         const backgroundColor = getBackgroundColor(count);
         return (
-          <View key={aula} style={[styles.square, { backgroundColor }]} onTouchEnd={() => {
-            console.log('Square pressed:', aula, edificioId);
-            props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId } });
-          }}>
+          <Animated.View key={aula} style={[styles.square, { backgroundColor, opacity: count > 0 ? blinkAnimation : 1 }]} onTouchStart={() => { touchStartTimeRef.current = Date.now() }} onTouchEnd={(event) => handleTouchEnd(event, aula, edificioId)}>
             <Text style={styles.squareText}>{aula}</Text>
-          </View>
+          </Animated.View>
         );
       });
     }
@@ -119,7 +143,17 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
     setSquares(squares);
   };
   
-  
+  const handleTouchEnd = (event, aula, edificioId) => {
+    const touchEndTime = Date.now();
+    const touchDuration = touchEndTime - touchStartTimeRef.current; // Accessing ref value directly
+    console.log(touchDuration);
+    if (touchDuration < 150) { // Adjust the threshold for long press as needed
+      console.log('Short tap: ', aula, edificioId);
+      props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId } });
+    } else {
+      console.log('Long press ignored: ', aula, edificioId);
+    }
+  };
 
   const getBackgroundColor = (count) => {
     if (count === 1) {
