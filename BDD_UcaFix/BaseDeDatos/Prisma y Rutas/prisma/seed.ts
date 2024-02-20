@@ -24,10 +24,10 @@ const userData: Prisma.UserCreateInput[] = [
 ]
 const edificioData: Prisma.EdificioCreateInput[] = [
   {
-    nombre: 'Magno',
+    nombre: 'San Alberto Magno',
   },
   {
-    nombre: 'Moro',
+    nombre: 'Santo Tomas Moro',
   },
   {
     nombre: 'Santa Maria',
@@ -36,6 +36,7 @@ const edificioData: Prisma.EdificioCreateInput[] = [
     nombre: 'San Jose',
   },
 ]
+
 
 async function main() {
   console.log(`Start seeding ...`)

@@ -47,12 +47,13 @@ function TabNav({ route }) {
   );
 }
 
-function MyProfileTabNav(){
+function MyProfileTabNav({ route }){
+  const { userData } = route.params;
   return(
     <Stack.Navigator>
-      <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }}/>
-      <Stack.Screen name='MainScreen' component={MainScreen} options={{ headerShown: false }}/>
-      <Stack.Screen name='PedidosResueltos' component={PedidosResueltos} options={{ headerShown: false }}/>
+      <Stack.Screen name="UserProfile" component={UserProfile} initialParams={{ userData }} options={{ headerShown: false }}/>
+      <Stack.Screen name='MainScreen' component={MainScreen} initialParams={{ userData }} options={{ headerShown: false }}/>
+      <Stack.Screen name='PedidosResueltos' component={PedidosResueltos} initialParams={{ userData }} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 }
@@ -75,7 +76,7 @@ export const MainTabNavigator = (props) => {
                 source={{ uri: 'https://img.icons8.com/fluency/48/gender-neutral-user--v1.png' }}
                 style={{ width: size, height: size, tintColor: color }}
               />
-            ), }}/>
+            ), }} initialParams={{ userData: propsUserData }}/>
     </Tab.Navigator>
   );
 }

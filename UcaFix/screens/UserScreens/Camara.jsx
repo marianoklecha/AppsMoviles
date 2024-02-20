@@ -10,13 +10,13 @@ import {
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { Camera, useCameraDevice } from 'react-native-vision-camera';
 
-export function Camara() {
+export function Camara(props) {
   const camera = useRef(null);
   const device = useCameraDevice('back');
 
   const [showCamera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(false)
-  const [imageSource, setImageSource] = useState('');
+  const [imageSource, setImageSource] = useState("");
 
 
   useEffect(() => {
@@ -34,10 +34,13 @@ export function Camara() {
 
   const capturePhoto = async () => {
     if (camera.current !== null) {
-      const photo = await camera.current.takePhoto();
-      setImageSource(photo.path);
+      const photo = await camera.current.takePhoto({
+        enableShutterSound: false,
+      });
+      await setImageSource(photo.path);
+      props.setImageSource(imageSource);
       setShowCamera(false);
-      console.log(photo.path);
+      //console.log(photo.path);
     }
   };
 
@@ -61,7 +64,7 @@ export function Camara() {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.camButton}
-              onPress={() => capturePhoto()}
+              onPress={() => {capturePhoto(); props.setImageSource(imageSource)}}
             />
           </View>
         </>
@@ -79,24 +82,25 @@ export function Camara() {
           <View style={styles.backButton}>
             <TouchableOpacity
               style={styles.backButton}
-              onPress={() => setShowCamera(true)}>
-              <Text style={{ color: 'white', fontWeight: '500' }}>Back</Text>
+              onPress={() => props.onPressCameraButton(false)}>
+              <Text style={{ color: 'white', fontWeight: '500' }}>Volver atrás</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
             <View style={styles.buttons}>
               <TouchableOpacity
                 style={styles.retakeButton}
-                onPress={() => setShowCamera(true)}>
+                onPress={() => {setShowCamera(true); props.setImageSource("");
+                  props.setImageSource("");}}>
                 <Text style={{ color: '#77c3ec', fontWeight: '500' }}>
-                  Retake
+                  Sacar de nuevo
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.usePhotoButton}
-                onPress={() => setShowCamera(true)}>
+                onPress={() => {props.onPressCameraButton(false); props.setImageSource(imageSource)}}>
                 <Text style={{ color: 'white', fontWeight: '500' }}>
-                  Use Photo
+                  Confirmar
                 </Text>
               </TouchableOpacity>
             </View>
@@ -108,7 +112,14 @@ export function Camara() {
 }
 
 const styles = StyleSheet.create({
+  
   container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 999, // Ensure camera view is on top
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

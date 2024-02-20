@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 export function UserProfile (props) {
   // Replace these with actual user data
-  const userName = 'Nombre Apellido';
-  const userEmail = 'nombre@uca.edu.ar';
+  
+  const propsUserData = props.route.params.userData;
+  const userName = propsUserData.name;
+  const userEmail = propsUserData.email;
 
   return (
     <>

@@ -21,10 +21,14 @@ CREATE TABLE "Pedido" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "title" TEXT,
+    "aula" TEXT,
+    "piso" TEXT,
+    "edificioId" INTEGER DEFAULT 0,
     "content" TEXT,
     "image" TEXT,
     "fixed" BOOLEAN NOT NULL,
     "authorId" INTEGER DEFAULT 0,
+    CONSTRAINT "Pedido_edificioId_fkey" FOREIGN KEY ("edificioId") REFERENCES "Edificio" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "Pedido_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
