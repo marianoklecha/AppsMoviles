@@ -1,135 +1,243 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+
 import {
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  Image,
   View,
-  Modal
+  StyleSheet,
+  Button,
+  Text,
+  Alert,
+  Image
 } from 'react-native';
+import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
+import { Camera, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 
 export function QRpageAdmin(props) {
-    const onTap = (nextScreen) => {
-      props.navigation.navigate(nextScreen);
-    };
-    const UserName = props;
-    console.log(UserName)
-    return (
-      
-      
-      // 
-      <View style={styles.back}>
+  const camera = useRef(null);
+  const device = useCameraDevice('back');
 
-        <View style={styles.TitleContainer} >
-        <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
-              }}
-            />
-            <Text style={[styles.title]}>UCA FIX</Text>
-            
-        </View>
-        
-        <SafeAreaView style={styles.container}>
+  const [showCamera, setShowCamera] = useState(false);
+  const [hasPermission, setHasPermission] = useState(false);
+ 
+  let aula = 0;
+  let piso = 0;
+  let edificioId = 0;
+  let lastCode = "";
 
-          
+   useEffect(() => {
+    // Pedir permiso de cámara
+    requestMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
+      if (statuses[PERMISSIONS.ANDROID.CAMERA] === 'granted') {
+        setHasPermission(true)
+        setShowCamera(true)
+      }
+      else {
+        Alert.alert('Falta permiso de cámara')
+      }
+    })
+  }, []);
 
-          <TouchableOpacity
-              style={[styles.button]}
-              onPress={() => props.navigation.navigate('ListaPedidos')}>
-              <Image
-                style={styles.tinyLogo}
-                source={{
-                  uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACJElEQVR4nO1bXW7DIAz2Uw81de9rD7Z212qSiyztruFpEpWiFOofDIXMn+SHEGzDh21I0gI4HA6HwxHDDgC+AOAHALBTuQHAOcxFjHMDE7CSk4aAW1B+g36xX0SCGBikd6jngU4AeARgJDKOADAzCs9fn8NCb4r0GRP3RwN/xVJgFlTf74i9tdwxLNouBv6KEYBMg+t+1LV0HNbjfYATADxGU7mbWnGOjAb+qHYSXIOpnH6W4xzJ9Ue1k7AmINd+swQMiepdigCpv2aK4KTM2c3uAsNqBbl6pcZb7SC0RuyEiC0fhA7BEWcwH4IVX8rFwF8xAqxR2o8TAMYRMC3uLas6hVSuSwf4zM5Yg4Ahkatce1TOU6BOlNx5sAfMBfW8z7VH2ZGOtxoBSKwI1542RZoh4I5cAnL1pPrZRfDfEDAkihcWFukJshgBKUif9yXCPUG+lAAKuaFM9XMC4MVFcIqEY6xI5rwD1NSKakVwIHKXe4JLXefWCjMCrMElwMp+ecWtE3DM/FZH7d+SkF/XoCpPg7PRKyoLAjiRYk4AMg1y9bUp4ASA7i0zG8hkXvutTpoC2okVJwCFOak5L1y2RIAVqF1h3U/tgJN7sZV6BQFN7wJTZIVy2rrbBTCiZ9nW5bdBNGirngIHw2+DuW2Wu8UDShexWnACwCMAMOfn8nvoF+9hDleN8klQ7VuXTw0Bu0DCPRJ6lGuYvOovMw6Hw+GAjeMXigB8L7yz2Z0AAAAASUVORK5CYII=',
-                }}
-              />
-            </TouchableOpacity>
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr'],
+    onCodeScanned: (codes) => {
+      console.log(`Scanned ${codes.length} codes!`);
+      codes.forEach(code => console.log(code));
+      lastCode= codes[0].value;
+      setShowCamera(false);
+      /*
+      Alert.alert(
+        `Alerta de ejemplo`,
+        `Se escaneó el código ${codes[0].value}`,
+      [
+        {text: 'OK', onPress: () => setShowCamera(true)},
+      ])*/
 
-          </SafeAreaView>
+      setTimeout(() => {
+        llenarInformacion();
+      }, 500); // 500 milliseconds (medio segundo)
 
-
-          
-      </View>
-      
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    back:{
-      width:'100%',
-      height:'100%',
-      backgroundColor: 'white'
-  
-    },
-    container: {
-      marginTop:'10%',
-      justifyContent: 'center',
-      marginHorizontal: '10%',
-      //backgroundColor: '#021B6F'
-    },
-    button: {
-      flexDirection: 'row',
-      borderRadius: 6,
-      backgroundColor: 'white',
-      
-    },
-    buttonSesion: {
-      borderRadius: 6,
-      
-      padding:'3%',
-      marginHorizontal: 50
-    },
-    buttonTextSesion: {
-      fontSize: 20,
-      color: "white",
-      fontWeight: "bold",
-      textAlign:"center",
-      padding:'2%',
-      
-    },
-    buttonText: {
-      marginTop: 10,
-      marginLeft: 20,
-      fontSize: 20,
-      color: "white",
-      fontWeight: "bold"
-    },
-    tinyLogo: {
-      width: 300,
-      height: 300,
-    },
-    text :{
-      fontSize: 25,
-      marginBottom:20,
-      color: 'black',
-    },
-    title :{
-      fontSize: 55,
-      marginTop:20,
-      color: 'black',
-      fontWeight: 'bold',
-      marginBottom:'2%'
-  
-    },
-    TitleContainer:{
-      flexDirection: 'row', 
-      alignItems: 'center',
-      justifyContent: 'center',
-      //backgroundColor: '#3FA7D6',
-      marginTop: '15%'
-    },
-    UcaLogo:{
-      width: 50,
-      height: 50,
-      marginTop:15,
-    },
-    footerContainer:{
-      flexDirection: 'row', 
-      justifyContent: 'space-between',  // Align items to the right
-      backgroundColor: '#2F61AF',
-      padding:'2%',
+      setTimeout(() => {
+        visitarPedidos(aula,edificioId);
+      }, 500); // 500 milliseconds (medio segundo)
       
     }
-  });
+  })
+
+  const llenarInformacion = () => {
+    const informacion = lastCode.split(".");
+    console.log(informacion);
+    aula = informacion[0];
+    piso = informacion[2];
+    const idInt = parseInt(informacion[4]);
+    edificioId = idInt;
+        
+    console.log(aula,piso,edificioId);
+  }
+
+  const visitarPedidos = (aula, edificioId) => {
+    props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId } });
+  };
+
+  /* import React from 'react';
+import { View, Text } from 'react-native';
+
+const YourComponent = () => {
+  const text = "105.1.San Alberto Magno";
+  const parts = text.split(".");
+
+  return (
+    <View>
+      {parts.map((part, index) => (
+        <Text key={index}>{part}</Text>
+      ))}
+    </View>
+  );
+};
+
+export default YourComponent; */
+
+  if (device == null) {
+    return <Text>Camera not available</Text>;
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Image
+          style={styles.UcaLogo}
+          source={{
+            uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png',
+          }}
+        />
+        <Text style={styles.title}>UCA FIX</Text>
+      </View>
+      <View style={styles.filterContainer}>
+        <Text style={styles.subtitle1}>Escanear código QR</Text>
+      </View>
+
+          {showCamera && <Camera
+            ref={camera}
+            style={{width: '100%', height: '100%'}}
+            device={device}
+            isActive={hasPermission}
+            codeScanner={codeScanner}
+          />}
+                
+
+
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    
+  },
+  button: {
+    backgroundColor: 'gray',
+  },
+  backButton: {
+    backgroundColor: 'rgba(0,0,0,0.0)',
+    position: 'absolute',
+    justifyContent: 'center',
+    width: '100%',
+    top: 0,
+    padding: 20,
+  },
+  buttonContainer: {
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    bottom: 0,
+    padding: 20,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  retakeButton: {
+    backgroundColor: '#fff',
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#77c3ec',
+  },
+  camButton: {
+    height: 80,
+    width: 80,
+    borderRadius: 40,
+    //ADD backgroundColor COLOR GREY
+    backgroundColor: '#B2BEB5',
+
+    alignSelf: 'center',
+    borderWidth: 4,
+    borderColor: 'white',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    aspectRatio: 9 / 16,
+  },
+  usePhotoButton: {
+    backgroundColor: '#77c3ec',
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  TitleContainer: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    shadowColor: "black"
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'left',
+    padding: '3%',
+    paddingTop: '4%',
+    backgroundColor: "white",
+    shadowColor: "black"
+  },
+  UcaLogo: {
+    width: 35,
+    height: 35,
+    marginLeft: '5%',
+    
+  },
+  title: {
+    fontSize: 30,
+    marginTop: 5,
+    color: 'black',
+    fontWeight: 'bold',
+    marginBottom: '2%',
+  },
+  filterContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    margin: 10,
+  },
+  subtitle1:{
+    marginTop: 10,
+    marginLeft: 10,
+    fontSize: 15,
+    color: 'black',
+    textAlign: "center",
+    fontWeight: 'bold',
+  },
+});
