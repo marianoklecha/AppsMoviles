@@ -35,30 +35,7 @@ const PedidoResueltoRoute = (prisma: PrismaClient) => {
         }
     });
     
-
-    // Update PedidoResuelto
-    router.put('/pedido-resuelto/:id', async (req, res) => {
-        try {
-            const { id } = req.params;
-            const { comments, imageFixed, adminId } = req.body;
-
-            // Update PedidoResuelto
-            const updatedPedidoResuelto = await prisma.pedidoResuelto.update({
-                where: { id: parseInt(id) },
-                data: {
-                    comments,
-                    imageFixed,
-                    adminId,
-                },
-            });
-
-            res.status(200).json(updatedPedidoResuelto);
-        } catch (error) {
-            console.error('Error updating Pedido Resuelto:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    })
-
+    
     return router
 }
 

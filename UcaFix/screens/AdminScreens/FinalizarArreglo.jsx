@@ -81,56 +81,18 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
       Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
       return;
     }
-  
+
     setLoading(true); // Start loading indicator
-  
-    try {
-      // Upload image to Firebase Storage
-      const reference = storage().ref(`images/${Date.now()}`);
-      const task = reference.putFile(localImageSource);
-  
-      // Track upload progress
-      task.on('state_changed', (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
-      });
-  
-      await task;
-      console.log('Image uploaded successfully');
-      const url = await reference.getDownloadURL();
-      console.log('Image URL:', url);
-  
-      // Send request to create PedidoResuelto
-      const response = await fetch(API_URL + `/pedidoResuelto/pedido-resuelto`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          pedidoId: pedido.id,
-          adminId: propsUserData.id,
-          comments: comments,
-          imageFixed: url,
-        })
-      });
-  
-      if (response.ok) {
-        Alert.alert('Arreglo Exitoso', 'Pedido Arreglado correctamente');
-        setComments("");
-        setLocalImageSource("");
-        setImageURL(null);
-      } else {
-        Alert.alert('Error', 'Failed to submit your request. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error submitting request:', error);
-      Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
-    } finally {
-      setLoading(false); // Stop loading indicator
-    }
+    await uploadImageToFirebaseStorage(localImageSource); // Wait for image upload to complete
+
+// After upload completes
+    await crearArreglo();
+
+      
   };
 
   const crearArreglo = async () => {
+    console.log(pedid.id,propsUserData.id,comments,url)
     try {
       const response = await fetch(API_URL+`/pedidoResuelto/pedido-resuelto`,{
         method: "POST",
@@ -144,7 +106,7 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
           imageFixed: url,
         })
       });
-      console.log(pedidoId,adminId,comments,imageFixed)
+      
       if (response.ok) {
         Alert.alert('Arreglo Exitoso', 'Pedido Arreglado correctamente');
         setComments("");
@@ -160,6 +122,8 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
       console.error('Error submitting request:', error);
       Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
       setLoading(false); // Stop loading indicator
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -167,6 +131,7 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
 
   return (
     <SafeAreaView style={styles.back}>
+
       <View style={styles.TitleContainer}>
         <Image
           style={styles.UcaLogo}
@@ -221,7 +186,7 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
             </View>
           )}
 
-          <TouchableOpacity style={styles.buttonListo} onPress={handleCreatePedido}>
+          <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
 
                 <Text style={styles.buttonTextListo}>Listo</Text>
               </TouchableOpacity>
@@ -242,8 +207,10 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
           </Modal>
       </ScrollView>
       {cameraVisible && <Camara setImageSource={setImageSource} onPressCameraButton={toggleCamera}/>}
+
     </SafeAreaView>
   );
+
 };
   
   const styles = StyleSheet.create({
