@@ -28,6 +28,9 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
   const [loading, setLoading] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
   const [imageSource, setImageSource] = useState("");
+  const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
+  let pisoDisponible = false;
+  if (pedido.aula === 'Baño' || pedido.aula === 'Biblioteca'){ pisoDisponible = true}
   let url = "";
   const propsUserData = props.route.params.userData;
   const toggleCamera = (input) => {
@@ -148,7 +151,8 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
         <View style={styles.container}>
           <Text style={styles.tituloPedido}>{pedido.title}</Text>
           <View>
-            <Text style={styles.aulaPedido}>{pedido.aula}</Text>
+            <Text style={styles.aulaPedido}>{pedido.aula} - {edificios[pedido.edificioId - 1]}</Text>
+            {pisoDisponible && <Text style={styles.aulaPedido}>Piso {pedido.piso}</Text>}
             <Image style={styles.fotoPedido} source={{ uri: pedido.image }} />
             <Text style={styles.descripcionPedido}>Descripción del problema:</Text>
             <Text style={styles.descripcionTexto}>{pedido.content}</Text>
@@ -166,19 +170,18 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
             onChangeText={(comments) => setComments(comments)}
             value={comments}
           />
-          <TouchableOpacity style={styles.button} onPress={() => toggleCamera(true)}
-
->
-            <Image
-              style={styles.buttonLogo}
-              source={{ uri: 'https://img.icons8.com/?size=256&id=59764&format=png' }}
-            />
+          <TouchableOpacity style={styles.button} onPress={() => toggleCamera(true)}>
+              <Image
+                style={styles.buttonLogo}
+                source={{ uri: 'https://img.icons8.com/?size=256&id=59764&format=png' }}
+               
+              />
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
 
           {/* Mini preview of the photo */}
           {localImageSource !== "" && (
-            <View style={styles.imagePreviewContainer}>
+            <View style={styles.imagePreviewContainer} >
               <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
               <Image source={{
                 uri: `file://'${imageSource}`,

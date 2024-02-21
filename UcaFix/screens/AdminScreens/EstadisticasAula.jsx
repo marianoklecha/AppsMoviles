@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   SafeAreaView,
   TouchableOpacity,
+  ScrollView,
   StyleSheet,
   Text,
   Image,
@@ -12,83 +13,82 @@ import {
   Dimensions
 } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
+import { PieChart, ProgressChart } from 'react-native-chart-kit';
 
-const MyBarChart = () => {
-  return (
-    <>
-      <BarChart
-        data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-          datasets: [
-            {
-              data: [20, 45, 28, 80, 99, 43],
-            },
-          ],
-        }}
-        width={Dimensions.get('window').width - 16}
-        height={220}
-        yAxisLabel={'Rs'}
-        chartConfig={{
-          backgroundColor: '#1cc910',
-          backgroundGradientFrom: '#eff3ff',
-          backgroundGradientTo: '#efefef',
-          decimalPlaces: 2,
-          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-        }}
-        style={{
-          marginVertical: 8,
-          marginHorizontal:8,
-          borderRadius: 16,
-        }}
-      />
-    </>
-  );
-};
+const API_URL = "http://localhost:3000";
+
+
 
 export function EstadisticasAula(props) {
-  const aulasPedidos = [
-      { id: 1, building: 'Magno', aula: 160, cant_pedR:15,cant_pedPen:3,porcentaje:83 },
-      { id: 4, building: 'Moro' , aula: 210, cant_pedR:5,cant_pedPen:0,porcentaje:100},
-      { id: 5, building: 'Moro', aula: 340,cant_pedR: 2,cant_pedPen:20,porcentaje:10 },
-    ];
-    const edificiosPedidosTotales = [
-        { edificio: 'Magno', pedidosTotales: 150 },
-        { edificio: 'Moro', pedidosTotales: 60 },
-        { edificio: 'San José', pedidosTotales: 20 },
-    ];
-    const data = {
-      labels: ["January", "February", "March", "April", "May", "June"],
-      datasets: [
-        {
-          data: [20, 45, 28, 80, 99, 43]
-        } ]};
-
     const onTap = (nextScreen) => {
       props.navigation.navigate(nextScreen);
     };
+
+    const [pedidos, setPedidos] = useState([]);
+
+    useEffect(() => {
+      fetchPedidos();
+    }, []);
+
+    const fetchPedidos = async () => {
+      try {
+        const response = await fetch(API_URL + `/pedidos/getPedidos`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(data);
+        } else {
+          Alert.alert("Error", "Failed to fetch pedidos");
+        }
+      } catch (error) {
+        console.error("Error fetching pedidos: ", error);
+        Alert.alert("Error", "An unexpected error occurred");
+      }
+    };
+
+    // Calculate number of requests per building
+  const buildingCounts = pedidos.reduce((acc, pedido) => {
+    acc[pedido.edificioId] = (acc[pedido.edificioId] || 0) + 1;
+    return acc;
+  }, {});
+  
+  const totalPedidos = Object.values(buildingCounts).reduce((acc, count) => acc + count, 0);
+
+  const colors = ['#8F39E1', '#69CA45', '#F0AD43', '#EDEA42'];
+  const edificios = ["Magno", "Moro","Santa Maria",  "San Jose"];
+
+  // Create dataset for PieChart
+  
+  const data = Object.keys(buildingCounts).map((buildingId, index) => ({
+    name: edificios[index % edificios.length],
+    pedidos: (buildingCounts[buildingId] / totalPedidos) * 100 , // Calculate percentage
+    color: colors[index % colors.length], // Use predefined colors, cycle through if needed
+    legendFontColor: "#7F7F7F",
+    legendFontSize: 14,
+    
+  }));
+
+  // Calculate the count of fixed and non-fixed pedidos for each edificioId
+  const edificioPedidos = {};
+  pedidos.forEach(pedido => {
+      const { edificioId, fixed } = pedido;
+      if (!edificioPedidos[edificioId]) {
+          edificioPedidos[edificioId] = { total: 0, fixed: 0, nonFixed: 0 };
+      }
+      edificioPedidos[edificioId].total++;
+      if (fixed) {
+          edificioPedidos[edificioId].fixed++;
+      } else {
+          edificioPedidos[edificioId].nonFixed++;
+      }
+  });
+
+  
     
     const UserName = props;
     console.log(UserName)
     
-    const renderItem = ({ item }) => (
-        <View style={styles.requestItem}>
-        <View style={styles.TitleRContainer}>
-          <Text style={styles.requestName}>{item.building}</Text>
-          <Text style={styles.requestBuilding}>{item.aula}</Text>
-        </View>
-        <View style={styles.rowContainer}>
-          <Text style={styles.additionalInfo}>Res: {item.cant_pedR}</Text>
-          <Text style={styles.additionalInfo}>Pend: {item.cant_pedPen}</Text>
-          <Text style={styles.additionalInfo}>Porc. comp: {item.porcentaje}%</Text>
-        </View>
-      </View>
-      );
-
-
-    return (
+        return (
       <View style={styles.back}>
         <View style={styles.header}>
           <Image style={styles.UcaLogo}
@@ -96,27 +96,62 @@ export function EstadisticasAula(props) {
           />
           <Text style={styles.title}>UCA FIX</Text>
         </View>
-
-        <View>
-                  <MyBarChart />
+        
+        <SafeAreaView style={styles.container}>
+                 
+            
+          <View style={styles.pieChartView}>
+            <Text style={styles.subtitle1}>Distribución total de pedidos recibidos</Text>
+            <PieChart
+              data={data}
+              width={Dimensions.get('window').width - 10}
+              height={210}
+              chartConfig={{
+                backgroundColor: '#1cc910',
+                backgroundGradientFrom: '#eff3ff',
+                backgroundGradientTo: '#efefef',
+                strokeWidth: 0,
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                style: {
+                  borderRadius: 0,
+                  labels: {
+                    fontWeight: 'bold', // Make labels bold
+                  },
+                  
+                },
+                
+              }}
+              accessor="pedidos"
+              backgroundColor="white"
+              center={[0, 0]}   
+              hasLegend       
+            />
           </View>
           
-        <SafeAreaView style={styles.container}>
-          <View style={styles.containerPedidosComplet}>
-            <Text style={styles.completedRequestsLabel}>ESTADISTICAS PEDIDOS</Text>
-          </View>
-
-
-          <FlatList
-            data={aulasPedidos}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-          />
-
-          <Image source={require('./grafico.png')} style={styles.imagen}/>
-
+          <Text style={styles.subtitle1}>Pedidos por Edificio</Text>
+            <View style={styles.tableContainer}>
+                <View style={styles.tableHeader}>
+                    <Text style={styles.columnHeader}>  Edificio</Text>
+                    <Text style={styles.columnHeader}>     Recibidos </Text>
+                    <Text style={styles.columnHeader}>   Arreglados </Text>
+                    <Text style={styles.columnHeader}> Pendientes</Text>
+                </View>
+                {Object.keys(edificioPedidos).map(edificioId => (
+                    <View style={styles.tableRow} key={edificioId}>
+                        <Text style={styles.columnData}>{edificios[edificioId - 1]}</Text>
+                        <Text style={styles.columnData}>{edificioPedidos[edificioId].total}</Text>
+                        <Text style={styles.columnData}>{edificioPedidos[edificioId].fixed}</Text>
+                        <Text style={styles.columnData}>{edificioPedidos[edificioId].nonFixed}</Text>
+                    </View>
+                ))}
+            </View>
+          
+          
+          
         </SafeAreaView>
       </View>
+      
     );
   };
   
@@ -130,7 +165,7 @@ export function EstadisticasAula(props) {
     container: {
       marginTop:'10%',
       justifyContent: 'center',
-      marginHorizontal: '10%',
+      marginHorizontal: '3%',
       //backgroundColor: '#021B6F'
     },
     button: {
@@ -261,5 +296,53 @@ export function EstadisticasAula(props) {
         width: 280,
         height: 200,
         
-      }
+      },
+      subtitle1:{
+        marginTop: 10,
+        
+        marginLeft: 10,
+        fontSize: 15,
+        color: 'black',
+        textAlign: "center",
+        fontWeight: "600",
+      },
+      title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    tableContainer: {
+        borderWidth: 1,
+        borderColor: '#000',
+        marginTop: 10,
+    },
+    tableHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomWidth: 1,
+        borderBottomColor: '#000',
+        padding: 10,
+        backgroundColor: "#A0D4FF"
+    },
+    columnHeader: {
+        fontWeight: 'bold',
+        textAlign: "center",
+        color: "black"
+    },
+    tableRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottomWidth: 1,
+        borderBottomColor: '#000',
+        padding: 10,
+        backgroundColor: "#DCEFFF"
+    },
+    columnData: {
+        flex: 1,
+        textAlign: 'center',
+        color: "black",
+        fontWeight: '400',
+    },
+    
+      
   });

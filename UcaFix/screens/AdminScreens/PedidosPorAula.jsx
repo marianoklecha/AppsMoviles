@@ -16,8 +16,8 @@ export function PedidosPorAula(props) {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filter, setFilter] = useState('notFixed');
-  const [piso, setPiso] = useState("");
   const [edificio, setEdificio] = useState("");
+  let pisoDisponible = false;
 
   useEffect(() => {
     fetchEdificios();
@@ -27,9 +27,12 @@ export function PedidosPorAula(props) {
   const propsUserData = props.route.params.userData;
   const aulaInfo = props.route.params.aulaInfo;
   const aula = aulaInfo.aula.toString();
+  const piso = aulaInfo.selectedFloor;
   const edificioId = aulaInfo.edificioId;
+  if (aula === 'Baño' || aula === 'Biblioteca'){ pisoDisponible = true}
   console.log(aula);
   console.log(edificioId);
+  console.log(piso);
   
 
   const fetchEdificios = async () => {
@@ -96,6 +99,7 @@ export function PedidosPorAula(props) {
       <View style={styles.filterContainer}>
         <Text style={styles.subtitle1}>Pedidos pendientes en:</Text>
         <Text style={styles.subtitle2}>{aula} - {edificio}</Text>
+        {pisoDisponible && <Text style={styles.subtitle2}>Piso {piso}</Text>}
       </View>
 
       {/* List of requests */}

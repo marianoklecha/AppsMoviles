@@ -149,7 +149,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
     console.log(touchDuration);
     if (touchDuration < 150) { // Adjust the threshold for long press as needed
       console.log('Short tap: ', aula, edificioId);
-      props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId } });
+      props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId, selectedFloor } });
     } else {
       console.log('Long press ignored: ', aula, edificioId);
     }

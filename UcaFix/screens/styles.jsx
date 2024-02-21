@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
           justifyContent: 'left',
           padding: '3%',
           marginTop: '4%',
+          elevation: 5,
           
         },
         UcaLogo: {
@@ -200,6 +201,10 @@ const styles = StyleSheet.create({
     imagePreviewContainer: {
       marginBottom: 15,
       alignItems: 'center',
+      
+      width: "65%",
+      alignItems: 'center',
+      marginHorizontal: "17.3%"
     },
     imagePreview: {
       width: 200,
@@ -207,7 +212,24 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       marginTop: 10,
     },
-    
+    imageGrande: {
+      width: 300,
+      height: 500,
+      marginTop: 10,
+    },
+    buttonCerrar: {
+      padding: 10,
+      marginHorizontal:"20%",
+      borderRadius: 6,
+      backgroundColor: '#A1A1A1',
+      marginTop: 8
+    },
+    buttonTextCerrar: {
+      fontSize: 17,
+      textAlign: 'center',
+      color: 'white',
+      fontWeight: 'bold',
+    },
 
 });
 export default styles;

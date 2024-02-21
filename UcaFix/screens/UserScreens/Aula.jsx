@@ -22,6 +22,7 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
   const [selectedEdificio, setSelectedEdificio] = useState(null);
   const [imageURL, setImageURL] = useState(null);
   const [loading, setLoading] = useState(false); // State to track loading
+  const [imagenGrande, setImagenGrande] = useState(false)
 
   let url = "";
  
@@ -238,13 +239,32 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
 
           {/* Mini preview of the photo */}
           {localImageSource !== "" && (
-            <View style={styles.imagePreviewContainer}>
+            <TouchableOpacity style={styles.imagePreviewContainer} onPress={() => setImagenGrande()}>
               <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
               <Image source={{
                 uri: `file://'${localImageSource}`,
               }} style={styles.imagePreview} />
-            </View>
+            </TouchableOpacity>
           )}
+
+          <Modal
+              animationType="fade"
+              transparent={true}
+              visible={imagenGrande}
+              onRequestClose={() => setImagenGrande(false)}
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                <Image source={{
+                uri: `file://'${localImageSource}`,
+              }} style={styles.imageGrande} />
+                <TouchableOpacity  style={styles.buttonCerrar} onPress={() => setImagenGrande(false)}>
+                  <Text style={styles.buttonTextCerrar}>Cerrar</Text>
+                </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          
 
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
             <Text style={styles.buttonTextListo}>Finalizar pedido</Text>
