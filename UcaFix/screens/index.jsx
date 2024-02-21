@@ -19,6 +19,8 @@ import { InsertarPedido } from "./UserScreens/scannerSelectQR/InsertarPedido";
 import {Camara} from  "./UserScreens/Camara";
 import { Escaner } from "./UserScreens/Escaner";
 import { HistorialDePedidos } from "./AdminScreens/HistorialDePedidos";
+import { PedidosPorAula } from "./AdminScreens/PedidosPorAula";
+import { MapaPedidos } from "./AdminScreens/MapaPedidos";
 
 export{
     MainScreen,
@@ -41,5 +43,7 @@ export{
     InsertarPedido,
     Camara,
     Escaner,
-    HistorialDePedidos
+    HistorialDePedidos,
+    PedidosPorAula,
+    MapaPedidos
 }
