@@ -19,16 +19,18 @@ export function PedidosPorAula(props) {
   const [piso, setPiso] = useState("");
   const [edificio, setEdificio] = useState("");
 
+  useEffect(() => {
+    fetchEdificios();
+    fetchPedidos();
+  }, []);
+
   const propsUserData = props.route.params.userData;
   const aulaInfo = props.route.params.aulaInfo;
   const aula = aulaInfo.aula.toString();
   const edificioId = aulaInfo.edificioId;
   console.log(aula);
   console.log(edificioId);
-  useEffect(() => {
-    fetchEdificios();
-    fetchPedidos();
-  }, []);
+  
 
   const fetchEdificios = async () => {
     try {
@@ -38,6 +40,7 @@ export function PedidosPorAula(props) {
         for (const edificio of edificios) {
         if (edificio.id === edificioId) {
         setEdificio(edificio.nombre);
+        console.log(edificio)
           break;
         }
     }
