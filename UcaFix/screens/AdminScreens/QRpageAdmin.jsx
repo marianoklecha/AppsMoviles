@@ -6,8 +6,11 @@ import {
   Button,
   Text,
   Alert,
-  Image
+  Image,
+  Modal,
+  TextInput
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { Camera, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 
@@ -17,6 +20,9 @@ export function QRpageAdmin(props) {
 
   const [showCamera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
+  const [QRManual, abrirQRManual] = useState(false);
+  const [codigoManual, setCodigoManual] = useState("");
+
  
   let aula = 0;
   let piso = 0;
@@ -50,15 +56,7 @@ export function QRpageAdmin(props) {
       [
         {text: 'OK', onPress: () => setShowCamera(true)},
       ])*/
-
-      setTimeout(() => {
-        llenarInformacion();
-      }, 500); // 500 milliseconds (medio segundo)
-
-      setTimeout(() => {
-        visitarPedidos(aula,edificioId);
-      }, 500); // 500 milliseconds (medio segundo)
-      
+      handleVisitarPedido();
     }
   })
 
@@ -71,6 +69,16 @@ export function QRpageAdmin(props) {
     edificioId = idInt;
         
     console.log(aula,piso,edificioId);
+  }
+
+  const handleVisitarPedido = () => {
+    setTimeout(() => {
+      llenarInformacion();
+    }, 500); // 500 milliseconds (medio segundo)
+
+    setTimeout(() => {
+      visitarPedidos(aula,edificioId);
+    }, 500); // 500 milliseconds (medio segundo)
   }
 
   const visitarPedidos = (aula, edificioId) => {
@@ -108,10 +116,10 @@ export default YourComponent; */
             uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png',
           }}
         />
-        <Text style={styles.title}>UCA FIX</Text>
+        <Text style={styles.codigoManual}>UCA FIX</Text>
       </View>
-      <View style={styles.filterContainer}>
-        <Text style={styles.subtitle1}>Escanear código QR</Text>
+      <View style={styles.filterContainer} onTouchEnd={() => {setShowCamera(false), abrirQRManual(true);}}>
+        <Text style={styles.subcodigoManual1}>Escanear código QR</Text>
       </View>
 
           {showCamera && <Camera
@@ -121,6 +129,32 @@ export default YourComponent; */
             isActive={hasPermission}
             codeScanner={codeScanner}
           />}
+
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={QRManual}
+              onRequestClose={() => abrirQRManual(false)}
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                <Text style={[styles.inputTitle, { marginTop: 16 }]}>Ingrese el código del QR</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Ej: 105.piso.1.edificio.1"
+                  placeholderTextColor="#8D8D8D"
+                  onChangeText={(codigoManual) => setCodigoManual(codigoManual)}
+                  value={codigoManual}
+                />
+                <View  style={styles.buttonListo} onTouchEnd ={() => {lastCode = codigoManual, handleVisitarPedido(), setShowCamera(true), abrirQRManual(false)} }>
+                  <Text style={styles.buttonTextListo}>Continuar</Text>
+                </View>
+                <View  style={styles.buttonCerrar} onTouchEnd ={() => abrirQRManual(false)}>
+                  <Text style={styles.buttonTextCerrar}>Cerrar</Text>
+                </View>
+                </View>
+              </View>
+            </Modal>
                 
 
 
@@ -194,7 +228,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
   },
-  TitleContainer: {
+  codigoManualContainer: {
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
@@ -220,7 +254,7 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     
   },
-  title: {
+  codigoManual: {
     fontSize: 30,
     marginTop: 5,
     color: 'black',
@@ -232,12 +266,62 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 10,
   },
-  subtitle1:{
+  subcodigoManual1:{
     marginTop: 10,
     marginLeft: 10,
     fontSize: 15,
     color: 'black',
     textAlign: "center",
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+  },
+  modalContent: {
+    backgroundColor: '#fff', // White background for the content
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  inputTitle: {
+    color: 'black',
+    fontSize: 20,
+  },
+  input: {
+    borderColor: 'gray',
+    width: '100%',
+    color: 'black',
+    borderRadius: 10,
+    padding: 15,
+    backgroundColor: '#F9F9F9',
+    marginBottom: "5%"
+  },
+  buttonCerrar: {
+    padding: 10,
+    marginHorizontal:"20%",
+    borderRadius: 6,
+    backgroundColor: '#A1A1A1',
+    marginTop: 8
+  },
+  buttonTextCerrar: {
+    fontSize: 17,
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  buttonListo: {
+    padding: 10,
+    marginHorizontal:"20%",
+    borderRadius: 6,
+    backgroundColor: '#69D377',
+  },
+  buttonTextListo: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'white',
     fontWeight: 'bold',
   },
 });
