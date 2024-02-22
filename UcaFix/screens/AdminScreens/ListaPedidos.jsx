@@ -47,10 +47,6 @@ export function ListaPedidos(props) {
   const filteredRequests = pedidos.filter((item) => {
     if (filter === 'all') {
       return true;
-    } else if (item.fixed === true && filter === 'fixed') {
-      return true;
-    } else if (item.fixed === false && filter === 'notFixed') {
-      return true;
     }else if (item.edificioId === 1 && filter === 1) {
       return true;
     } else if (item.edificioId === 2 && filter === 2) {
@@ -82,7 +78,7 @@ export function ListaPedidos(props) {
 
       {/* Filter code */}
       <View style={styles.filterContainer}>
-        <Text style={styles.subtitle}>Tus Pedidos</Text>
+        <Text style={styles.subtitle}>Últimos pedidos</Text>
         {/* Filter button */}
         <TouchableOpacity
           style={styles.filterButton}
@@ -108,26 +104,9 @@ export function ListaPedidos(props) {
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
-                <Text style={styles.modalButtonText}>All</Text>
+                <Text style={styles.modalButtonText}>Todos</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={filter === 'fixed' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(true);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Terminado</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={filter === 'notFixed' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter('notFixed');
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>No Terminado</Text>
-              </TouchableOpacity>
+              
               <TouchableOpacity
                 style={filter === 'San Alberto Magno' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -270,7 +249,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#F9F9F9'
+    backgroundColor: '#F9F9F9',
+    elevation: 1,
  
   },
   filterButtonText: {
@@ -320,6 +300,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: '#F3F5F8',
     borderRadius: 15,
+    elevation: 4,
   },
   requestInfo: {
     flex: 1,

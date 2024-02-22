@@ -64,7 +64,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
 
   const fetchPedidos = async () => {
     try {
-      const response = await fetch(API_URL + `/pedidos/getPedidos`);
+      const response = await fetch(API_URL + `/pedidos/getPedidosPendientes`);
       
       if (response.ok) {
         const data = await response.json();
@@ -263,7 +263,8 @@ const styles = StyleSheet.create({
     padding: 5, // Adjust this value to increase or decrease the vertical space between rows
     height:  "auto",
     margin: 17.5,
-    borderRadius:8
+    borderRadius:8,
+    elevation: 10,
   },
   squareText: {
     textAlign: "center",

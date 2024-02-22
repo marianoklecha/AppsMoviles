@@ -101,7 +101,7 @@ export function EstadisticasAula(props) {
                  
             
           <View style={styles.pieChartView}>
-            <Text style={styles.subtitle1}>Distribución total de pedidos recibidos</Text>
+            <Text style={styles.subtitle1}>Distribución por edificios de los pedidos recibidos</Text>
             <PieChart
               data={data}
               width={Dimensions.get('window').width - 10}
@@ -129,7 +129,7 @@ export function EstadisticasAula(props) {
             />
           </View>
           
-          <Text style={styles.subtitle1}>Pedidos por Edificio</Text>
+          <Text style={styles.subtitle1}>Estado actual de todos los pedidos recibidos</Text>
             <View style={styles.tableContainer}>
                 <View style={styles.tableHeader}>
                     <Text style={styles.columnHeader}>  Edificio</Text>
@@ -163,7 +163,6 @@ export function EstadisticasAula(props) {
   
     },
     container: {
-      marginTop:'10%',
       justifyContent: 'center',
       marginHorizontal: '3%',
       //backgroundColor: '#021B6F'
@@ -204,27 +203,22 @@ export function EstadisticasAula(props) {
       marginBottom:20,
       color: 'black',
     },
-    title :{
-      fontSize: 55,
-      marginTop:20,
-      color: 'black',
-      fontWeight: 'bold',
-      marginBottom:'2%'
-  
-    },
     TitleContainer:{
       flexDirection: 'row', 
       alignItems: 'center',
       justifyContent: 'center',
       //backgroundColor: '#3FA7D6',
-      marginTop: '15%'
+      marginTop: '15%',
+      
     },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'left',
-      padding: '3%',
-      marginTop: '4%',
+      padding: '5%',
+      paddingTop: '5%',
+      elevation: 4,
+      backgroundColor: "white"
       
     },
     UcaLogo: {
@@ -306,43 +300,53 @@ export function EstadisticasAula(props) {
         textAlign: "center",
         fontWeight: "600",
       },
-      title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 10,
-    },
+      
     tableContainer: {
-        borderWidth: 1,
-        borderColor: '#000',
-        marginTop: 10,
-    },
-    tableHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: '#000',
-        padding: 10,
-        backgroundColor: "#A0D4FF"
-    },
-    columnHeader: {
-        fontWeight: 'bold',
-        textAlign: "center",
-        color: "black"
-    },
-    tableRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: '#000',
-        padding: 10,
-        backgroundColor: "#DCEFFF"
-    },
-    columnData: {
-        flex: 1,
-        textAlign: 'center',
-        color: "black",
-        fontWeight: '400',
-    },
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      marginTop: 10,
+      backgroundColor: 'white', // Change to your desired background color
+  },
+  tableHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderBottomWidth: 1,
+      borderBottomColor: '#000',
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      backgroundColor: "#788EB2", // Header background color
+      borderTopStartRadius: 10,
+      borderTopEndRadius: 10,
+  },
+  columnHeader: {
+      fontWeight: 'bold',
+      textAlign: "center",
+      color: "white",
+      
+  },
+  tableRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderBottomWidth: 1,
+      borderBottomColor: '#000',
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      backgroundColor: "#F6F6F6", // Alternating row background color
+      
+  },
+  columnData: {
+      flex: 1,
+      textAlign: 'center',
+      color: "black",
+      fontWeight: '400',
+      
+  },
+  pieChartView: {
+    marginBottom: "1%"
+  }
     
       
   });

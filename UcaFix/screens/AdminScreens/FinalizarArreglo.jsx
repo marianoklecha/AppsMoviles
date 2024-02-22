@@ -19,29 +19,27 @@ import storage from '@react-native-firebase/storage';
 import { Camara } from '../UserScreens/Camara';
 const API_URL = "http://localhost:3000";
 
-export function FinalizarArreglo({ onPressCameraButton, ...props }) {
+export function FinalizarArreglo({...props }) {
+ 
   const pedido = props.route.params.pedido;
-  const [comments, setComments] = React.useState("");
-  const [imageUri, setImageUri] = React.useState(null);
-  const [localImageSource, setLocalImageSource] = useState("");
+  const [comments, setComments] = useState("");
   const [imageURL, setImageURL] = useState(null);
   const [loading, setLoading] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
   const [imageSource, setImageSource] = useState("");
+  const [uploading, setUploading] = useState(false); // State to track upload progress
+  let url = "";
   const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
   let pisoDisponible = false;
+
   if (pedido.aula === 'Baño' || pedido.aula === 'Biblioteca'){ pisoDisponible = true}
-  let url = "";
+  
   const propsUserData = props.route.params.userData;
+
   const toggleCamera = (input) => {
     setCameraVisible(input);
   };
-  useEffect(() => {
-    setLocalImageSource(prevImageSource => {
-      console.log("Updated image source Aula:", imageSource);
-      return imageSource;
-    });
-  }, [imageSource]);
+ 
   useEffect(() => {
     if (loading) {
       // Start loading indicator
@@ -51,9 +49,10 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
       setLoading(false);
     }
   }, [loading]);
+
   const uploadImageToFirebaseStorage = async (imageUri) => {
     try {
-      setLoading(true);
+      setUploading(true);
       const reference = storage().ref(`images/${Date.now()}`);
       const task = reference.putFile(imageUri);
 
@@ -71,7 +70,7 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
       console.error('Error uploading image:', error);
       Alert.alert('Error', 'Failed to upload image to Firebase Storage');
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
   const handleCreatePedido = async () => {
@@ -80,22 +79,28 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
       return;
     }
   
-    if (!localImageSource) {
+    if (!imageSource) {
       Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
       return;
     }
 
     setLoading(true); // Start loading indicator
-    await uploadImageToFirebaseStorage(localImageSource); // Wait for image upload to complete
+    await uploadImageToFirebaseStorage(imageSource); // Wait for image upload to complete
+
+    console.log(imageURL); // This should now have the correct value
+
+    if (url === null) {
+      Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
+      return;
+    }
 
 // After upload completes
     await crearArreglo();
-
       
   };
 
   const crearArreglo = async () => {
-    console.log(pedid.id,propsUserData.id,comments,url)
+    console.log(pedido.id,propsUserData.id,comments,url)
     try {
       const response = await fetch(API_URL+`/pedidoResuelto/pedido-resuelto`,{
         method: "POST",
@@ -114,7 +119,7 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
         Alert.alert('Arreglo Exitoso', 'Pedido Arreglado correctamente');
         setComments("");
         url = "";
-        setLocalImageSource("");
+        setImageSource("");
         setImageURL(null);
         let url = "";
       } else {
@@ -146,15 +151,15 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
       </View>
       <ScrollView>
         <View style={styles.tituloPagina}>
-          <Text style={styles.textoTituloPagina}>Arreglo en Proceso</Text>
+          <Text style={styles.textoTituloPagina}>Finalización del pedido recibido:</Text>
         </View>
         <View style={styles.container}>
           <Text style={styles.tituloPedido}>{pedido.title}</Text>
-          <View>
+          <View style={styles.pedidoContainer}>
             <Text style={styles.aulaPedido}>{pedido.aula} - {edificios[pedido.edificioId - 1]}</Text>
             {pisoDisponible && <Text style={styles.aulaPedido}>Piso {pedido.piso}</Text>}
             <Image style={styles.fotoPedido} source={{ uri: pedido.image }} />
-            <Text style={styles.descripcionPedido}>Descripción del problema:</Text>
+            <Text style={styles.descripcionPedido}>Descripción adjunta del problema:</Text>
             <Text style={styles.descripcionTexto}>{pedido.content}</Text>
           </View>
         </View>
@@ -162,10 +167,11 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
           <View style={styles.tituloPagina}>
             <Text style={styles.textoTituloPagina}>Completar una vez realizado el arreglo</Text>
           </View>
-          <Text style={[styles.inputTitle, { marginTop: "4%" }]}>Comentarios que quiera agregar:</Text>
+          <Text style={[styles.inputTitle, { marginTop: "4%" }]}>Describa el estado del problema y el procedimiento realizado </Text>
           <TextInput
             style={styles.input}
-            placeholder="Escribir acá"
+            multiline={true}
+            placeholder="Escribir aquí"
             placeholderTextColor="#8D8D8D"
             onChangeText={(comments) => setComments(comments)}
             value={comments}
@@ -180,7 +186,7 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
           </TouchableOpacity>
 
           {/* Mini preview of the photo */}
-          {localImageSource !== "" && (
+          {imageSource !== "" && (
             <View style={styles.imagePreviewContainer} >
               <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
               <Image source={{
@@ -344,10 +350,11 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
         fontSize:15,
         color: "black",
         fontWeight: "600",
-        textAlign:"center"
+        textAlign:"center",
+        marginBottom: "1%"
     },
     descripcionTexto:{
-    fontSize:15,
+    fontSize:18,
     color: "black",
     },
     input: {
@@ -392,4 +399,7 @@ export function FinalizarArreglo({ onPressCameraButton, ...props }) {
         borderRadius: 10,
         marginTop: 10,
       },
+      pedidoContainer: {
+        alignItems: 'center',
+      }
   });

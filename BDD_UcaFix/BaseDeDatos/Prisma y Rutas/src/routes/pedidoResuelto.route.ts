@@ -26,6 +26,8 @@ const PedidoResueltoRoute = (prisma: PrismaClient) => {
                     where: { id: pedidoId },
                     data: { fixed: true },
                 });
+
+                res.status(201).json(updatedPedido);
             }
     
             res.status(201).json(createdPedidoResuelto);

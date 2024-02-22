@@ -113,7 +113,7 @@ export function PedidosResueltos(props) {
               <TouchableOpacity
                 style={filter === 'fixed' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
-                  setFilter(true);
+                  setFilter('fixed');
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
@@ -196,7 +196,7 @@ export function PedidosResueltos(props) {
             style={styles.requestItem}
           >
             {/* Status indicator */}
-            <View style={[styles.statusIndicator, { backgroundColor: item.completed ? 'green' : 'red' }]} />
+            <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
             {/* Request information */}
             <View style={styles.requestInfo}>
               <Text style={styles.requestText}>{` ${item.title}`}</Text>
