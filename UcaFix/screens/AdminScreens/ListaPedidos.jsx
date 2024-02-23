@@ -19,6 +19,7 @@ export function ListaPedidos(props) {
   const [filter, setFilter] = useState('all');
 
   const propsUserData = props.route.params.userData;
+  const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
 
   useEffect(() => {
     fetchPedidos();
@@ -63,6 +64,12 @@ export function ListaPedidos(props) {
     return false;
   });
 
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    return formattedDate;
+  };
+
   return (
     <View style={styles.back}>
       {/* Header code */}
@@ -84,7 +91,7 @@ export function ListaPedidos(props) {
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
         >
-          <Text style={styles.filterButtonText}>Filter</Text>
+          <Text style={styles.filterButtonText}>Filtro</Text>
         </TouchableOpacity>
 
         {/* Filter modal */}
@@ -178,28 +185,31 @@ export function ListaPedidos(props) {
       <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
       {/* Request information */}
       <View style={styles.requestInfo}>
-        <Text style={styles.requestText}>{` ${item.title}`}</Text>
-        {/* Expanded details */}
-        {selectedRequest === item.id && (
-          <View style={styles.detailsContainer}>
-            <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: item.image
-              }}
-            />
-            <Text style={styles.requestText}>{` ${item.aula}`}</Text>
-            <Text style={styles.detailsText}>{item.content}</Text>
-          </View>
-        )}
-      </View>
+              <Text style={styles.requestTitle}>{` ${item.title}`}</Text>
+              <Text style={styles.requestAula}>{` ${item.aula} - ${edificios[item.edificioId - 1]}` }</Text>
+              {/* Expanded details */}
+              {selectedRequest === item.id && (
+                <View style={styles.detailsContainer}>
+                  
+                  <Image
+                    style={styles.pedidoImagen}
+                    source={{
+                      uri: item.image
+                    }}
+                  />
+                  
+                  <Text style={styles.detailsText}>{item.content}</Text>
+                  <Text style={styles.detailsText}>Solicitado el día: {formatDate(item.createdAt)}</Text> 
+                </View>
+              )}
+            </View>
       {/* FIX button */}
       {!item.fixed && (
         <TouchableOpacity
         style={styles.fixButton}
         onPress={() => props.navigation.navigate('FinalizarArreglo', { pedido: item })}
       >
-        <Text style={styles.fixButtonText}>FIX</Text>
+        <Text style={styles.fixButtonText}>Finalizar</Text>
       </TouchableOpacity>
       
       )}
@@ -244,6 +254,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     margin: 10,
+    
   },
   filterButton: {
     paddingVertical: 10,
@@ -261,11 +272,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
+    
   },
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 10,
     padding:10,
+   
   },
   modalButton: {
     paddingVertical: 10,
@@ -273,6 +286,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     backgroundColor: '#D1D1D1',
+    
   },
   activeModalButton: {
     paddingVertical: 10,
@@ -280,6 +294,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     backgroundColor: '#2F61AF',
+    
   },
   modalButtonText: {
     color: 'black',
@@ -288,7 +303,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 50,
     marginLeft: 15,
     marginRight: 15,
 
@@ -300,7 +314,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: '#F3F5F8',
     borderRadius: 15,
-    elevation: 4,
   },
   requestInfo: {
     flex: 1,
@@ -315,12 +328,16 @@ const styles = StyleSheet.create({
     color: 'black',
     
   },
+  
   detailsContainer: {
     flex: 1,
     marginTop: 10,
+   // backgroundColor: "yellow",
+    alignItems: "center"
   },
   detailsText: {
     marginBottom: 5,
+    color: "black"
   },
   subtitle:{
     marginTop: 10,
@@ -331,4 +348,31 @@ const styles = StyleSheet.create({
     color: 'black',
     
   },
+  requestTitle: {
+    marginBottom: 5,
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: 'black',
+    
+  },
+  requestAula: {
+    fontSize: 13,
+    color: 'black',
+    
+  },
+  pedidoImagen: {
+    width: 80,
+    height: 120,
+    margin: 15,
+  },
+  fixButton: {
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
+  fixButtonText : {
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: '#6D6D6D',
+  }
 });

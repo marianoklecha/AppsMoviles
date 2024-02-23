@@ -19,6 +19,7 @@ export function PedidosResueltos(props) {
   const [filter, setFilter] = useState('all');
 
   const propsUserData = props.route.params.userData;
+  const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
 
   useEffect(() => {
     fetchPedidos();
@@ -43,6 +44,14 @@ export function PedidosResueltos(props) {
   const handleRequestClick = (item) => {
     setSelectedRequest(selectedRequest === item.id ? null : item.id);
   };
+
+  
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    return formattedDate;
+  };
+
 
   const filteredRequests = pedidos.filter((item) => {
     if (filter === 'all') {
@@ -199,18 +208,21 @@ export function PedidosResueltos(props) {
             <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
             {/* Request information */}
             <View style={styles.requestInfo}>
-              <Text style={styles.requestText}>{` ${item.title}`}</Text>
+              <Text style={styles.requestTitle}>{` ${item.title}`}</Text>
+              <Text style={styles.requestAula}>{` ${item.aula} - ${edificios[item.edificioId - 1]}` }</Text>
               {/* Expanded details */}
               {selectedRequest === item.id && (
                 <View style={styles.detailsContainer}>
+                  
                   <Image
-                    style={styles.UcaLogo}
+                    style={styles.pedidoImagen}
                     source={{
                       uri: item.image
                     }}
                   />
-                  <Text style={styles.requestText}>{` ${item.aula}`}</Text>
+                  
                   <Text style={styles.detailsText}>{item.content}</Text>
+                  <Text style={styles.detailsText}>Solicitado el día: {formatDate(item.createdAt)}</Text> 
                 </View>
               )}
             </View>
@@ -298,7 +310,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 50,
     marginLeft: 15,
     marginRight: 15,
 
@@ -306,7 +317,7 @@ const styles = StyleSheet.create({
   requestItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
+    padding: 17,
     marginBottom: 20,
     backgroundColor: '#F3F5F8',
     borderRadius: 15,
@@ -317,7 +328,12 @@ const styles = StyleSheet.create({
     color: 'black',
 
   },
-  requestText: {
+  requestAula: {
+    fontSize: 13,
+    color: 'black',
+    
+  },
+  requestTitle: {
     marginBottom: 5,
     fontWeight: 'bold',
     fontSize: 16,
@@ -327,9 +343,12 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
     marginTop: 10,
+   // backgroundColor: "yellow",
+    alignItems: "center"
   },
   detailsText: {
     marginBottom: 5,
+    color: "black"
   },
   subtitle:{
     marginTop: 10,
@@ -339,6 +358,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     
+  },
+  pedidoImagen: {
+    width: 80,
+    height: 120,
+    margin: 15,
   },
 });
 
