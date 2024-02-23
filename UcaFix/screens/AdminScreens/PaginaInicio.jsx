@@ -137,7 +137,8 @@ export function PaginaInicio(props) {
       width: 50,
       height: 50,
       marginTop:15,
-      marginRight:10
+      marginRight:10,
+      tintColor: "black"
     },
     footerContainer:{
       flexDirection: 'row', 

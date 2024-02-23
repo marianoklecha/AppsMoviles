@@ -36,6 +36,25 @@ const PedidoResueltoRoute = (prisma: PrismaClient) => {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
+
+     // Get Pedidos Resueltos with related PedidoResuelto
+     router.get('/getPedidosResueltos', async (req, res) => {
+        try {
+            const pedidos = await prisma.pedido.findMany({
+                where: {
+                    fixed: true,
+                },
+                include: {
+                    pedidosResueltos: true, // This includes the related pedidoResuelto entries
+                },
+            });
+
+            res.json(pedidos);
+        } catch (error) {
+            console.error('Error retrieving Pedidos Resueltos:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    });
     
     
     return router
