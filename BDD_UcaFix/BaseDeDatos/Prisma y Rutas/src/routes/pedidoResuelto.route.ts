@@ -55,6 +55,29 @@ const PedidoResueltoRoute = (prisma: PrismaClient) => {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     });
+    router.get('/getPedResueltosByUser', async (req, res) => {
+        const adminId = req.query.adminId as string | undefined;
+        
+        if (adminId === undefined) {
+            return res.status(400).json({ error: 'Author ID is required' });
+        }
+    
+        const pedidoResuelto = await prisma.pedidoResuelto.findMany({
+            where: {
+                adminId: parseInt(adminId),
+            },
+            include: {
+                pedido: true // This will include the related Pedido
+            }
+        });
+    
+        if(!pedidoResuelto || pedidoResuelto.length === 0){
+            res.status(400).send("No se encuentra usuario o pedidos resueltos")
+            return;
+        }
+    
+        res.json(pedidoResuelto);
+    });
     
     
     return router
