@@ -2,11 +2,18 @@ import { PrismaClient } from '@prisma/client'
 import express, { NextFunction, Request, Response } from 'express'
 import addRoutes from './routes'
 import "express-async-errors";
+import admin from 'firebase-admin';
 
 const prisma = new PrismaClient()
 const app = express()
 
 app.use(express.json())
+
+var serviceAccount = require("../ucafix-b4e1b-firebase-adminsdk-u42h5-1a7a2035b5.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 addRoutes(app, prisma)
 

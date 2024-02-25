@@ -10,15 +10,25 @@ import {
   TextInput,
   Alert
 } from 'react-native';
+import messaging from "@react-native-firebase/messaging"
 
 export function LoginScreen(props) {
     const [email, setMail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [fcmToken, setFcmToken] = React.useState(null);
+
+    React.useEffect(() => {
+      async function getToken(){
+        const fcmToken = await messaging().getToken()
+        setFcmToken(fcmToken)
+      }
+      getToken()
+    })
     console.log(JSON.stringify(props))
 
-    async function handleLogin(email, password, loginFunction) {
+    async function handleLogin(email, password, loginFunction, fcmToken) {
       try{
-        const loginCheck = await fetch("http://localhost:3000/users/login?email=" + email + "&password=" + password)
+        const loginCheck = await fetch("http://localhost:3000/users/login?email=" + email + "&password=" + password + "&fcmToken=" + fcmToken)
           if (loginCheck.ok) {
               let data = await loginCheck.json()
               loginFunction(data)
@@ -73,7 +83,7 @@ export function LoginScreen(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => handleLogin(email, password, props.loginFn)}>
+            onPress={() => handleLogin(email, password, props.loginFn, fcmToken)}>
             <Text style={styles.buttonText}>Iniciar sesión</Text>
           </TouchableOpacity>
 

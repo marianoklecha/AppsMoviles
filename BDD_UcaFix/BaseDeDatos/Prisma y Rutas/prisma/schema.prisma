@@ -8,63 +8,69 @@ datasource db {
 }
 
 model User {
-  id       Int         @id @default(autoincrement())
-  email    String      @unique
-  password String      @default("")
-  name     String?
-  isAdmin  Boolean     @default(false)
-  pedidos   Pedido[]
-  pedidosResueltos PedidoResuelto[]
+  id                Int         @id @default(autoincrement())
+  email             String      @unique
+  password          String      @default("")
+  name              String?
+  isAdmin           Boolean     @default(false)
+  pedidos           Pedido[]
+  pedidosResueltos  PedidoResuelto[]
+  tokenId           FCMToken[]
 }
 model PedidoResuelto{
-  id        Int      @id @default(autoincrement())
-  pedido  Pedido?  @relation(fields: [pedidoId], references: [id])
-  pedidoId Int?     @default(0)
-  admin     User?     @relation(fields: [adminId], references: [id])   
-  adminId   Int?      @default(0)
-  comments  String? 
-  imageFixed     String?
+  id          Int       @id @default(autoincrement())
+  pedido      Pedido?   @relation(fields: [pedidoId], references: [id])
+  pedidoId    Int?      @default(0)
+  admin       User?     @relation(fields: [adminId], references: [id])   
+  adminId     Int?      @default(0)
+  comments    String? 
+  imageFixed  String?
 
 }
 model Pedido {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  title     String?
-  aula      String?
-  piso      String?
-  edificio  Edificio? @relation(fields: [edificioId], references: [id])
-  edificioId  Int?      @default(0)
-  content   String?
-  image     String?
-  fixed     Boolean
-  author    User?     @relation(fields: [authorId], references: [id])
-  authorId  Int?      @default(0)
-  pedidosResueltos PedidoResuelto[]
+  id                Int      @id @default(autoincrement())
+  createdAt         DateTime @default(now())
+  title             String?
+  aula              String?
+  piso              String?
+  edificio          Edificio? @relation(fields: [edificioId], references: [id])
+  edificioId        Int?      @default(0)
+  content           String?
+  image             String?
+  fixed             Boolean
+  author            User?     @relation(fields: [authorId], references: [id])
+  authorId          Int?      @default(0)
+  pedidosResueltos  PedidoResuelto[]
 
 }
 model Aula{
-  id Int @id @default(autoincrement())
-  edificio Edificio? @relation(fields: [edificioId], references: [id])
-  edificioId Int?      @default(0)
-  numero Int?
-  piso  Int?
-  qr     String?
+  id          Int       @id @default(autoincrement())
+  edificio    Edificio? @relation(fields: [edificioId], references: [id])
+  edificioId  Int?      @default(0)
+  numero      Int?
+  piso        Int?
+  qr          String?
 }
 model EspacioComun{
-  id Int @id @default(autoincrement())
-  isBiblio Boolean     @default(false)
-  edificio Edificio? @relation(fields: [edificioId], references: [id])
-  edificioId Int?      @default(0)
-  numero Int?
-  piso  Int?
-  qr     String?
+  id          Int       @id @default(autoincrement())
+  isBiblio    Boolean   @default(false)
+  edificio    Edificio? @relation(fields: [edificioId], references: [id])
+  edificioId  Int?      @default(0)
+  numero      Int?
+  piso        Int?
+  qr          String?
 }
 model Edificio{
-  id Int @id @default(autoincrement())
-  nombre String?
-  espacioComunes EspacioComun[]
-  aulas Aula[]
-  pedido Pedido[]
+  id              Int       @id @default(autoincrement())
+  nombre          String?
+  espacioComunes  EspacioComun[]
+  aulas           Aula[]
+  pedido          Pedido[]
 }
 
-
+model FCMToken {
+  id            Int     @id @default(autoincrement())
+  userId        Int
+  user          User    @relation(fields: [userId], references: [id])
+  device_token  String  @unique
+}

@@ -8,8 +8,14 @@ const UserRoute = (prisma: PrismaClient) => {
     const users = await prisma.user.findMany()
     res.json(users)
   })
+
+
   router.get('/login', async (req, res) => {
-    const {email, password, isAdmin} = req.query
+    const {email, password, fcmToken} = req.query
+    if(!email || !password || !fcmToken) {
+      res.status(400).send({error : "Bad request"})
+      return
+    }
     const user = await prisma.user.findUnique({
       where: {
         email: email as string,
@@ -20,6 +26,23 @@ const UserRoute = (prisma: PrismaClient) => {
       res.status(400).send("No se encuentra usuario")
       return
     }
+    try {
+      await prisma.fCMToken.create(
+        {
+          data: {
+              device_token: fcmToken as string,
+              user: {
+                connect: {
+                  id: user.id
+                }
+              }
+          }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
+    
     res.json(user)
   })
 
