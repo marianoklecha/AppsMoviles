@@ -30,85 +30,64 @@ const App = () => {
         {loggedInUser ?
         <>
         {
-          /*Acá conditionalRendering de si es admin o usuario*/
-
-          /* esadmin? TabNavigatorAdmin*/
-          /* => Adentro de este Tab poner una pantalla de StackNavigator
-           con todo lo del admin y otra solita para el perfil*/
-
-          /* sino: TabNavigatorUsuaeio */
-          /* => Adentro de este Tab poner una pantalla de StackNavigator
-          con todo lo del usuario y otra solita  para el perfil*/
-
+          loggedInUser.isAdmin ? 
+          <>
+            <Stack.Screen name="AdminTabNavigator" options={{headerShown : false}}>
+              {props => <AdminTabNavigator {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+           <Stack.Screen name="PaginaInicio" options={{headerShown : false}}>
+            {props => <PaginaInicio {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="PedidosPorAula" options={{headerShown : false}}>
+              {props => <PedidosPorAula {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="QRpageAdmin" options={{headerShown : false}}>
+              {props => <QRpageAdmin {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="MapaPedidos" options={{headerShown : false}}>
+              {props => <MapaPedidos {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="AdminProfile" options={{headerShown : false}}>
+              {props => <AdminProfile {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="PedidosResueltos" options={{headerShown : false}}>
+              {props => <PedidosResueltos {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="FinalizarArreglo" options={{headerShown : false}}>
+              {props => <FinalizarArreglo {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="ListaPedidos" options={{headerShown : false}}>
+              {props => <ListaPedidos {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="HistorialDePedidos" options={{headerShown : false}}>
+              {props => <HistorialDePedidos {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+          </>
+          : 
+          <>
+            <Stack.Screen name="MainTabNavigator" options={{headerShown : false}}>
+              {props => <MainTabNavigator {...props} userData={loggedInUser} route={props.route}/>}
+            </Stack.Screen>
+            <Stack.Screen name="MainScreen" options={{headerShown : false}}>
+              {props => <MainScreen {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="UserProfile" options={{headerShown : false}}>
+              {props => <UserProfile {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="InputClassroomScreen" options={{headerShown : false}}>
+              {props => <InputClassroomScreen {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="QRpageUser" options={{headerShown : false}}>
+              {props => <QRpageUser {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="Camara" options={{headerShown : false}}>
+              {props => <Camara {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+            <Stack.Screen name="Escaner" options={{headerShown : false}}>
+              {props => <Escaner {...props} userData={loggedInUser}/>}
+            </Stack.Screen>
+          </>
         } 
-          <Stack.Screen name="PaginaInicio" options={{headerShown : false}}>
-            {props => <PaginaInicio {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="PedidosPorAula" options={{headerShown : false}}>
-            {props => <PedidosPorAula {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="MainTabNavigator" options={{headerShown : false}}>
-            {props => <MainTabNavigator {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="MainScreen" options={{headerShown : false}}>
-            {props => <MainScreen {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="AdminTabNavigator" options={{headerShown : false}}>
-            {props => <AdminTabNavigator {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="PisosEdificio" options={{headerShown : false}}>
-            {props => <PisosEdificio {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="QRpageAdmin" options={{headerShown : false}}>
-            {props => <QRpageAdmin {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="MapaPedidos" options={{headerShown : false}}>
-            {props => <MapaPedidos {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="ElegirEdificio" options={{headerShown : false}}>
-            {props => <ElegirEdificio {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="AdminProfile" options={{headerShown : false}}>
-            {props => <AdminProfile {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="UserProfile" options={{headerShown : false}}>
-            {props => <UserProfile {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="InputClassroomScreen" options={{headerShown : false}}>
-            {props => <InputClassroomScreen {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="QRpageUser" options={{headerShown : false}}>
-            {props => <QRpageUser {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="PedidosResueltos" options={{headerShown : false}}>
-            {props => <PedidosResueltos {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="FinalizarArreglo" options={{headerShown : false}}>
-            {props => <FinalizarArreglo {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="ListaPedidos" options={{headerShown : false}}>
-            {props => <ListaPedidos {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="InsertarPedido" options={{headerShown : false}}>
-            {props => <InsertarPedido {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="AulaQR" options={{headerShown : false}}>
-            {props => <AulaQR {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="EspacioComunQR" options={{headerShown : false}}>
-            {props => <EspacioComunQR {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="Camara" options={{headerShown : false}}>
-            {props => <Camara {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="Escaner" options={{headerShown : false}}>
-            {props => <Escaner {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          <Stack.Screen name="HistorialDePedidos" options={{headerShown : false}}>
-            {props => <HistorialDePedidos {...props} userId={loggedInUser}/>}
-          </Stack.Screen>
-          
-          
         </>
         :
         <>
@@ -117,10 +96,8 @@ const App = () => {
           </Stack.Screen>
         </>
         }
-
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 

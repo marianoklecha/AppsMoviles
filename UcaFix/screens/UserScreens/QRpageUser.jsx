@@ -1,35 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
   Text,
   Image,
-  View,
-  Modal
+  View
 } from 'react-native';
 
 export function QRpageUser(props) {
-    const onTap = (nextScreen) => {
-      props.navigation.navigate(nextScreen);
-    };
     const UserName = props;
     console.log(UserName)
-    return (
-      
-      
-      // 
-      <View style={styles.back}>
 
+    return (
+      <View style={styles.back}>
         <View style={styles.TitleContainer} >
-        <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
-              }}
-            />
-            <Text style={[styles.title]}>UCA FIX</Text>
-            
+          <Image
+            style={styles.UcaLogo}
+            source={{
+              uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'}}
+          />
+          <Text style={[styles.title]}>UCA FIX</Text>
         </View>
         
         <SafeAreaView style={styles.container}>
@@ -45,14 +36,8 @@ export function QRpageUser(props) {
             onPress={() => props.navigation.navigate('InsertarPedido')}>
             <Text style={styles.buttonText}>Escanear</Text>
           </TouchableOpacity>
-              
-
-          </SafeAreaView>
-
-
-          
-      </View>
-      
+        </SafeAreaView>    
+      </View> 
     );
   };
   
@@ -130,7 +115,7 @@ export function QRpageUser(props) {
     },
     footerContainer:{
       flexDirection: 'row', 
-      justifyContent: 'space-between',  // Align items to the right
+      justifyContent: 'space-between',
       backgroundColor: '#2F61AF',
       padding:'2%',
       

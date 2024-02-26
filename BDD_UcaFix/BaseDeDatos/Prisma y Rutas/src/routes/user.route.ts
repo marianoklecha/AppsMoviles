@@ -9,7 +9,6 @@ const UserRoute = (prisma: PrismaClient) => {
     res.json(users)
   })
 
-
   router.get('/login', async (req, res) => {
     const {email, password, fcmToken} = req.query
     if(!email || !password || !fcmToken) {
@@ -46,6 +45,28 @@ const UserRoute = (prisma: PrismaClient) => {
     res.json(user)
   })
 
+  router.get('/getNombreOfAdmins', async (req, res) => {
+    try {
+      const admins = await prisma.user.findMany({
+          where: {
+              isAdmin: true,
+          },
+      });
+
+      if (admins.length === 0) {
+          return res.status(404).send("No admins found");
+      }
+
+      const adminDetails = admins.map(admin => {
+          return { userId: admin.id, name: admin.name };
+      });
+
+      res.json(adminDetails);
+  } catch (error) {
+      console.error("Error fetching admins:", error);
+      res.status(500).send("Internal server error");
+  }
+});
 
   router.post(`/signup`, async (req, res) => {
     const { name, email } = req.body
@@ -57,6 +78,7 @@ const UserRoute = (prisma: PrismaClient) => {
     })
     res.json(result)
   })
+
   router.put(`/`, async (req, res) => {
     const { name, email } = req.body
     const result = await prisma.user.create({

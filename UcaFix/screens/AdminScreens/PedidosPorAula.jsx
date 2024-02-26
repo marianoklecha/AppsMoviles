@@ -6,15 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Modal,
   Alert,
 } from 'react-native';
-
 
 export function PedidosPorAula(props) {
   const [pedidos, setPedidos] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filter, setFilter] = useState('notFixed');
   const [edificio, setEdificio] = useState("");
   let pisoDisponible = false;
@@ -34,7 +31,6 @@ export function PedidosPorAula(props) {
   console.log(edificioId);
   console.log(piso);
   
-
   const fetchEdificios = async () => {
     try {
       const response = await fetch("http://localhost:3000/edificios/getEdificios");
@@ -47,7 +43,6 @@ export function PedidosPorAula(props) {
           break;
         }
     }
-    
       } else {
         Alert.alert("Error", "Failed to fetch Edificios");
       }
@@ -60,7 +55,6 @@ export function PedidosPorAula(props) {
   const fetchPedidos = async () => {
     try {
       const response = await fetch("http://localhost:3000/pedidos/getPedidosByAula?aula="+ aula +"&edificioId=" + edificioId);
-      
       if (response.ok) {
         const data = await response.json();
         setPedidos(data);
@@ -83,17 +77,19 @@ export function PedidosPorAula(props) {
     }
   });
 
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    return formattedDate;
+  };
+
   return (
     <View style={styles.back}>
-      {/* Header code */}
-      <View style={styles.TitleContainer}>
-        <Image
-          style={styles.UcaLogo}
-          source={{
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
-          }}
+      <View style={styles.header}>
+        <Image style={styles.UcaLogo}
+          source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'}}
         />
-        <Text style={[styles.title]}>UCA FIX</Text>
+        <Text style={styles.title}>UCA FIX</Text>
       </View>
 
       <View style={styles.filterContainer}>
@@ -102,46 +98,43 @@ export function PedidosPorAula(props) {
         {pisoDisponible && <Text style={styles.subtitle2}>Piso {piso}</Text>}
       </View>
 
-      {/* List of requests */}
       <ScrollView style={styles.scrollView}>
-  {filteredRequests.map((item) => (
-    <TouchableOpacity
-      key={item.id}
-      onPress={() => handleRequestClick(item)}
-      style={styles.requestItem}
-    >
-      {/* Status indicator */}
-      <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
-      {/* Request information */}
-      <View style={styles.requestInfo}>
-        <Text style={styles.requestText}>{` ${item.title}`}</Text>
-        {/* Expanded details */}
-        {selectedRequest === item.id && (
-          <View style={styles.detailsContainer}>
-            <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: item.image
-              }}
-            />
-            <Text style={styles.requestText}>{` ${item.aula}`}</Text>
-            <Text style={styles.detailsText}>{item.content}</Text>
-          </View>
-        )}
-      </View>
-      {/* FIX button */}
-      {!item.fixed && (
-        <TouchableOpacity
-        style={styles.fixButton}
-        onPress={() => props.navigation.navigate('FinalizarArreglo', { pedido: item })}
-      >
-        <Text style={styles.fixButtonText}>FIX</Text>
-      </TouchableOpacity>
-      
-      )}
-    </TouchableOpacity>
-  ))}
-</ScrollView>
+        {filteredRequests.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => handleRequestClick(item)}
+            style={styles.requestItem}
+          >
+            <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
+            
+            <View style={styles.requestInfo}>
+              <Text style={styles.requestText}>{` ${item.title}`}</Text>
+
+              {selectedRequest === item.id && (
+                <View style={styles.detailsContainer}>
+                  <Image
+                    style={styles.pedidoImagen}
+                    source={{
+                      uri: item.image
+                    }}
+                  />
+                  <Text style={styles.detailsText}>{item.content}</Text>
+                  <Text style={styles.detailsText}>Solicitado el día: {formatDate(item.createdAt)}</Text> 
+                </View>
+              )}
+            </View>
+            
+            {!item.fixed && (
+              <TouchableOpacity
+                style={styles.fixButton}
+                onPress={() => props.navigation.navigate('FinalizarArreglo', { pedido: item })}
+              >
+                <Text style={styles.fixButtonText}>Finalizar</Text>
+              </TouchableOpacity>
+            )}
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -158,9 +151,26 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'white',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'left',
+    padding: '5%',
+    paddingTop: '5%',
+    elevation: 4,
+    backgroundColor: "white"
+    
+  },
+  UcaLogo: {
+    width: 30,
+    height: 30,
+    marginLeft: '5%',
+    marginRight:5
+    
+  },
   title: {
-    fontSize: 55,
-    marginTop: 20,
+    fontSize: 30,
+    marginTop: 5,
     color: 'black',
     fontWeight: 'bold',
     marginBottom: '2%',
@@ -170,11 +180,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  UcaLogo: {
-    width: 50,
-    height: 50,
-    marginTop: 15,
   },
   filterContainer: {
     flexDirection: 'column',
@@ -252,9 +257,11 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
     marginTop: 10,
+    alignItems: "center"
   },
   detailsText: {
     marginBottom: 5,
+    color: "black"
   },
   subtitle1:{
     marginTop: 10,
@@ -271,4 +278,19 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: "center"
   },
+  pedidoImagen: {
+    width: 80,
+    height: 120,
+    margin: 15,
+  },
+  fixButton: {
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
+  fixButtonText : {
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: '#6D6D6D',
+  }
 });

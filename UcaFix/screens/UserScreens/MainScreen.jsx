@@ -1,42 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
   Text,
   Image,
-  View,
-  Modal
+  View
 } from 'react-native';
 
 export function MainScreen(props) {
-    const onTap = (nextScreen) => {
-      props.navigation.navigate(nextScreen);
-    };
-
     console.log("### MainScreen ###")
     console.log(props.route.params.userData)
     
-    
     return (
-      
-      
-      // 
       <View style={styles.back}>
-
         <View style={styles.TitleContainer} >
-        <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
-              }}
-            />
-            <Text style={[styles.title]}>UCA FIX</Text>
-            
+          <Image
+            style={styles.UcaLogo}
+            source={{
+              uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
+            }}
+          />
+          <Text style={[styles.title]}>UCA FIX</Text>
         </View>
         
         <SafeAreaView style={styles.container}>
           <Text style={[styles.text]}>Bienvenido/a! </Text> 
+
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => props.navigation.navigate('InputClassroomScreen')}>
@@ -47,7 +37,6 @@ export function MainScreen(props) {
               }}
             />
             <Text style={styles.buttonText}>Nuevo pedido</Text>
-            
           </TouchableOpacity>
           
           <TouchableOpacity
@@ -62,13 +51,8 @@ export function MainScreen(props) {
             <Text style={styles.buttonText}>Escanear código QR</Text>
           </TouchableOpacity>
 
-
-          </SafeAreaView>
-
-
-          
+        </SafeAreaView> 
       </View>
-      
     );
   };
   
@@ -146,7 +130,7 @@ export function MainScreen(props) {
     },
     footerContainer:{
       flexDirection: 'row', 
-      justifyContent: 'space-between',  // Align items to the right
+      justifyContent: 'space-between',
       backgroundColor: '#2F61AF',
       padding:'2%',
       

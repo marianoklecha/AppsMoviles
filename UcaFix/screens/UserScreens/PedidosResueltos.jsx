@@ -28,7 +28,6 @@ export function PedidosResueltos(props) {
   const fetchPedidos = async () => {
     try {
       const response = await fetch(API_URL + `/pedidos/getPedidosByUser?authorId=` + propsUserData.id);
-      
       if (response.ok) {
         const data = await response.json();
         setPedidos(data);
@@ -45,13 +44,11 @@ export function PedidosResueltos(props) {
     setSelectedRequest(selectedRequest === item.id ? null : item.id);
   };
 
-  
   const formatDate = (createdAt) => {
     const date = new Date(createdAt);
     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     return formattedDate;
   };
-
 
   const filteredRequests = pedidos.filter((item) => {
     if (filter === 'all') {
@@ -78,7 +75,6 @@ export function PedidosResueltos(props) {
 
   return (
     <View style={styles.back}>
-      {/* Header code */}
       <View style={styles.TitleContainer}>
         <Image
           style={styles.UcaLogo}
@@ -89,10 +85,8 @@ export function PedidosResueltos(props) {
         <Text style={[styles.title]}>UCA FIX</Text>
       </View>
 
-      {/* Filter code */}
       <View style={styles.filterContainer}>
         <Text style={styles.subtitle}>Tus Pedidos</Text>
-        {/* Filter button */}
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
@@ -100,25 +94,24 @@ export function PedidosResueltos(props) {
           <Text style={styles.filterButtonText}>Filter</Text>
         </TouchableOpacity>
 
-        {/* Filter modal */}
         <Modal
           animationType="slide-up"
           transparent={true}
           visible={filterModalVisible}
           onRequestClose={() => setFilterModalVisible(!filterModalVisible)}
         >
-          {/* Modal content */}
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-            <TouchableOpacity
+              <TouchableOpacity
                 style={filter === 'all' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
                   setFilter('all');
                   setFilterModalVisible(!filterModalVisible);
                 }}
               >
-                <Text style={styles.modalButtonText}>All</Text>
+                <Text style={styles.modalButtonText}>Todos</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 'fixed' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -128,6 +121,7 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>Terminado</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 'notFixed' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -137,6 +131,7 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>No Terminado</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 'San Alberto Magno' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -146,6 +141,7 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>San Alberto Magno</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 2 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -155,6 +151,7 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>Santo Tomas Moro</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 3 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -164,6 +161,7 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>Santa Maria</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 4 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -173,6 +171,7 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>San Jose</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 'Biblioteca' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -182,6 +181,7 @@ export function PedidosResueltos(props) {
               >
                 <Text style={styles.modalButtonText}>Biblioteca</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 'Baño' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -196,7 +196,6 @@ export function PedidosResueltos(props) {
         </Modal>
       </View>
 
-      {/* List of requests */}
       <ScrollView style={styles.scrollView} >
         {filteredRequests.map((item) => (
           <TouchableOpacity
@@ -204,23 +203,18 @@ export function PedidosResueltos(props) {
             onPress={() => handleRequestClick(item)}
             style={styles.requestItem}
           >
-            {/* Status indicator */}
             <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
-            {/* Request information */}
             <View style={styles.requestInfo}>
               <Text style={styles.requestTitle}>{` ${item.title}`}</Text>
               <Text style={styles.requestAula}>{` ${item.aula} - ${edificios[item.edificioId - 1]}` }</Text>
-              {/* Expanded details */}
+              
               {selectedRequest === item.id && (
                 <View style={styles.detailsContainer}>
-                  
                   <Image
                     style={styles.pedidoImagen}
                     source={{
-                      uri: item.image
-                    }}
-                  />
-                  
+                      uri: item.image}}
+                  />                 
                   <Text style={styles.detailsText}>{item.content}</Text>
                   <Text style={styles.detailsText}>Solicitado el día: {formatDate(item.createdAt)}</Text> 
                 </View>
@@ -232,7 +226,6 @@ export function PedidosResueltos(props) {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   statusIndicator: {

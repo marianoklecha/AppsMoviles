@@ -11,13 +11,10 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
   const [translateX] = useState(new Animated.Value(0));
   const [translateY] = useState(new Animated.Value(0));
   const [lastPosition, setLastPosition] = useState({ x: 0, y: -2 });
-  
 
-  const touchStartTimeRef = useRef(null); // Using a ref instead of state
+  const touchStartTimeRef = useRef(null); 
   const blinkAnimation = useRef(new Animated.Value(0)).current;
-
   const mapContainerRef = useRef(null);
-
   const propsUserData = props.route.params.userData;
 
   useEffect(() => {
@@ -40,7 +37,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
 
   useEffect(() => {
     startBlinkAnimation();
-  }, [edificioId,selectedFloor,props]); // Start blinking animation whenever edificioId changes
+  }, [edificioId,selectedFloor,props]);
   
   const startBlinkAnimation = () => {
     Animated.loop(
@@ -59,19 +56,16 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
     ).start();
   };
   
-
-  
-
   const fetchPedidos = async () => {
     try {
       const response = await fetch(API_URL + `/pedidos/getPedidosPendientes`);
-      
       if (response.ok) {
         const data = await response.json();
         setPedidos(data.filter(pedido => pedido.edificioId === localEdificioId)); // Filter pedidos based on localEdificioId
       } else {
         Alert.alert("Error", "Failed to fetch pedidos");
       }
+
     } catch (error) {
       console.error("Error fetching pedidos: ", error);
       Alert.alert("Error", "An unexpected error occurred");
@@ -82,20 +76,18 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
     const floors = {
       '1': {},
       '2': {},
-      '3': {}, // Add more floors as needed
+      '3': {},
       '4': {},
     };
   
-    // Initialize aulas for each floor up to 66
     for (let floor in floors) {
-      for (let i = parseInt(floor) * 100; i <= parseInt(floor) * 100 + 66; i++) { // Changed upper limit to 66
+      for (let i = parseInt(floor) * 100; i <= parseInt(floor) * 100 + 66; i++) { 
         floors[floor][i.toString()] = 0;
       }
     }
   
-    // Count pedidos for each aula and floor
     pedidos.forEach(pedido => {
-      const floor = pedido.piso.startsWith('1') ? '1' : pedido.piso.startsWith('2') ? '2' : pedido.piso.startsWith('3') ? '3' : '4'; // Adjust for more floors
+      const floor = pedido.piso.startsWith('1') ? '1' : pedido.piso.startsWith('2') ? '2' : pedido.piso.startsWith('3') ? '3' : '4';
       if (!floors[floor][pedido.aula]) {
         floors[floor][pedido.aula] = 1;
       } else {
@@ -103,17 +95,14 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
       }
     });
   
-    // Add bathroom square for each floor
     for (let floor in floors) {
       if (!floors[floor]['Baño']) {
         floors[floor]['Baño'] = 0;
       }
     }
   
-    // Generate squares for selected floor
     let squares = [];
     if (edificioId === 3) {
-      // Add bathroom square for each floor
       for (let floor in floors) {
         if (!floors[floor]['Biblioteca']) {
           floors[floor]['Biblioteca'] = 0;
@@ -139,15 +128,14 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
         );
       });
     }
-  
     setSquares(squares);
   };
   
   const handleTouchEnd = (event, aula, edificioId) => {
     const touchEndTime = Date.now();
-    const touchDuration = touchEndTime - touchStartTimeRef.current; // Accessing ref value directly
+    const touchDuration = touchEndTime - touchStartTimeRef.current;
     console.log(touchDuration);
-    if (touchDuration < 150) { // Adjust the threshold for long press as needed
+    if (touchDuration < 150) {
       console.log('Short tap: ', aula, edificioId);
       props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId, selectedFloor } });
     } else {
@@ -215,13 +203,13 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
   const [squares, setSquares] = useState([]);
 
   if (edificioId === 0) {
-    return null; // Return nothing if edificioId is 0
+    return null;
   }
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={resetScale} style={styles.resetButton} />
-      {squares.length > 0 && ( // Render mapContainer only if squares exist
+      {squares.length > 0 && (
         <Animated.View
           ref={mapContainerRef}
           {...panResponder.panHandlers}
@@ -249,9 +237,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: "red",
-    margin: 4, // Adjust this value to increase or decrease the space around each square
-    width: "auto", // Adjust this value to change the width of each square
-    height: "auto", // Adjust this value to change the height of each square
+    margin: 4, 
+    width: "auto", 
+    height: "auto",
     paddingVertical: 4,
     paddingHorizontal: 4
   },
@@ -260,7 +248,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     width: "auto",
-    padding: 5, // Adjust this value to increase or decrease the vertical space between rows
+    padding: 5, 
     height:  "auto",
     margin: 17.5,
     borderRadius:8,

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MainScreen } from './MainScreen';
 import { PedidosResueltos } from './PedidosResueltos';
@@ -12,7 +11,6 @@ import { InsertarPedido } from './scannerSelectQR/InsertarPedido';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 function TabNav({ route }) {
   const { userData } = route.params;
@@ -60,23 +58,26 @@ function MyProfileTabNav({ route }){
 
 export const MainTabNavigator = (props) => {
   console.log("### Maintab ###")
-  const propsUserData = props.route.params.userData;
+  const propsUserData = props.userData;
   console.log(propsUserData)
+
   return (
-    
     <Tab.Navigator>
       <Tab.Screen name='Menu' component={TabNav} options={{ headerShown: false, tabBarIcon: ({ color, size }) => (
-              <Image
-                source={{ uri: 'https://img.icons8.com/fluency/48/home-page.png' }}
-                style={{ width: size, height: size, tintColor: color }}
-              />
-            ),}} initialParams={{ userData: propsUserData }}/>
+        <Image
+          source={{ uri: 'https://img.icons8.com/fluency/48/home-page.png' }}
+          style={{ width: size, height: size, tintColor: color }}
+        />
+        ),}} initialParams={{ userData: propsUserData }}
+      />
+
       <Tab.Screen name="Perfil" component={MyProfileTabNav} options={{ headerShown: false, tabBarIcon: ({ color, size }) => (
-              <Image
-                source={{ uri: 'https://img.icons8.com/fluency/48/gender-neutral-user--v1.png' }}
-                style={{ width: size, height: size, tintColor: color }}
-              />
-            ), }} initialParams={{ userData: propsUserData }}/>
+        <Image
+          source={{ uri: 'https://img.icons8.com/fluency/48/gender-neutral-user--v1.png' }}
+          style={{ width: size, height: size, tintColor: color }}
+        />
+        ), }} initialParams={{ userData: propsUserData }}
+      />
     </Tab.Navigator>
   );
 }
