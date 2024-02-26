@@ -21,6 +21,7 @@ import { Escaner } from "./UserScreens/Escaner";
 import { HistorialDePedidos } from "./AdminScreens/HistorialDePedidos";
 import { PedidosPorAula } from "./AdminScreens/PedidosPorAula";
 import { MapaPedidos } from "./AdminScreens/MapaPedidos";
+import { PedidoFillWithQR } from "./UserScreens/PedidoFillWithQR";
 
 export{
     MainScreen,
@@ -45,5 +46,7 @@ export{
     Escaner,
     HistorialDePedidos,
     PedidosPorAula,
-    MapaPedidos
+    MapaPedidos,
+    PedidoFillWithQR,
+
 }

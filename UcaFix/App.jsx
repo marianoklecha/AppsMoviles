@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,HistorialDePedidos,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR,Camara,Escaner } from './screens';
+import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,HistorialDePedidos,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR,Camara,Escaner,PedidoFillWithQR } from './screens';
 import { PedidosPorAula } from './screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { requestMultiple,requestNotifications,PERMISSIONS } from 'react-native-permissions';
@@ -106,6 +106,9 @@ const App = () => {
           </Stack.Screen>
           <Stack.Screen name="HistorialDePedidos" options={{headerShown : false}}>
             {props => <HistorialDePedidos {...props} userId={loggedInUser}/>}
+          </Stack.Screen>
+          <Stack.Screen name="PedidoFillWithQR" options={{headerShown : false}}>
+            {props => <PedidoFillWithQR {...props} userId={loggedInUser}/>}
           </Stack.Screen>
           
           

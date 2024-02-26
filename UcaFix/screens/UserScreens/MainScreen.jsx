@@ -52,7 +52,7 @@ export function MainScreen(props) {
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('Escaner')}>
+            onPress={() => props.navigation.navigate('QRpageUser')}>
            <Image
               style={styles.tinyLogo}
               source={{
