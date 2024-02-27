@@ -1,52 +1,38 @@
 import React, { useEffect, useState } from 'react';
-
 import {
   SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
   StyleSheet,
   Text,
   Image,
   View,
-  Modal,
-  FlatList,
   Dimensions
 } from 'react-native';
-import { BarChart } from 'react-native-chart-kit';
-import { PieChart, ProgressChart } from 'react-native-chart-kit';
+import { PieChart} from 'react-native-chart-kit';
 
 const API_URL = "http://localhost:3000";
 
-
-
 export function EstadisticasAula(props) {
-    const onTap = (nextScreen) => {
-      props.navigation.navigate(nextScreen);
-    };
+  const [pedidos, setPedidos] = useState([]);
 
-    const [pedidos, setPedidos] = useState([]);
+  useEffect(() => {
+    fetchPedidos();
+  }, []);
 
-    useEffect(() => {
-      fetchPedidos();
-    }, []);
-
-    const fetchPedidos = async () => {
-      try {
-        const response = await fetch(API_URL + `/pedidos/getPedidos`);
-        
-        if (response.ok) {
-          const data = await response.json();
-          setPedidos(data);
-        } else {
-          Alert.alert("Error", "Failed to fetch pedidos");
-        }
-      } catch (error) {
-        console.error("Error fetching pedidos: ", error);
-        Alert.alert("Error", "An unexpected error occurred");
+  const fetchPedidos = async () => {
+    try {
+      const response = await fetch(API_URL + `/pedidos/getPedidos`);
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(data);
+      } else {
+        Alert.alert("Error", "Failed to fetch pedidos");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching pedidos: ", error);
+      Alert.alert("Error", "An unexpected error occurred");
+    }
+  };
 
-    // Calculate number of requests per building
   const buildingCounts = pedidos.reduce((acc, pedido) => {
     acc[pedido.edificioId] = (acc[pedido.edificioId] || 0) + 1;
     return acc;
@@ -57,18 +43,14 @@ export function EstadisticasAula(props) {
   const colors = ['#8F39E1', '#69CA45', '#F0AD43', '#EDEA42'];
   const edificios = ["Magno", "Moro","Santa Maria",  "San Jose"];
 
-  // Create dataset for PieChart
-  
   const data = Object.keys(buildingCounts).map((buildingId, index) => ({
     name: edificios[index % edificios.length],
-    pedidos: (buildingCounts[buildingId] / totalPedidos) * 100 , // Calculate percentage
-    color: colors[index % colors.length], // Use predefined colors, cycle through if needed
+    pedidos: (buildingCounts[buildingId] / totalPedidos) * 100 ,
+    color: colors[index % colors.length],
     legendFontColor: "#7F7F7F",
     legendFontSize: 14,
-    
   }));
 
-  // Calculate the count of fixed and non-fixed pedidos for each edificioId
   const edificioPedidos = {};
   pedidos.forEach(pedido => {
       const { edificioId, fixed } = pedido;
@@ -83,74 +65,67 @@ export function EstadisticasAula(props) {
       }
   });
 
+  const UserName = props;
+  console.log(UserName)
   
-    
-    const UserName = props;
-    console.log(UserName)
-    
-        return (
-      <View style={styles.back}>
-        <View style={styles.header}>
-          <Image style={styles.UcaLogo}
-            source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'}}
+  return (
+    <View style={styles.back}>
+      <View style={styles.header}>
+        <Image style={styles.UcaLogo}
+          source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'}}
+        />
+        <Text style={styles.title}>UCA FIX</Text>
+      </View>
+      
+      <SafeAreaView style={styles.container}>
+        <View style={styles.pieChartView}>
+          <Text style={styles.subtitle1}>Distribución por edificios de los pedidos recibidos</Text>
+
+          <PieChart
+            data={data}
+            width={Dimensions.get('window').width - 10}
+            height={210}
+            chartConfig={{
+              backgroundColor: '#1cc910',
+              backgroundGradientFrom: '#eff3ff',
+              backgroundGradientTo: '#efefef',
+              strokeWidth: 0,
+              decimalPlaces: 0,
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              style: {
+                borderRadius: 0,
+                labels: {
+                  fontWeight: 'bold',
+                },                
+              },
+            }}
+            accessor="pedidos"
+            backgroundColor="white"
+            center={[0, 0]}   
+            hasLegend       
           />
-          <Text style={styles.title}>UCA FIX</Text>
         </View>
         
-        <SafeAreaView style={styles.container}>
-                 
-            
-          <View style={styles.pieChartView}>
-            <Text style={styles.subtitle1}>Distribución por edificios de los pedidos recibidos</Text>
-            <PieChart
-              data={data}
-              width={Dimensions.get('window').width - 10}
-              height={210}
-              chartConfig={{
-                backgroundColor: '#1cc910',
-                backgroundGradientFrom: '#eff3ff',
-                backgroundGradientTo: '#efefef',
-                strokeWidth: 0,
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                  borderRadius: 0,
-                  labels: {
-                    fontWeight: 'bold', // Make labels bold
-                  },
-                  
-                },
-                
-              }}
-              accessor="pedidos"
-              backgroundColor="white"
-              center={[0, 0]}   
-              hasLegend       
-            />
-          </View>
-          
-          <Text style={styles.subtitle1}>Estado actual de todos los pedidos recibidos</Text>
-            <View style={styles.tableContainer}>
-                <View style={styles.tableHeader}>
-                    <Text style={styles.columnHeader}>  Edificio</Text>
-                    <Text style={styles.columnHeader}>     Recibidos </Text>
-                    <Text style={styles.columnHeader}>   Arreglados </Text>
-                    <Text style={styles.columnHeader}> Pendientes</Text>
-                </View>
-                {Object.keys(edificioPedidos).map(edificioId => (
-                    <View style={styles.tableRow} key={edificioId}>
-                        <Text style={styles.columnData}>{edificios[edificioId - 1]}</Text>
-                        <Text style={styles.columnData}>{edificioPedidos[edificioId].total}</Text>
-                        <Text style={styles.columnData}>{edificioPedidos[edificioId].fixed}</Text>
-                        <Text style={styles.columnData}>{edificioPedidos[edificioId].nonFixed}</Text>
-                    </View>
-                ))}
+        <Text style={styles.subtitle1}>Estado actual de todos los pedidos recibidos</Text>
+
+        <View style={styles.tableContainer}>
+            <View style={styles.tableHeader}>
+                <Text style={styles.columnHeader}>  Edificio</Text>
+                <Text style={styles.columnHeader}>     Recibidos </Text>
+                <Text style={styles.columnHeader}>   Arreglados </Text>
+                <Text style={styles.columnHeader}> Pendientes</Text>
             </View>
-          
-          
-          
-        </SafeAreaView>
-      </View>
+            {Object.keys(edificioPedidos).map(edificioId => (
+                <View style={styles.tableRow} key={edificioId}>
+                    <Text style={styles.columnData}>{edificios[edificioId - 1]}</Text>
+                    <Text style={styles.columnData}>{edificioPedidos[edificioId].total}</Text>
+                    <Text style={styles.columnData}>{edificioPedidos[edificioId].fixed}</Text>
+                    <Text style={styles.columnData}>{edificioPedidos[edificioId].nonFixed}</Text>
+                </View>
+            ))}
+        </View>
+      </SafeAreaView>
+    </View>
       
     );
   };
@@ -217,7 +192,7 @@ export function EstadisticasAula(props) {
       justifyContent: 'left',
       padding: '5%',
       paddingTop: '5%',
-      elevation: 4,
+    
       backgroundColor: "white"
       
     },
@@ -237,7 +212,7 @@ export function EstadisticasAula(props) {
     },
     footerContainer:{
       flexDirection: 'row', 
-      justifyContent: 'space-between',  // Align items to the right
+      justifyContent: 'space-between',
       backgroundColor: '#2F61AF',
       padding:'2%',
       
@@ -308,7 +283,7 @@ export function EstadisticasAula(props) {
       shadowOpacity: 0.25,
       shadowRadius: 3.84,
       marginTop: 10,
-      backgroundColor: 'white', // Change to your desired background color
+      backgroundColor: 'white', 
   },
   tableHeader: {
       flexDirection: 'row',
@@ -317,7 +292,7 @@ export function EstadisticasAula(props) {
       borderBottomColor: '#000',
       paddingVertical: 12,
       paddingHorizontal: 20,
-      backgroundColor: "#788EB2", // Header background color
+      backgroundColor: "#788EB2",
       borderTopStartRadius: 10,
       borderTopEndRadius: 10,
   },
@@ -334,7 +309,7 @@ export function EstadisticasAula(props) {
       borderBottomColor: '#000',
       paddingVertical: 10,
       paddingHorizontal: 20,
-      backgroundColor: "#F6F6F6", // Alternating row background color
+      backgroundColor: "#F6F6F6", 
       
   },
   columnData: {

@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState} from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
   TextInput,
-  Input,
   Text,
   Image,
   View,
@@ -13,25 +12,22 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
-import { Camera, useCameraDevice } from 'react-native-vision-camera';
 import storage from '@react-native-firebase/storage';
 import { Camara } from '../UserScreens/Camara';
 const API_URL = "http://localhost:3000";
 
 export function FinalizarArreglo({...props }) {
- 
   const pedido = props.route.params.pedido;
   const [comments, setComments] = useState("");
   const [imageURL, setImageURL] = useState(null);
   const [loading, setLoading] = useState(false);
   const [cameraVisible, setCameraVisible] = useState(false);
   const [imageSource, setImageSource] = useState("");
-  const [uploading, setUploading] = useState(false); // State to track upload progress
+  const [uploading, setUploading] = useState(false);
   let url = "";
+
   const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
   let pisoDisponible = false;
-
   if (pedido.aula === 'Baño' || pedido.aula === 'Biblioteca'){ pisoDisponible = true}
   
   const propsUserData = props.route.params.userData;
@@ -42,10 +38,8 @@ export function FinalizarArreglo({...props }) {
  
   useEffect(() => {
     if (loading) {
-      // Start loading indicator
       setLoading(true);
     } else {
-      // Stop loading indicator
       setLoading(false);
     }
   }, [loading]);
@@ -56,19 +50,19 @@ export function FinalizarArreglo({...props }) {
       const reference = storage().ref(`images/${Date.now()}`);
       const task = reference.putFile(imageUri);
 
-      // Track upload progress
       task.on('state_changed', (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
       });
-
       await task;
       console.log('Image uploaded successfully');
       url = await reference.getDownloadURL();
       console.log('Image URL:', url);
+
     } catch (error) {
       console.error('Error uploading image:', error);
       Alert.alert('Error', 'Failed to upload image to Firebase Storage');
+
     } finally {
       setUploading(false);
     }
@@ -84,19 +78,16 @@ export function FinalizarArreglo({...props }) {
       return;
     }
 
-    setLoading(true); // Start loading indicator
-    await uploadImageToFirebaseStorage(imageSource); // Wait for image upload to complete
-
-    console.log(imageURL); // This should now have the correct value
+    setLoading(true); 
+    await uploadImageToFirebaseStorage(imageSource); 
+    console.log(imageURL);
 
     if (url === null) {
       Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
       return;
     }
 
-// After upload completes
     await crearArreglo();
-      
   };
 
   const crearArreglo = async () => {
@@ -122,15 +113,18 @@ export function FinalizarArreglo({...props }) {
         setImageSource("");
         setImageURL(null);
         let url = "";
+
       } else {
         Alert.alert('Error', 'Failed to submit your request. Please try again.');
       }
       setLoading(false); // Stop loading indicator
+
     } catch (error) {
       console.error('Error submitting request:', error);
       Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
       setLoading(false); // Stop loading indicator
-    }finally{
+
+    } finally {
       setLoading(false);
     }
   };
@@ -149,10 +143,12 @@ export function FinalizarArreglo({...props }) {
         />
         <Text style={[styles.title]}>UCA FIX</Text>
       </View>
+
       <ScrollView>
         <View style={styles.tituloPagina}>
           <Text style={styles.textoTituloPagina}>Finalización del pedido recibido:</Text>
         </View>
+
         <View style={styles.container}>
           <Text style={styles.tituloPedido}>{pedido.title}</Text>
           <View style={styles.pedidoContainer}>
@@ -163,11 +159,14 @@ export function FinalizarArreglo({...props }) {
             <Text style={styles.descripcionTexto}>{pedido.content}</Text>
           </View>
         </View>
+
         <View style={styles.containerFinalizar}>
           <View style={styles.tituloPagina}>
             <Text style={styles.textoTituloPagina}>Completar una vez realizado el arreglo</Text>
           </View>
+
           <Text style={[styles.inputTitle, { marginTop: "4%" }]}>Describa el estado del problema y el procedimiento realizado </Text>
+
           <TextInput
             style={styles.input}
             multiline={true}
@@ -176,6 +175,7 @@ export function FinalizarArreglo({...props }) {
             onChangeText={(comments) => setComments(comments)}
             value={comments}
           />
+
           <TouchableOpacity style={styles.button} onPress={() => toggleCamera(true)}>
               <Image
                 style={styles.buttonLogo}
@@ -185,7 +185,6 @@ export function FinalizarArreglo({...props }) {
             <Text style={styles.buttonText}>Cargar imagen/es</Text>
           </TouchableOpacity>
 
-          {/* Mini preview of the photo */}
           {imageSource !== "" && (
             <View style={styles.imagePreviewContainer} >
               <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
@@ -196,27 +195,26 @@ export function FinalizarArreglo({...props }) {
           )}
 
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
+            <Text style={styles.buttonTextListo}>Listo</Text>
+          </TouchableOpacity>
+        </View>
 
-                <Text style={styles.buttonTextListo}>Listo</Text>
-              </TouchableOpacity>
-              </View>
-
-              <Modal
-            animationType="fade"
-            transparent={true}
-            visible={loading}
-            onRequestClose={() => setLoading(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <ActivityIndicator size="large" color="#3C99FF" />
-                <Text style={styles.loadingText}>Espere...</Text>
-              </View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={loading}
+          onRequestClose={() => setLoading(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <ActivityIndicator size="large" color="#3C99FF" />
+              <Text style={styles.loadingText}>Espere...</Text>
             </View>
-          </Modal>
+          </View>
+        </Modal>
       </ScrollView>
-      {cameraVisible && <Camara setImageSource={setImageSource} onPressCameraButton={toggleCamera}/>}
 
+      {cameraVisible && <Camara setImageSource={setImageSource} onPressCameraButton={toggleCamera}/>}
     </SafeAreaView>
   );
 
@@ -280,7 +278,7 @@ export function FinalizarArreglo({...props }) {
     },
     footerContainer:{
       flexDirection: 'row', 
-      justifyContent: 'space-between',  // Align items to the right
+      justifyContent: 'space-between',   
       backgroundColor: '#2F61AF',
       padding:'2%',
       
@@ -376,10 +374,10 @@ export function FinalizarArreglo({...props }) {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
       },
       modalContent: {
-        backgroundColor: '#fff', // White background for the content
+        backgroundColor: '#fff', 
         padding: 20,
         borderRadius: 10,
         alignItems: 'center',

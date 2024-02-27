@@ -28,13 +28,13 @@ export function ListaPedidos(props) {
   const fetchPedidos = async () => {
     try {
       const response = await fetch(API_URL + `/pedidos/getPedidosPendientes`);
-      
       if (response.ok) {
         const data = await response.json();
         setPedidos(data);
       } else {
         Alert.alert("Error", "Failed to fetch pedidos");
       }
+
     } catch (error) {
       console.error("Error fetching pedidos: ", error);
       Alert.alert("Error", "An unexpected error occurred");
@@ -72,21 +72,16 @@ export function ListaPedidos(props) {
 
   return (
     <View style={styles.back}>
-      {/* Header code */}
-      <View style={styles.TitleContainer}>
-        <Image
-          style={styles.UcaLogo}
-          source={{
-            uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'
-          }}
+      <View style={styles.header}>
+        <Image style={styles.UcaLogo}
+          source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'}}
         />
-        <Text style={[styles.title]}>UCA FIX</Text>
+        <Text style={styles.title}>UCA FIX</Text>
       </View>
 
-      {/* Filter code */}
       <View style={styles.filterContainer}>
         <Text style={styles.subtitle}>Últimos pedidos</Text>
-        {/* Filter button */}
+        
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
@@ -94,17 +89,15 @@ export function ListaPedidos(props) {
           <Text style={styles.filterButtonText}>Filtro</Text>
         </TouchableOpacity>
 
-        {/* Filter modal */}
         <Modal
           animationType="slide-up"
           transparent={true}
           visible={filterModalVisible}
           onRequestClose={() => setFilterModalVisible(!filterModalVisible)}
         >
-          {/* Modal content */}
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-            <TouchableOpacity
+              <TouchableOpacity
                 style={filter === 'all' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
                   setFilter('all');
@@ -123,6 +116,7 @@ export function ListaPedidos(props) {
               >
                 <Text style={styles.modalButtonText}>San Alberto Magno</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 2 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -132,6 +126,7 @@ export function ListaPedidos(props) {
               >
                 <Text style={styles.modalButtonText}>Santo Tomas Moro</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 3 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -141,6 +136,7 @@ export function ListaPedidos(props) {
               >
                 <Text style={styles.modalButtonText}>Santa Maria</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 4 ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -150,6 +146,7 @@ export function ListaPedidos(props) {
               >
                 <Text style={styles.modalButtonText}>San Jose</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 'Biblioteca' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -159,6 +156,7 @@ export function ListaPedidos(props) {
               >
                 <Text style={styles.modalButtonText}>Biblioteca</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={filter === 'Baño' ? styles.activeModalButton : styles.modalButton}
                 onPress={() => {
@@ -173,49 +171,44 @@ export function ListaPedidos(props) {
         </Modal>
       </View>
 
-      {/* List of requests */}
       <ScrollView style={styles.scrollView}>
-  {filteredRequests.map((item) => (
-    <TouchableOpacity
-      key={item.id}
-      onPress={() => handleRequestClick(item)}
-      style={styles.requestItem}
-    >
-      {/* Status indicator */}
-      <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
-      {/* Request information */}
-      <View style={styles.requestInfo}>
+        {filteredRequests.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => handleRequestClick(item)}
+            style={styles.requestItem}
+          >
+            <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
+            
+            <View style={styles.requestInfo}>
               <Text style={styles.requestTitle}>{` ${item.title}`}</Text>
               <Text style={styles.requestAula}>{` ${item.aula} - ${edificios[item.edificioId - 1]}` }</Text>
-              {/* Expanded details */}
+              
               {selectedRequest === item.id && (
                 <View style={styles.detailsContainer}>
-                  
                   <Image
                     style={styles.pedidoImagen}
                     source={{
                       uri: item.image
                     }}
                   />
-                  
                   <Text style={styles.detailsText}>{item.content}</Text>
                   <Text style={styles.detailsText}>Solicitado el día: {formatDate(item.createdAt)}</Text> 
                 </View>
               )}
             </View>
-      {/* FIX button */}
-      {!item.fixed && (
-        <TouchableOpacity
-        style={styles.fixButton}
-        onPress={() => props.navigation.navigate('FinalizarArreglo', { pedido: item })}
-      >
-        <Text style={styles.fixButtonText}>Finalizar</Text>
-      </TouchableOpacity>
-      
-      )}
-    </TouchableOpacity>
-  ))}
-</ScrollView>
+           
+            {!item.fixed && (
+              <TouchableOpacity
+              style={styles.fixButton}
+              onPress={() => props.navigation.navigate('FinalizarArreglo', { pedido: item })}
+            >
+              <Text style={styles.fixButtonText}>Finalizar</Text>
+            </TouchableOpacity>
+            )}
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -232,23 +225,34 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'white',
   },
-  title: {
-    fontSize: 55,
-    marginTop: 20,
-    color: 'black',
-    fontWeight: 'bold',
-    marginBottom: '2%',
-  },
   TitleContainer: {
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'left',
+    padding: '5%',
+    paddingTop: '5%',
+    backgroundColor: "white"
+    
+  },
   UcaLogo: {
-    width: 50,
-    height: 50,
-    marginTop: 15,
+    width: 30,
+    height: 30,
+    marginLeft: '5%',
+    marginRight:5
+    
+  },
+  title: {
+    fontSize: 30,
+    marginTop: 5,
+    color: 'black',
+    fontWeight: 'bold',
+    marginBottom: '2%',
   },
   filterContainer: {
     flexDirection: 'row',

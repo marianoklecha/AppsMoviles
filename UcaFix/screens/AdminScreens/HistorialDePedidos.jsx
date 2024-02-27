@@ -10,21 +10,12 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-const Stack = createStackNavigator();
 
 const API_URL = "http://localhost:3000";
-const requestData = [
-    { id: 1, request: 'Pizarron Roto' ,building: 'Magno', completed: true, details: 'El pizzarron de la 102 magno esta roto y no tiene tiza', uploadedPicture: 'https://t4.ftcdn.net/jpg/04/01/91/89/360_F_401918904_dXxFbwo4QheU5ZkTtMFIJfPogcuJydwS.jpg',fixer: 'Juan Lopez' },
-    { id: 2, request: 'Baño sin traba ' ,building: ' Magno', completed: false, details: 'No puedo cargar porque los enchufes no funcionan', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png',fixer: 'undifined' },
-    { id: 3, request: 'Biblioteca Enchufes', building: 'Biblioteca', completed: false, details: 'Details for request 3', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png',fixer: 'undifined' },
-    { id: 4, request: 'Silla Rota ' ,building: 'Moro', completed: true, details: 'Details for request 4', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png',fixer: 'Juan Lopez' },
-    { id: 5, request: 'Proyector no funciona ' ,building: 'Moro', completed: true, details: 'Details for request 5', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png',fixer: 'Juan Lopez' },
-    { id: 6, request: 'Proyector no funciona ' ,building: 'Moro', completed: true, details: 'Details for request 5', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png',fixer: 'Juan Lopez' },
-    { id: 7, request: 'Proyector no funciona ' ,building: 'Moro', completed: true, details: 'Details for request 5', uploadedPicture: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png',fixer: 'Juan Lopez' },
-  ];
+
 export function HistorialDePedidos(props) {
   const [pedidos, setPedidos] = useState([]);
+  const [adminNombres, setAdminNombres] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filter, setFilter] = useState('all');
@@ -34,19 +25,19 @@ export function HistorialDePedidos(props) {
 
   useEffect(() => {
     fetchPedidos();
-    
+    fetchAdminNombres();
   }, []);
 
   const fetchPedidos = async () => {
     try {
       const response = await fetch(API_URL + `/pedidoResuelto/getPedidosResueltos`);
-      
       if (response.ok) {
         const data = await response.json();
         setPedidos(data);
       } else {
         Alert.alert("Error", "Failed to fetch pedidos");
       }
+
     } catch (error) {
       console.error("Error fetching pedidos: ", error);
       Alert.alert("Error", "An unexpected error occurred");
@@ -54,13 +45,28 @@ export function HistorialDePedidos(props) {
     console.log(pedidos);
   };
 
+  const fetchAdminNombres = async () => {
+    try {
+      const response = await fetch(API_URL + `/users/getNombreOfAdmins`);
+      if (response.ok) {
+        const data = await response.json();
+        setAdminNombres(data);
+      } else {
+        Alert.alert("Error", "Failed to fetch pedidos");
+      }
+
+    } catch (error) {
+      console.error("Error fetching pedidos: ", error);
+      Alert.alert("Error", "An unexpected error occurred");
+    }
+    console.log(adminNombres);
+  };
+
   const handleRequestClick = (item) => {
     setSelectedRequest(selectedRequest === item.id ? null : item.id);
   };
+
   const navigation = useNavigation();
-  const handleFixThisClick = () => {
-    navigation.navigate('FinalizarArreglo');
-  };
 
   const filteredRequests = pedidos.filter((item) => {
     if (filter === 'all') {
@@ -89,20 +95,15 @@ export function HistorialDePedidos(props) {
 
   return (
     <View style={styles.back}>
-      <View style={styles.TitleContainer}>
-        <Image
-          style={styles.UcaLogo}
-          source={{
-            uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'
-          }}
+      <View style={styles.header}>
+        <Image style={styles.UcaLogo}
+          source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'}}
         />
-        <Text style={[styles.title]}>UCA FIX</Text>
+        <Text style={styles.title}>UCA FIX</Text>
       </View>
 
-      {/* Filter code */}
       <View style={styles.filterContainer}>
-        <Text style={styles.subtitle}>Últimos pedidos</Text>
-        {/* Filter button */}
+        <Text style={styles.subtitle}>Últimos pedidos</Text> 
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
@@ -110,14 +111,12 @@ export function HistorialDePedidos(props) {
           <Text style={styles.filterButtonText}>Filtro</Text>
         </TouchableOpacity>
 
-        {/* Filter modal */}
         <Modal
           animationType="slide-up"
           transparent={true}
           visible={filterModalVisible}
           onRequestClose={() => setFilterModalVisible(!filterModalVisible)}
         >
-          {/* Modal content */}
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
             <TouchableOpacity
@@ -125,119 +124,112 @@ export function HistorialDePedidos(props) {
                 onPress={() => {
                   setFilter('all');
                   setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Todos</Text>
-              </TouchableOpacity>
+                }}>
+              <Text style={styles.modalButtonText}>Todos</Text>
+            </TouchableOpacity>
               
-              <TouchableOpacity
-                style={filter === 'San Alberto Magno' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(1);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>San Alberto Magno</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={filter === 2 ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(2);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Santo Tomas Moro</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={filter === 3 ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(3);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Santa Maria</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={filter === 4 ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(4);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>San Jose</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={filter === 'Biblioteca' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter('Biblioteca');
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Biblioteca</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={filter === 'Baño' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter('Baño');
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Baño</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              style={filter === 'San Alberto Magno' ? styles.activeModalButton : styles.modalButton}
+              onPress={() => {
+                setFilter(1);
+                setFilterModalVisible(!filterModalVisible);
+              }}>
+              <Text style={styles.modalButtonText}>San Alberto Magno</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={filter === 2 ? styles.activeModalButton : styles.modalButton}
+              onPress={() => {
+                setFilter(2);
+                setFilterModalVisible(!filterModalVisible);
+              }}>
+              <Text style={styles.modalButtonText}>Santo Tomas Moro</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={filter === 3 ? styles.activeModalButton : styles.modalButton}
+              onPress={() => {
+                setFilter(3);
+                setFilterModalVisible(!filterModalVisible);
+              }}>
+              <Text style={styles.modalButtonText}>Santa Maria</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={filter === 4 ? styles.activeModalButton : styles.modalButton}
+              onPress={() => {
+                setFilter(4);
+                setFilterModalVisible(!filterModalVisible);
+              }}>
+              <Text style={styles.modalButtonText}>San Jose</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={filter === 'Biblioteca' ? styles.activeModalButton : styles.modalButton}
+              onPress={() => {
+                setFilter('Biblioteca');
+                setFilterModalVisible(!filterModalVisible);
+              }}>
+              <Text style={styles.modalButtonText}>Biblioteca</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={filter === 'Baño' ? styles.activeModalButton : styles.modalButton}
+              onPress={() => {
+                setFilter('Baño');
+                setFilterModalVisible(!filterModalVisible);
+              }}>
+              <Text style={styles.modalButtonText}>Baño</Text>
+            </TouchableOpacity>
+
           </View>
-        </Modal>
-      </View> 
-
-      
-
-      <ScrollView style={styles.scrollView} >
-      {filteredRequests.map((item) => (
-      <TouchableOpacity
-        key={item.id}
-        onPress={() => handleRequestClick(item)}
-        style={styles.requestItem}
-      >
-       
-        <View style={styles.requestInfo}>
-          <Text style={styles.requestTitle}>{`${item.title}`}</Text>
-          <Text style={styles.requestAula}>{`${item.aula} - ${edificios[item.edificioId - 1]}` }</Text>
-          {/* Rendering adminId for each pedidoResuelto */}
-        {item.pedidosResueltos.map((pedidoResuelto, index) => (
-          <Text key={index} style={styles.requestText}>Arreglado por: {pedidoResuelto.adminId}</Text>
-        ))}
-          {selectedRequest === item.id && (
-            <View style={styles.detailsContainer}>
-              <Text style={styles.pedidoDescripcion}>Descripción del pedido</Text>
-              <Image
-                    style={styles.pedidoImagen}
-                    source={{uri: item.image}}
-                  />
-              <Text style={styles.detailsText}>{item.content}</Text>
-              <Text style={styles.detailsText}>Solicitado: {formatDate(item.createdAt)}</Text> 
-              
-              <Text style={styles.pedidoDescripcion}>Descripción del arreglo</Text>
-              {item.pedidosResueltos.map((pedidoResuelto, index) => (
-                <Image
-                  style={styles.pedidoImagen}
-                  source={{uri: pedidoResuelto.imageFixed}}/>
-              ))}
-              {item.pedidosResueltos.map((pedidoResuelto, index) => (
-                <Text key={index} style={styles.detailsText}>{pedidoResuelto.comments}</Text>
-              ))}           
-              
-            </View>
-            
-          )}
         </View>
-        
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      </Modal>
+    </View> 
 
-      
+    <ScrollView style={styles.scrollView} >
+      {filteredRequests.map((item) => (
+        <TouchableOpacity
+          key={item.id}
+          onPress={() => handleRequestClick(item)}
+          style={styles.requestItem}
+        > 
+          <View style={styles.requestInfo}>
+            <Text style={styles.requestTitle}>{`${item.title}`}</Text>
+            <Text style={styles.requestAula}>{`${item.aula} - ${edificios[item.edificioId - 1]}` }</Text>
+            
+            {item.pedidosResueltos.map((pedidoResuelto, index) => (
+              <Text key={index} style={styles.requestText}>
+                Arreglado por:{" "}
+                {adminNombres.find(admin => admin.userId === pedidoResuelto.adminId)?.name}
+              </Text>
+            ))}
 
-    </View>
+            {selectedRequest === item.id && (
+              <View style={styles.detailsContainer}>
+                <Text style={styles.pedidoDescripcion}>Descripción del pedido</Text>
+                <Image style={styles.pedidoImagen} source={{uri: item.image}}/>
+                <Text style={styles.detailsText}>{item.content}</Text>
+                <Text style={styles.detailsText}>Solicitado: {formatDate(item.createdAt)}</Text> 
+                <Text style={styles.pedidoDescripcion}>Descripción del arreglo</Text>
+
+                {item.pedidosResueltos.map((pedidoResuelto, index) => (
+                  <Image
+                    style={styles.pedidoImagen}
+                    source={{uri: pedidoResuelto.imageFixed}}/>
+                ))}
+
+                {item.pedidosResueltos.map((pedidoResuelto, index) => (
+                  <Text key={index} style={styles.detailsText}>{pedidoResuelto.comments}</Text>
+                ))}           
+                
+              </View>
+            )}
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  </View>
   );
 }
 
@@ -247,29 +239,38 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 15,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'left',
+    padding: '5%',
+    paddingTop: '5%',
+    backgroundColor: "white"
+  },
+  UcaLogo: {
+    width: 30,
+    height: 30,
+    marginLeft: '5%',
+    marginRight:5
+    
+  },
+  title: {
+    fontSize: 30,
+    marginTop: 5,
+    color: 'black',
+    fontWeight: 'bold',
+    marginBottom: '2%',
+  },
   back: {
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 55,
-    marginTop: 20,
-    color: 'black',
-    fontWeight: 'bold',
-    marginBottom: '2%',
   },
   TitleContainer: {
     marginTop: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  UcaLogo: {
-    width: 50,
-    height: 50,
-    marginTop: 15,
-    marginRight:10,
   },
   filterContainer: {
     flexDirection: 'row',

@@ -1,36 +1,30 @@
 import React, { useEffect, useState, useRef } from 'react';
-
 import {
   View,
   StyleSheet,
-  Button,
   Text,
   Alert,
   Image,
   Modal,
   TextInput
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { Camera, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
 
 export function QRpageAdmin(props) {
   const camera = useRef(null);
   const device = useCameraDevice('back');
-
   const [showCamera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const [QRManual, abrirQRManual] = useState(false);
   const [codigoManual, setCodigoManual] = useState("");
 
- 
   let aula = 0;
   let piso = 0;
   let edificioId = 0;
   let lastCode = "";
 
-   useEffect(() => {
-    // Pedir permiso de cámara
+  useEffect(() => {
     requestMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
       if (statuses[PERMISSIONS.ANDROID.CAMERA] === 'granted') {
         setHasPermission(true)
@@ -49,13 +43,6 @@ export function QRpageAdmin(props) {
       codes.forEach(code => console.log(code));
       lastCode= codes[0].value;
       setShowCamera(false);
-      /*
-      Alert.alert(
-        `Alerta de ejemplo`,
-        `Se escaneó el código ${codes[0].value}`,
-      [
-        {text: 'OK', onPress: () => setShowCamera(true)},
-      ])*/
       handleVisitarPedido();
     }
   })
@@ -67,41 +54,22 @@ export function QRpageAdmin(props) {
     piso = informacion[2];
     const idInt = parseInt(informacion[4]);
     edificioId = idInt;
-        
     console.log(aula,piso,edificioId);
   }
 
   const handleVisitarPedido = () => {
     setTimeout(() => {
       llenarInformacion();
-    }, 500); // 500 milliseconds (medio segundo)
+    }, 500); 
 
     setTimeout(() => {
       visitarPedidos(aula,edificioId);
-    }, 500); // 500 milliseconds (medio segundo)
+    }, 500);
   }
 
   const visitarPedidos = (aula, edificioId) => {
     props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId } });
   };
-
-  /* import React from 'react';
-import { View, Text } from 'react-native';
-
-const YourComponent = () => {
-  const text = "105.1.San Alberto Magno";
-  const parts = text.split(".");
-
-  return (
-    <View>
-      {parts.map((part, index) => (
-        <Text key={index}>{part}</Text>
-      ))}
-    </View>
-  );
-};
-
-export default YourComponent; */
 
   if (device == null) {
     return <Text>Camera not available</Text>;
@@ -118,46 +86,44 @@ export default YourComponent; */
         />
         <Text style={styles.codigoManual}>UCA FIX</Text>
       </View>
+
       <View style={styles.filterContainer} onTouchEnd={() => {setShowCamera(false), abrirQRManual(true);}}>
         <Text style={styles.subcodigoManual1}>Escanear código QR</Text>
       </View>
 
-          {showCamera && <Camera
-            ref={camera}
-            style={{width: '100%', height: '100%'}}
-            device={device}
-            isActive={hasPermission}
-            codeScanner={codeScanner}
-          />}
+      {showCamera && <Camera
+        ref={camera}
+        style={{width: '100%', height: '100%'}}
+        device={device}
+        isActive={hasPermission}
+        codeScanner={codeScanner}
+      />}
 
-            <Modal
-              animationType="fade"
-              transparent={true}
-              visible={QRManual}
-              onRequestClose={() => abrirQRManual(false)}
-            >
-              <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                <Text style={[styles.inputTitle, { marginTop: 16 }]}>Ingrese el código del QR</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Ej: 105.piso.1.edificio.1"
-                  placeholderTextColor="#8D8D8D"
-                  onChangeText={(codigoManual) => setCodigoManual(codigoManual)}
-                  value={codigoManual}
-                />
-                <View  style={styles.buttonListo} onTouchEnd ={() => {lastCode = codigoManual, handleVisitarPedido(), setShowCamera(true), abrirQRManual(false)} }>
-                  <Text style={styles.buttonTextListo}>Continuar</Text>
-                </View>
-                <View  style={styles.buttonCerrar} onTouchEnd ={() => abrirQRManual(false)}>
-                  <Text style={styles.buttonTextCerrar}>Cerrar</Text>
-                </View>
-                </View>
-              </View>
-            </Modal>
-                
-
-
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={QRManual}
+        onRequestClose={() => abrirQRManual(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+          <Text style={[styles.inputTitle, { marginTop: 16 }]}>Ingrese el código del QR</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ej: 105.piso.1.edificio.1"
+            placeholderTextColor="#8D8D8D"
+            onChangeText={(codigoManual) => setCodigoManual(codigoManual)}
+            value={codigoManual}
+          />
+          <View  style={styles.buttonListo} onTouchEnd ={() => {lastCode = codigoManual, handleVisitarPedido(), setShowCamera(true), abrirQRManual(false)} }>
+            <Text style={styles.buttonTextListo}>Continuar</Text>
+          </View>
+          <View  style={styles.buttonCerrar} onTouchEnd ={() => abrirQRManual(false)}>
+            <Text style={styles.buttonTextCerrar}>Cerrar</Text>
+          </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -207,7 +173,6 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    //ADD backgroundColor COLOR GREY
     backgroundColor: '#B2BEB5',
 
     alignSelf: 'center',
@@ -278,10 +243,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContent: {
-    backgroundColor: '#fff', // White background for the content
+    backgroundColor: '#fff', 
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',
