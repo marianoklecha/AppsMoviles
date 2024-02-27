@@ -1,7 +1,8 @@
 import { type PrismaClient, type Prisma } from "@prisma/client";
 import { Router, type Express } from "express";
+import admin from "firebase-admin";
 
-const PedidoResueltoRoute = (prisma: PrismaClient) => {
+const PedidoResueltoRoute = (prisma: PrismaClient,firebaseAdmin: admin.app.App) => {
     const router = Router();
 
     // Create PedidoResuelto
@@ -25,12 +26,31 @@ const PedidoResueltoRoute = (prisma: PrismaClient) => {
                 const updatedPedido = await prisma.pedido.update({
                     where: { id: pedidoId },
                     data: { fixed: true },
+                    include: { author: true }, // Include author to get user ID
                 });
 
+                // Fetch the FCMToken of the author
+                const authorFCMToken = await prisma.fCMToken.findFirst({
+                    where: {
+                        userId: (updatedPedido.authorId as number | undefined),
+                    },
+                });
+
+                if (authorFCMToken) {
+                    // Send notification
+                    await firebaseAdmin.messaging().send({
+                        token: authorFCMToken.device_token,
+                        notification: {
+                            title: 'Pedido Resolved',
+                            body: 'Your pedido has been resolved.',
+                        },
+                    });
+                }
+
                 res.status(201).json(updatedPedido);
+            } else {
+                res.status(404).json({ error: 'Pedido not found' });
             }
-    
-            res.status(201).json(createdPedidoResuelto);
         } catch (error) {
             console.error('Error creating Pedido Resuelto:', error);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -57,27 +77,21 @@ const PedidoResueltoRoute = (prisma: PrismaClient) => {
     });
     router.get('/getPedResueltosByUser', async (req, res) => {
         const adminId = req.query.adminId as string | undefined;
-        
-        if (adminId === undefined) {
-            return res.status(400).json({ error: 'Author ID is required' });
-        }
-    
+            if (adminId === undefined) {
+                return res.status(400).json({ error: 'Author ID is required' });
+            }
+
         const pedidoResuelto = await prisma.pedidoResuelto.findMany({
             where: {
                 adminId: parseInt(adminId),
-            },
-            include: {
-                pedido: true // This will include the related Pedido
             }
         });
-    
-        if(!pedidoResuelto || pedidoResuelto.length === 0){
-            res.status(400).send("No se encuentra usuario o pedidos resueltos")
-            return;
+        if(!pedidoResuelto){
+            res.status(400).send("No se encuentra usuario")
+            return
         }
-    
-        res.json(pedidoResuelto);
-    });
+        res.json(pedidoResuelto)
+        })
     
     
     return router

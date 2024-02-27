@@ -4,6 +4,7 @@ import PedidosRoute from "./pedidos.route"
 import EdificiosRoute from "./edificios.route"
 import { type Express } from "express"
 import PedidoResueltoRoute from "./pedidoResuelto.route"
+import admin from "firebase-admin";
 
 const addRoutes = (app: Express, prisma: PrismaClient) => {
     app.get('/', (req, res) => {
@@ -11,11 +12,12 @@ const addRoutes = (app: Express, prisma: PrismaClient) => {
             message: "Hello world!"
         })
     })
+    const admin= require("firebase-admin")
     // Acá van tus custom routers
     app.use('/pedidos/', PedidosRoute(prisma))
     app.use('/users/', UserRoute(prisma))
     app.use('/edificios/',EdificiosRoute(prisma))
-    app.use('/pedidoResuelto/',PedidoResueltoRoute(prisma))
+    app.use('/pedidoResuelto/',PedidoResueltoRoute(prisma,admin))
     
 }
 
