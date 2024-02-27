@@ -6,9 +6,10 @@ import storage from '@react-native-firebase/storage'; // Import Firebase storage
 import styles from '../styles';
 import { Camara } from './Camara';
 
+
 const API_URL = "http://localhost:3000";
 
-export const PedidoFillWithQR = ( props ) => {
+export const PedidoFillWithQR = ( {...props } ) => {
     const [uploading, setUploading] = useState(false); // State to track upload progress
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -28,6 +29,7 @@ export const PedidoFillWithQR = ( props ) => {
 
 
     const propsUserData = props.route.params.userData;
+  
 
   const fetchEdificios = async () => {
     try {
@@ -51,7 +53,7 @@ export const PedidoFillWithQR = ( props ) => {
       }
   };
   nombreEdificio(edificios)
-  console.log(edificios)
+//   console.log('id user:'+propsUserData.id)
 
 useEffect(() => {
     if (loading) {
@@ -128,8 +130,7 @@ useEffect(() => {
             setImageSource("");
             setImageURL(null);
             let url = "";
-  
-          
+            props.navigation.navigate('MainTabNavigator', { userData: propsUserData })        
         } else {
           Alert.alert('Error', 'Failed to submit your request. Please try again.');
         }

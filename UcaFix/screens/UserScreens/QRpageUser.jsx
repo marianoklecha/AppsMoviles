@@ -13,11 +13,11 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { Camera, useCameraDevice, useCodeScanner } from 'react-native-vision-camera';
-
+const API_URL = "http://localhost:3000";
 export function QRpageUser(props) {
   const camera = useRef(null);
   const device = useCameraDevice('back');
-
+  const propsUserData = props.route.params.userData;
   const [showCamera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
   const [QRManual, abrirQRManual] = useState(false);
@@ -82,7 +82,7 @@ export function QRpageUser(props) {
   }
 
   const visitarPedidos = (aula,piso, edificioId) => {
-    props.navigation.navigate('PedidoFillWithQR', { aulaInfo: { aula,piso,edificioId } });
+    props.navigation.navigate('PedidoFillWithQR', { aulaInfo: { aula,piso,edificioId },userData: propsUserData });
   };
   
 
