@@ -8,6 +8,7 @@ import { PedidosResueltos } from './PedidosResueltos';
 import { InputClassroomScreen } from './InputClassroomScreen';
 import { UserProfile } from './UserProfile';
 import { QRpageUser } from './QRpageUser';
+import { PedidoFillWithQR } from './PedidoFillWithQR';
 import { InsertarPedido } from './scannerSelectQR/InsertarPedido';
 
 const Stack = createStackNavigator();
@@ -41,6 +42,10 @@ function TabNav({ route }) {
       />
       <Stack.Screen 
         name='InsertarPedido' component={InsertarPedido} options={{ headerShown: false }}
+        initialParams={{ userData }}
+      />
+      <Stack.Screen 
+        name='PedidoFillWithQR' component={PedidoFillWithQR} options={{ headerShown: false }}
         initialParams={{ userData }}
       />
     </Stack.Navigator>

@@ -130,7 +130,8 @@ useEffect(() => {
             setImageSource("");
             setImageURL(null);
             let url = "";
-            props.navigation.navigate('MainTabNavigator', { userData: propsUserData })        
+            props.navigation.navigate('Menu', { screen: 'MainScreen', params: { userData: propsUserData } });
+      
         } else {
           Alert.alert('Error', 'Failed to submit your request. Please try again.');
         }
@@ -193,18 +194,9 @@ useEffect(() => {
             value={title}
           />
           <Text style={styles.inputTitle}>Espacio/Aula</Text>
-          <TextInput
-        style={styles.input}
-        value={aula}
-        onChangeText={setAula}
-      />
-
+          <Text style={styles.input} value={aula}>{aula}</Text> 
             <Text style={[styles.inputTitle, { marginTop:15 }]}>Piso</Text>
-            <TextInput
-        style={styles.input}
-        value={piso}
-        onChangeText={setPiso}
-      />    
+            <Text style={styles.input} value={piso}>{piso}</Text>  
       <Text style={[styles.inputTitle, { marginTop:15 }]}>Edificio</Text>
         <Text style={styles.input} value={edificioID}>{edificioNombre}</Text>
           
