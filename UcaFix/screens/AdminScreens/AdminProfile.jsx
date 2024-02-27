@@ -9,6 +9,7 @@ export function AdminProfile(props) {
 
   useEffect(() => {
     fetchPedidos();
+    console.log(pedidos)
   }, []);
 
   const fetchPedidos = async () => {
@@ -55,6 +56,7 @@ export function AdminProfile(props) {
           <Text style={styles.completedRequestsLabel}>Pedidos Completados</Text>
         </View>
         <FlatList
+        style = {styles.flatlist}
           data={pedidos}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
@@ -97,12 +99,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   requestItem: {
-    marginTop: 10,
+    marginVertical: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#DADBDF'
-
+    backgroundColor: '#DADBDF',
+    
   },
   requestName: {
     fontSize: 18,
@@ -142,4 +144,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: '2%',
   },
+  
 });

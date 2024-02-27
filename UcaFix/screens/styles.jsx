@@ -230,6 +230,29 @@ const styles = StyleSheet.create({
       color: 'white',
       fontWeight: 'bold',
     },
+    headerAdmin: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'left',
+      padding: '5%',
+      paddingTop: '5%',
+      backgroundColor: "white"
+      
+    },
+    UcaLogoAdmin: {
+      width: 30,
+      height: 30,
+      marginLeft: '5%',
+      marginRight:5
+      
+    },
+    titleAdmin: {
+      fontSize: 30,
+      marginTop: 5,
+      color: 'black',
+      fontWeight: 'bold',
+      marginBottom: '2%',
+    },
 
 });
 export default styles;

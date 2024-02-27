@@ -8,7 +8,7 @@ export function UserProfile (props) {
 
   return (
     <>
-      <View style={styles.TitleContainer}>
+      <View style={styles.header}>
         <Image
           style={styles.UcaLogo}
           source={{
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: "white"
   },
   avatar: {
     width: 100,
@@ -77,10 +78,21 @@ const styles = StyleSheet.create({
     justifyContent: 'left',
     //backgroundColor: '#3FA7D6',
     padding:'3%',
-  },UcaLogo: {
+  }, header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'left',
+    padding: '3%',
+    paddingTop: '6.9%',
+  
+    backgroundColor: "white"
+    
+  },
+  UcaLogo: {
     width: 35,
     height: 35,
     marginLeft: '5%',
+    
   },
   title: {
     fontSize: 30,

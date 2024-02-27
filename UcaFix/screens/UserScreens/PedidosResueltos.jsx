@@ -75,14 +75,11 @@ export function PedidosResueltos(props) {
 
   return (
     <View style={styles.back}>
-      <View style={styles.TitleContainer}>
-        <Image
-          style={styles.UcaLogo}
-          source={{
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
-          }}
+      <View style={styles.header}>
+        <Image style={styles.UcaLogo}
+          source={{uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'}}
         />
-        <Text style={[styles.title]}>UCA FIX</Text>
+        <Text style={styles.title}>UCA FIX</Text>
       </View>
 
       <View style={styles.filterContainer}>
@@ -91,7 +88,7 @@ export function PedidosResueltos(props) {
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
         >
-          <Text style={styles.filterButtonText}>Filter</Text>
+          <Text style={styles.filterButtonText}>Filtro</Text>
         </TouchableOpacity>
 
         <Modal
@@ -356,6 +353,29 @@ const styles = StyleSheet.create({
     width: 80,
     height: 120,
     margin: 15,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'left',
+    padding: '3%',
+    paddingTop: '6.9%',
+  
+    backgroundColor: "white"
+    
+  },
+  UcaLogo: {
+    width: 35,
+    height: 35,
+    marginLeft: '5%',
+    
+  },
+  title: {
+    fontSize: 30,
+    marginTop: 5,
+    color: 'black',
+    fontWeight: 'bold',
+    marginBottom: '2%',
   },
 });
 

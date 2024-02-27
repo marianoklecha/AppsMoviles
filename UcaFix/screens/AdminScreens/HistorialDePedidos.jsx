@@ -206,7 +206,7 @@ export function HistorialDePedidos(props) {
             ))}
 
             {selectedRequest === item.id && (
-              <View style={styles.detailsContainer}>
+              <View  style={styles.detailsContainer}>
                 <Text style={styles.pedidoDescripcion}>Descripción del pedido</Text>
                 <Image style={styles.pedidoImagen} source={{uri: item.image}}/>
                 <Text style={styles.detailsText}>{item.content}</Text>
@@ -220,7 +220,7 @@ export function HistorialDePedidos(props) {
                 ))}
 
                 {item.pedidosResueltos.map((pedidoResuelto, index) => (
-                  <Text key={index} style={styles.detailsText}>{pedidoResuelto.comments}</Text>
+                  <Text key={index+1000} style={styles.detailsText}>{pedidoResuelto.comments}</Text>
                 ))}           
                 
               </View>

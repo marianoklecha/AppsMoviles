@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
     justifyContent: 'left',
     padding: '5%',
     paddingTop: '5%',
-    elevation: 4,
     backgroundColor: "white"
     
   },

@@ -232,7 +232,7 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
                 style={styles.buttonLogo}
                 source={{ uri: 'https://img.icons8.com/?size=256&id=59764&format=png' }}
               />
-              <Text style={styles.buttonText}>Cargar imagen/es</Text>
+              <Text style={styles.buttonText}>Cargar imagen</Text>
             </TouchableOpacity>
 
             {localImageSource !== "" && (

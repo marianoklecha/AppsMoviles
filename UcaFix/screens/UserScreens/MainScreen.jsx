@@ -124,8 +124,8 @@ export function MainScreen(props) {
       marginTop: '15%'
     },
     UcaLogo:{
-      width: 50,
-      height: 50,
+      width: 60,
+      height: 60,
       marginTop:15,
     },
     footerContainer:{

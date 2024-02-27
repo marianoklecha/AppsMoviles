@@ -66,21 +66,27 @@ const PedidoResueltoRoute = (prisma: PrismaClient,firebaseAdmin: admin.app.App) 
     });
     router.get('/getPedResueltosByUser', async (req, res) => {
         const adminId = req.query.adminId as string | undefined;
-            if (adminId === undefined) {
-                return res.status(400).json({ error: 'Author ID is required' });
-            }
-
+        
+        if (adminId === undefined) {
+            return res.status(400).json({ error: 'Author ID is required' });
+        }
+    
         const pedidoResuelto = await prisma.pedidoResuelto.findMany({
             where: {
                 adminId: parseInt(adminId),
+            },
+            include: {
+                pedido: true // This will include the related Pedido
             }
         });
-        if(!pedidoResuelto){
-            res.status(400).send("No se encuentra usuario")
-            return
+    
+        if(!pedidoResuelto || pedidoResuelto.length === 0){
+            res.status(400).send("No se encuentra usuario o pedidos resueltos")
+            return;
         }
-        res.json(pedidoResuelto)
-        })
+    
+        res.json(pedidoResuelto);
+    });
     
     
     return router
