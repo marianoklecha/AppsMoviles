@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { Alert } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 import { MainScreen, InputClassroomScreen,LoginScreen,AdminOUser,QRpageAdmin,QRpageUser,HistorialDePedidos,ElegirEdificio,PaginaInicio, FinalizarArreglo,ListaPedidos, MainTabNavigator, UserProfile,PedidosResueltos,AdminProfile,AdminTabNavigator,MapaPedidos,InsertarPedido,AulaQR,EspacioComunQR,Camara,Escaner,PedidoFillWithQR } from './screens';
@@ -24,6 +25,13 @@ const App = () => {
   const [loggedInUser, setLoggedInUser] = React.useState(null);
   console.log("### APP ###")
   console.log(loggedInUser)
+  React.useEffect(() => {
+    const subscription = messaging().onMessage(async remoteMessage => {
+      Alert.alert("Llego una notif", remoteMessage.notification.body)
+    })
+    return subscription
+  })
+  
   return (
     <NavigationContainer>
       <Stack.Navigator>

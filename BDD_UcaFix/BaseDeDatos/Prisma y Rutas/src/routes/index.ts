@@ -4,6 +4,7 @@ import PedidosRoute from "./pedidos.route"
 import EdificiosRoute from "./edificios.route"
 import { type Express } from "express"
 import PedidoResueltoRoute from "./pedidoResuelto.route"
+import NotificacionesRoute from "./notificaciones.route"
 import admin from "firebase-admin";
 
 const addRoutes = (app: Express, prisma: PrismaClient) => {
@@ -18,7 +19,7 @@ const addRoutes = (app: Express, prisma: PrismaClient) => {
     app.use('/users/', UserRoute(prisma))
     app.use('/edificios/',EdificiosRoute(prisma))
     app.use('/pedidoResuelto/',PedidoResueltoRoute(prisma,admin))
-    
+    app.use('/notificaciones/',NotificacionesRoute(prisma,admin))
 }
 
 export default addRoutes

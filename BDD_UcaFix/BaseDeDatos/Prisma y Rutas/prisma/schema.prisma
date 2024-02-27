@@ -16,6 +16,7 @@ model User {
   pedidos           Pedido[]
   pedidosResueltos  PedidoResuelto[]
   tokenId           FCMToken[]
+  notificacion      Notificacion[]
 }
 model PedidoResuelto{
   id          Int       @id @default(autoincrement())
@@ -25,7 +26,14 @@ model PedidoResuelto{
   adminId     Int?      @default(0)
   comments    String? 
   imageFixed  String?
-
+  createdAt   DateTime @default(now())
+}
+model Notificacion {
+  id          Int       @id @default(autoincrement())
+  pedido      Pedido?   @relation(fields: [pedidoId], references: [id])
+  pedidoId    Int?      @default(0)
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int?      @default(0)
 }
 model Pedido {
   id                Int      @id @default(autoincrement())
@@ -41,7 +49,7 @@ model Pedido {
   author            User?     @relation(fields: [authorId], references: [id])
   authorId          Int?      @default(0)
   pedidosResueltos  PedidoResuelto[]
-
+  notificacion      Notificacion[]
 }
 model Aula{
   id          Int       @id @default(autoincrement())

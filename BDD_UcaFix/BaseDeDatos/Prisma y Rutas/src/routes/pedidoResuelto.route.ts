@@ -29,23 +29,12 @@ const PedidoResueltoRoute = (prisma: PrismaClient,firebaseAdmin: admin.app.App) 
                     include: { author: true }, // Include author to get user ID
                 });
 
-                // Fetch the FCMToken of the author
-                const authorFCMToken = await prisma.fCMToken.findFirst({
-                    where: {
-                        userId: (updatedPedido.authorId as number | undefined),
-                    },
+                const createdNotificacion = await prisma.notificacion.create({
+                    data: {
+                        pedidoId,
+                        userId: updatedPedido.authorId
+                     },
                 });
-
-                if (authorFCMToken) {
-                    // Send notification
-                    await firebaseAdmin.messaging().send({
-                        token: authorFCMToken.device_token,
-                        notification: {
-                            title: 'Pedido Resolved',
-                            body: 'Your pedido has been resolved.',
-                        },
-                    });
-                }
 
                 res.status(201).json(updatedPedido);
             } else {
