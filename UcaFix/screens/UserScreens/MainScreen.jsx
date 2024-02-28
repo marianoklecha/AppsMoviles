@@ -18,8 +18,6 @@ export function MainScreen(props) {
         const response = await fetch(API_URL + "/notificaciones/getNotifsByUser?userId="+userData.id);
         if (response.ok) {
           const data = await response.json();
-        } else {
-          Alert.alert("Error", "Failed to fetch Notificaciones");
         }
       } catch (error) {
         console.error("Error fetching Notificaciones: ", error);
