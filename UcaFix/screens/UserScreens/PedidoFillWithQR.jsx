@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Keyboard, Platform, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Alert, Modal, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import storage from '@react-native-firebase/storage'; // Import Firebase storage module
+import storage from '@react-native-firebase/storage';
 import styles from '../styles';
 import { Camara } from './Camara';
 
@@ -10,13 +10,13 @@ import { Camara } from './Camara';
 const API_URL = "http://localhost:3000";
 
 export const PedidoFillWithQR = ( {...props } ) => {
-    const [uploading, setUploading] = useState(false); // State to track upload progress
+    const [uploading, setUploading] = useState(false);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [edificios, setEdificios] = useState([]);
     const [selectedEdificio, setSelectedEdificio] = useState(null);
     const [imageURL, setImageURL] = useState(null);
-    const [loading, setLoading] = useState(false); // State to track loading
+    const [loading, setLoading] = useState(false);
     const [cameraVisible, setCameraVisible] = useState(false);
     const [imageSource, setImageSource] = useState("");
     const aulaInfo = props.route.params.aulaInfo;
@@ -54,14 +54,11 @@ export const PedidoFillWithQR = ( {...props } ) => {
       }
   };
   nombreEdificio(edificios)
-//   console.log('id user:'+propsUserData.id)
 
 useEffect(() => {
     if (loading) {
-      // Start loading indicator
       setLoading(true);
     } else {
-      // Stop loading indicator
       setLoading(false);
     }
   }, [loading]);
@@ -80,8 +77,6 @@ useEffect(() => {
             setUploading(true);
             const reference = storage().ref(`images/${Date.now()}`);
             const task = reference.putFile(imageUri);
-      
-            // Track upload progress
             task.on('state_changed', (snapshot) => {
               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
               console.log(`Upload is ${progress}% done`);
@@ -136,11 +131,11 @@ useEffect(() => {
         } else {
           Alert.alert('Error', 'Failed to submit your request. Please try again.');
         }
-        setLoading(false); // Stop loading indicator
+        setLoading(false); 
       } catch (error) {
         console.error('Error submitting request:', error);
         Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
-        setLoading(false); // Stop loading indicator
+        setLoading(false); 
       }finally{
         setLoading(false);
       }
@@ -158,12 +153,11 @@ useEffect(() => {
         return;
       }
   
-      setLoading(true); // Start loading indicator
+      setLoading(true); 
     
-      await uploadImageToFirebaseStorage(imageSource); // Wait for image upload to complete
-      // Wait until imageURL is not null
+      await uploadImageToFirebaseStorage(imageSource); 
       
-      console.log(imageURL); // This should now have the correct value
+      console.log(imageURL); 
     
       if (url === null) {
         Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');

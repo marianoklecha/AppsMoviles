@@ -168,7 +168,7 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
             <Text style={styles.inputTitle}>Biblioteca o Baño</Text>
             <SelectList 
               search={false} 
-              setSelected={(val) => setAula(val)} // Update the aula state here
+              setSelected={(val) => setAula(val)} 
               boxStyles={{borderRadius:10, backgroundColor:"#F9F9F9",borderWidth:0,}}
               inputStyles={{borderRadius:6, color:"#8D8D8D", padding:"2%"}}
               dropdownStyles={{borderRadius:6,borderWidth:0,backgroundColor:"#F9F9F9"}}

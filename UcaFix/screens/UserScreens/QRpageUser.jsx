@@ -49,13 +49,6 @@ export function QRpageUser(props) {
       codes.forEach(code => console.log(code));
       lastCode= codes[0].value;
       setShowCamera(false);
-      /*
-      Alert.alert(
-        `Alerta de ejemplo`,
-        `Se escaneó el código ${codes[0].value}`,
-      [
-        {text: 'OK', onPress: () => setShowCamera(true)},
-      ])*/
       handleVisitarPedido();
     }
   })
@@ -74,36 +67,16 @@ export function QRpageUser(props) {
   const handleVisitarPedido = () => {
     setTimeout(() => {
       llenarInformacion();
-    }, 500); // 500 milliseconds (medio segundo)
+    }, 500); 
 
     setTimeout(() => {
       visitarPedidos(aula,piso,edificioId);
-    }, 500); // 500 milliseconds (medio segundo)
+    }, 500); 
   }
 
   const visitarPedidos = (aula,piso, edificioId) => {
     props.navigation.navigate('PedidoFillWithQR', { aulaInfo: { aula,piso,edificioId },userData: propsUserData });
   };
-  
-
-  /* import React from 'react';
-import { View, Text } from 'react-native';
-
-const YourComponent = () => {
-  const text = "105.1.San Alberto Magno";
-  const parts = text.split(".");
-
-  return (
-    <View>
-      {parts.map((part, index) => (
-        <Text key={index}>{part}</Text>
-      ))}
-    </View>
-  );
-};
-
-export default YourComponent; */
-
   if (device == null) {
     return <Text>Camera not available</Text>;
   }

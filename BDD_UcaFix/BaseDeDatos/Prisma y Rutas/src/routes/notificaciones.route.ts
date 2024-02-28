@@ -32,8 +32,8 @@ const NotificacionesRoute = (prisma: PrismaClient, firebaseAdmin: admin.app.App)
         await firebaseAdmin.messaging().send({
           token: authorFCMToken.device_token,
           notification: {
-            title: 'Pedido Resolved',
-            body: 'Your pedido has been resolved.',
+            title: 'Pedido Resuelto',
+            body: 'Tu pedido ha sido resuelto.',
           },
         });
 
