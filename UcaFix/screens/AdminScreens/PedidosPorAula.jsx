@@ -26,7 +26,7 @@ export function PedidosPorAula(props) {
   const propsUserData = props.route.params.userData;
   const aulaInfo = props.route.params.aulaInfo;
   const aula = aulaInfo.aula.toString();
-  const piso = aulaInfo.selectedFloor;
+  const piso = aulaInfo.piso;
   const edificioId = aulaInfo.edificioId;
   if (aula === 'Baño' || aula === 'Biblioteca'){ pisoDisponible = true}
   console.log(aula);

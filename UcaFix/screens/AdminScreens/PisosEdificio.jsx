@@ -142,19 +142,19 @@ export function PisosEdificio(props) {
 
       <View style={{ flex: 1 }}>
         <FadeInView visible={visible1}>
-          <MapaPedidos {...props} selectedFloor = {1} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
+          <MapaPedidos {...props} piso = {1} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
         </FadeInView>
 
         <FadeInView visible={visible2}>
-          <MapaPedidos {...props}  selectedFloor = {2} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
+          <MapaPedidos {...props}  piso = {2} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
         </FadeInView>
 
         <FadeInView visible={visible3}>
-          <MapaPedidos {...props}  selectedFloor = {3} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
+          <MapaPedidos {...props}  piso = {3} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
         </FadeInView>
 
         <FadeInView visible={visible4}>
-          <MapaPedidos {...props}  selectedFloor = {4} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
+          <MapaPedidos {...props}  piso = {4} edificioId = {edificioId} navigation={props.navigation} ></MapaPedidos>
         </FadeInView>
       </View>
     </View>

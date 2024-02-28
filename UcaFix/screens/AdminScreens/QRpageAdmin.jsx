@@ -68,7 +68,7 @@ export function QRpageAdmin(props) {
   }
 
   const visitarPedidos = (aula, edificioId) => {
-    props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId } });
+    props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId, piso } });
   };
 
   if (device == null) {
