@@ -24,6 +24,8 @@ export function FinalizarArreglo({...props }) {
   const [cameraVisible, setCameraVisible] = useState(false);
   const [imageSource, setImageSource] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [imagenGrande, setImagenGrande] = useState(false)
+
   let url = "";
 
   const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
@@ -180,13 +182,33 @@ export function FinalizarArreglo({...props }) {
           </TouchableOpacity>
 
           {imageSource !== "" && (
-            <View style={styles.imagePreviewContainer} >
+            <TouchableOpacity style={styles.imagePreviewContainer} onPress={() => setImagenGrande()}>
               <Text style={styles.buttonVistaPrevia}>Ver vista previa</Text>
               <Image source={{
                 uri: `file://'${imageSource}`,
               }} style={styles.imagePreview} />
-            </View>
+            </TouchableOpacity>
           )}
+
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={imagenGrande}
+            onRequestClose={() => setImagenGrande(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+
+                <Image source={{
+                uri: `file://'${imageSource}`,
+                }} style={styles.imageGrande} />
+                
+                <TouchableOpacity  style={styles.buttonCerrar} onPress={() => setImagenGrande(false)}>
+                  <Text style={styles.buttonTextCerrar}>Cerrar</Text>
+                </TouchableOpacity>
+              </View> 
+            </View>
+          </Modal>
 
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
             <Text style={styles.buttonTextListo}>Finalizar</Text>
@@ -411,5 +433,23 @@ export function FinalizarArreglo({...props }) {
         fontSize: 15,
         color: 'black',
         fontWeight: "600",
-      }
+      },
+      imageGrande: {
+        width: 300,
+        height: 500,
+        marginTop: 10,
+      },
+      buttonCerrar: {
+        padding: 10,
+        marginHorizontal:"20%",
+        borderRadius: 6,
+        backgroundColor: '#A1A1A1',
+        marginTop: 8
+      },
+      buttonTextCerrar: {
+        fontSize: 17,
+        textAlign: 'center',
+        color: 'white',
+        fontWeight: 'bold',
+      },
   });
