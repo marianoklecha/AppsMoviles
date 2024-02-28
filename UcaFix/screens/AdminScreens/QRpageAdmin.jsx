@@ -68,7 +68,12 @@ export function QRpageAdmin(props) {
   }
 
   const visitarPedidos = (aula, edificioId) => {
-    props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId, piso } });
+    if(!aula || !edificioId || !piso){
+      Alert.alert('Error de escaneo', 'Por favor, vuelva a escanear el QR.');
+    } else {
+      props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId, piso } });
+    }
+    setShowCamera(true);
   };
 
   if (device == null) {
