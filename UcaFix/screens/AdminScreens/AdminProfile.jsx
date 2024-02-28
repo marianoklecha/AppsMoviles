@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, Alert, RefreshControl } from 'react-native';
 
 const API_URL = "http://localhost:3000";
 export function AdminProfile(props) {
   const propsUserData = props.route.params.userData;
   const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
   const [pedidos, setPedidos] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
     fetchPedidos();
@@ -27,6 +28,14 @@ export function AdminProfile(props) {
       Alert.alert("Error", "An unexpected error occurred");
     }
   };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      fetchPedidos();
+      setRefreshing(false);
+    }, 500);
+  }, []);
 
   const formatDate = (createdAt) => {
     const date = new Date(createdAt);
@@ -59,11 +68,15 @@ export function AdminProfile(props) {
           <Text style={styles.name}>{propsUserData.name}</Text>
           <Text style={styles.email}>{propsUserData.email}</Text>
         </View>
+        
         <View style={styles.containerPedidosComplet}>
           <Text style={styles.completedRequestsLabel}>Arreglos que realizaste: {pedidos.length}</Text>
         </View>
+       
         <FlatList
         style = {styles.flatlist}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           data={pedidos}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}

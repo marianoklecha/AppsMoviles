@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, PanResponder, Animated, TouchableOpacity, Alert
 
 const API_URL = "http://localhost:3000";
 
-export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
+export function MapaPedidos({ piso, edificioId, ...props }) {
   const [localEdificioId, setLocalEdificioId] = useState(null);
   const [pedidos, setPedidos] = useState([]);
   const [scale, setScale] = useState(1);
@@ -37,7 +37,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
 
   useEffect(() => {
     startBlinkAnimation();
-  }, [edificioId,selectedFloor,props]);
+  }, [edificioId,piso,props]);
   
   const startBlinkAnimation = () => {
     Animated.loop(
@@ -108,7 +108,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
           floors[floor]['Biblioteca'] = 0;
         }
       }
-      squares = Object.entries(floors[selectedFloor]).map(([aula, count]) => {
+      squares = Object.entries(floors[piso]).map(([aula, count]) => {
         const backgroundColor = getBackgroundColor(count);
         if (aula === 'Baño' || aula === 'Biblioteca') {
           return (
@@ -119,7 +119,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
         }
       });
     } else {
-      squares = Object.entries(floors[selectedFloor]).map(([aula, count]) => {
+      squares = Object.entries(floors[piso]).map(([aula, count]) => {
         const backgroundColor = getBackgroundColor(count);
         return (
           <Animated.View key={aula} style={[styles.square, { backgroundColor, opacity: count > 0 ? blinkAnimation : 1 }]} onTouchStart={() => { touchStartTimeRef.current = Date.now() }} onTouchEnd={(event) => handleTouchEnd(event, aula, edificioId)}>
@@ -137,7 +137,7 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
     console.log(touchDuration);
     if (touchDuration < 150) {
       console.log('Short tap: ', aula, edificioId);
-      props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId, selectedFloor } });
+      props.navigation.navigate('PedidosPorAula', { aulaInfo: { aula, edificioId, piso } });
     } else {
       console.log('Long press ignored: ', aula, edificioId);
     }
