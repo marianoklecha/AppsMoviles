@@ -61,11 +61,11 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
           const data = await response.json();
           setEdificios(data);
         } else {
-          Alert.alert("Error", "Failed to fetch Edificios");
+          console.log("Error", "Falló el fetch de Edificios");
         }
       } catch (error) {
-        console.error("Error fetching Edificios: ", error);
-        Alert.alert("Error", "An unexpected error occurred");
+        console.error("Error al hacer el fetch de Edificios: ", error);
+      Alert.alert("Error", "Ocurrió un error inesperado");
       }
     };
 
@@ -80,13 +80,13 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
         });
   
         await task;
-        console.log('Image uploaded successfully');
+        console.log('Imagen subida exitosamente');
         url = await reference.getDownloadURL();
         console.log('Image URL:', url);
 
       } catch (error) {
-        console.error('Error uploading image:', error);
-        Alert.alert('Error', 'Failed to upload image to Firebase Storage');
+        console.error('Error subiendo la imagen:', error);
+        Alert.alert('Error', 'Ocurrió un error inesperado');
 
       } finally {
         setUploading(false);
@@ -121,21 +121,23 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
         });
   
         if (response.ok) {
-          Alert.alert('Pedido Exitoso', 'Tu pedido ha sido realizado correctamente');
+          Alert.alert('¡Pedido realizado!', 'Tu pedido ha sido realizado correctamente');
           setAula("");
           setTitle("");
           setContent("");
           setPiso("");
           setSelectedEdificio(null);
+          setLocalImageSource("");
+          setImageURL(null);
           url = "";
   
         } else {
-          Alert.alert('Error', 'Failed to submit your request. Please try again.');
+          Alert.alert('Error', 'Ha ocurrido un error. Intentelo nuevamente.');
         }
         setLoading(false);
       } catch (error) {
-        console.error('Error submitting request:', error);
-        Alert.alert('Error', 'An unexpected error occurred. Please try again later.');
+        console.error('Error al cargar el formulario', error);
+        Alert.alert('Error', 'Ha ocurrido un error inesperado. Por favor, intentelo nuevamente.');
         setLoading(false); 
       }
     };
@@ -243,7 +245,7 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
 
             {localImageSource !== "" && (
               <TouchableOpacity style={styles.imagePreviewContainer} onPress={() => setImagenGrande()}>
-                <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
+                <Text style={styles.buttonVistaPrevia}>Ver vista previa</Text>
                 <Image source={{
                   uri: `file://'${localImageSource}`,
                 }} style={styles.imagePreview} />

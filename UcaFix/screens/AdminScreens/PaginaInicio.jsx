@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 export function PaginaInicio(props) {
+    const userData=props.route.params.userData
     return (
       <View style={styles.back}>
         <View style={styles.TitleContainer}>
@@ -22,6 +23,7 @@ export function PaginaInicio(props) {
         </View>
 
         <SafeAreaView style={styles.container}>
+          <Text style={[styles.text]}>Hola, {userData.name}! </Text> 
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => props.navigation.navigate('ListaPedidos')}
@@ -84,7 +86,7 @@ export function PaginaInicio(props) {
   
     },
     container: {
-      marginTop:'20%',
+      marginTop:'5%',
       justifyContent: 'center',
       marginHorizontal: '10%',
       //backgroundColor: '#021B6F'

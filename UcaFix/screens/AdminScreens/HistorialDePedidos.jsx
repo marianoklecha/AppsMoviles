@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   Alert,
+  RefreshControl
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,6 +20,7 @@ export function HistorialDePedidos(props) {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const propsUserData = props.route.params.userData;
   const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
@@ -62,11 +64,17 @@ export function HistorialDePedidos(props) {
     console.log(adminNombres);
   };
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      fetchPedidos();
+      setRefreshing(false);
+    }, 500);
+  }, []);
+
   const handleRequestClick = (item) => {
     setSelectedRequest(selectedRequest === item.id ? null : item.id);
   };
-
-  const navigation = useNavigation();
 
   const filteredRequests = pedidos.filter((item) => {
     if (filter === 'all') {
@@ -187,7 +195,9 @@ export function HistorialDePedidos(props) {
       </Modal>
     </View> 
 
-    <ScrollView style={styles.scrollView} >
+    <ScrollView style={styles.scrollView} refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
       {filteredRequests.map((item) => (
         <TouchableOpacity
           key={item.id}
@@ -207,11 +217,9 @@ export function HistorialDePedidos(props) {
 
             {selectedRequest === item.id && (
               <View  style={styles.detailsContainer}>
-                <Text style={styles.pedidoDescripcion}>Descripción del pedido</Text>
+                
+                <Text style={styles.pedidoDescripcion}>Imagenes adjuntas       </Text>
                 <Image style={styles.pedidoImagen} source={{uri: item.image}}/>
-                <Text style={styles.detailsText}>{item.content}</Text>
-                <Text style={styles.detailsText}>Solicitado: {formatDate(item.createdAt)}</Text> 
-                <Text style={styles.pedidoDescripcion}>Descripción del arreglo</Text>
 
                 {item.pedidosResueltos.map((pedidoResuelto, index) => (
                   <>
@@ -219,8 +227,19 @@ export function HistorialDePedidos(props) {
                     key={item.id}
                     style={styles.pedidoImagen}
                     source={{uri: pedidoResuelto.imageFixed}}/>
+                  
+                  </>
+                ))}
+                <Text style={styles.pedidoDescripcion}>Pedido - Solicitado: {formatDate(item.createdAt)} </Text>
+                <Text style={styles.detailsText}>{item.content}</Text>
+                
+                
+
+                {item.pedidosResueltos.map((pedidoResuelto, index) => (
+                  <>
+                  <Text style={styles.pedidoDescripcion}>Arreglo - Finalizado: {formatDate(pedidoResuelto.createdAt)}    </Text>
                   <Text key={index+1000} style={styles.detailsText}>{pedidoResuelto.comments}</Text>
-                  <Text key={index+2000} style={styles.detailsText}>Fin del arreglo: {formatDate(pedidoResuelto.createdAt)}</Text>
+                  
                   </>
                 ))}
 
@@ -324,14 +343,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 15,
     marginRight: 15,
-
+    
   },
   requestItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 14,
     marginBottom: 20,
-    backgroundColor: '#F3F5F8',
+    backgroundColor: '#D5E9F7',
     borderRadius: 15,
   },
   requestInfo: {
@@ -343,17 +362,20 @@ const styles = StyleSheet.create({
   pedidoDescripcion: {
     fontSize: 15,
     color: 'black',
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center",
   },
   detailsContainer: {
     flex: 1,
     marginTop: 10,
     marginRight: 10,
-    backgroundColor: "#CECECE",
-    
+    backgroundColor: "#EFEFEF",
     paddingVertical: 10,
     paddingHorizontal: 20,
-    alignItems: "center"
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    borderRadius: 10
   },
   subtitle:{
     marginTop: 10,
@@ -397,6 +419,8 @@ const styles = StyleSheet.create({
     width: 80,
     height: 120,
     margin: 15,
+    flexDirection: "row",
+    marginHorizontal:"8.4%"
   },
   requestTitle: {
     marginBottom: 5,

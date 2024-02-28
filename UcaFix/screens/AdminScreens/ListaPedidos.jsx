@@ -8,6 +8,7 @@ import {
   Image,
   Modal,
   Alert,
+  RefreshControl
 } from 'react-native';
 
 const API_URL = "http://localhost:3000";
@@ -17,6 +18,7 @@ export function ListaPedidos(props) {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const propsUserData = props.route.params.userData;
   const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
@@ -40,6 +42,14 @@ export function ListaPedidos(props) {
       Alert.alert("Error", "An unexpected error occurred");
     }
   };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      fetchPedidos();
+      setRefreshing(false);
+    }, 500);
+  }, []);
 
   const handleRequestClick = (item) => {
     setSelectedRequest(selectedRequest === item.id ? null : item.id);
@@ -171,7 +181,9 @@ export function ListaPedidos(props) {
         </Modal>
       </View>
 
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+
         {filteredRequests.map((item) => (
           <TouchableOpacity
             key={item.id}

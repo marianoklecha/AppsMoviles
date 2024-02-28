@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  RefreshControl
 } from 'react-native';
 
 export function PedidosPorAula(props) {
@@ -14,6 +15,7 @@ export function PedidosPorAula(props) {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [filter, setFilter] = useState('notFixed');
   const [edificio, setEdificio] = useState("");
+  const [refreshing, setRefreshing] = React.useState(false);
   let pisoDisponible = false;
 
   useEffect(() => {
@@ -67,6 +69,14 @@ export function PedidosPorAula(props) {
     }
   };
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      fetchPedidos();
+      setRefreshing(false);
+    }, 500);
+  }, []);
+
   const handleRequestClick = (item) => {
     setSelectedRequest(selectedRequest === item.id ? null : item.id);
   };
@@ -98,7 +108,9 @@ export function PedidosPorAula(props) {
         {pisoDisponible && <Text style={styles.subtitle2}>Piso {piso}</Text>}
       </View>
 
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {filteredRequests.map((item) => (
           <TouchableOpacity
             key={item.id}

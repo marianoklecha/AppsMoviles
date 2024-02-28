@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     paddingRight:20,
   },
   avatar: {
-    width: 100,
-    height: 100,
+    width: 70,
+    height: 70,
     borderRadius: 75,
     margin: 15,
   },
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#DADBDF',
+    backgroundColor: '#D5E9F7',
     
   },
   requestName: {

@@ -6,7 +6,7 @@ import {
   Text,
   Image,
   View,
-  Alert
+  Alert,
 } from 'react-native';
 const API_URL = "http://localhost:3000";
 export function MainScreen(props) {
@@ -40,7 +40,7 @@ export function MainScreen(props) {
         </View>
         
         <SafeAreaView style={styles.container}>
-          <Text style={[styles.text]}>Bienvenido/a! </Text> 
+          <Text style={[styles.text]}>Hola, {userData.name}! </Text> 
 
           <TouchableOpacity
             style={[styles.button]}

@@ -69,7 +69,7 @@ export function FinalizarArreglo({...props }) {
   };
   const handleCreatePedido = async () => {
     if (!comments) {
-      Alert.alert('Arreglo Incompleto', 'Por favor, llene todos los campos y cargue una imagen antes de hacer un pedido.');
+      Alert.alert('Formulario incompleto', 'Por favor, llene todos los campos y cargue una imagen antes de hacer un pedido.');
       return;
     }
   
@@ -133,21 +133,15 @@ export function FinalizarArreglo({...props }) {
 
   return (
     <SafeAreaView style={styles.back}>
-
-      <View style={styles.TitleContainer}>
-        <Image
-          style={styles.UcaLogo}
-          source={{
-            uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'
-          }}
+      <View style={styles.header}>
+        <Image style={styles.UcaLogo}
+          source={{uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'}}
         />
-        <Text style={[styles.title]}>UCA FIX</Text>
+        <Text style={styles.title}>UCA FIX</Text>
       </View>
 
       <ScrollView>
-        <View style={styles.tituloPagina}>
-          <Text style={styles.textoTituloPagina}>Finalización del pedido recibido:</Text>
-        </View>
+        
 
         <View style={styles.container}>
           <Text style={styles.tituloPedido}>{pedido.title}</Text>
@@ -182,12 +176,12 @@ export function FinalizarArreglo({...props }) {
                 source={{ uri: 'https://img.icons8.com/?size=256&id=59764&format=png' }}
                
               />
-            <Text style={styles.buttonText}>Cargar imagen/es</Text>
+            <Text style={styles.buttonText}>Cargar imagen</Text>
           </TouchableOpacity>
 
           {imageSource !== "" && (
             <View style={styles.imagePreviewContainer} >
-              <Text style={styles.buttonVistaPrevia}>Vista previa</Text>
+              <Text style={styles.buttonVistaPrevia}>Ver vista previa</Text>
               <Image source={{
                 uri: `file://'${imageSource}`,
               }} style={styles.imagePreview} />
@@ -195,7 +189,7 @@ export function FinalizarArreglo({...props }) {
           )}
 
           <TouchableOpacity style={styles.buttonListo} onPress={() => handleCreatePedido()}>
-            <Text style={styles.buttonTextListo}>Listo</Text>
+            <Text style={styles.buttonTextListo}>Finalizar</Text>
           </TouchableOpacity>
         </View>
 
@@ -240,9 +234,10 @@ export function FinalizarArreglo({...props }) {
         fontSize: 18,
         color: 'black',
         fontWeight: 'bold',
+        marginTop: "1%",
     },
     buttonLogo: {
-        marginTop: "4%",
+        marginTop: "1%",
         width: 40,
         height:25
     },
@@ -256,11 +251,29 @@ export function FinalizarArreglo({...props }) {
       marginBottom:20,
       color: 'black',
     },
-    title :{
-      fontSize: 37,
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'left',
+      padding: '5%',
+      paddingTop: '5%',
+    
+      backgroundColor: "white"
+      
+    },
+    UcaLogo: {
+      width: 30,
+      height: 30,
+      marginLeft: '5%',
+      marginRight:5
+      
+    },
+    title: {
+      fontSize: 30,
+      marginTop: 5,
       color: 'black',
       fontWeight: 'bold',
-  
+      marginBottom: '2%',
     },
     TitleContainer:{
       flexDirection: 'row', 
@@ -269,13 +282,7 @@ export function FinalizarArreglo({...props }) {
       margin:10,
       padding: 10
     },
-    UcaLogo:{
-      width: 35,
-      height: 35,
-      marginTop: "2.5%",
-      marginLeft: "3%",
-      marginRight:"3%"
-    },
+    
     footerContainer:{
       flexDirection: 'row', 
       justifyContent: 'space-between',   
@@ -284,7 +291,6 @@ export function FinalizarArreglo({...props }) {
       
     },
     container: {
-        marginTop:'5%',
         alignContent:"left",
         borderRadius:10,
         marginHorizontal: '5%',
@@ -297,7 +303,7 @@ export function FinalizarArreglo({...props }) {
         borderRadius:10,
         marginHorizontal: '5%',
         backgroundColor: '#EAEAEA',
-        marginBottom:"23%"
+        marginBottom:"5%"
     }
     ,
     buttonListo: {
@@ -399,5 +405,11 @@ export function FinalizarArreglo({...props }) {
       },
       pedidoContainer: {
         alignItems: 'center',
+      },
+      buttonVistaPrevia: {
+        textAlign: "center",
+        fontSize: 15,
+        color: 'black',
+        fontWeight: "600",
       }
   });
