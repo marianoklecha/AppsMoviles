@@ -144,10 +144,9 @@ export function MapaPedidos({ selectedFloor, edificioId, ...props }) {
   };
 
   const getBackgroundColor = (count) => {
-    
-    if (count == 1) {
+    if (count === 1) {
       return 'yellow';
-    } else if (count == 2) {
+    } else if (count === 2) {
       return 'orange';
     } else if (count >= 3) {
       return 'red';
