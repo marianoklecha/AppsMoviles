@@ -76,7 +76,7 @@ const PedidoResueltoRoute = (prisma: PrismaClient,firebaseAdmin: admin.app.App) 
                 adminId: parseInt(adminId),
             },
             include: {
-                pedido: true // This will include the related Pedido
+                pedido: true 
             }
         });
     

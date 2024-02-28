@@ -15,6 +15,7 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [edificios, setEdificios] = useState([]);
+    const [edificiosMostrar, setEdificiosMostrar] = useState([]);
     const [selectedEdificio, setSelectedEdificio] = useState(null);
     const [imageURL, setImageURL] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -35,6 +36,11 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
         return imageSource;
       });
     }, [imageSource]);
+
+    useEffect(() => {
+      const filteredEdificios = aula === "Biblioteca" ? edificios.filter(edificio => edificio.id === 3) : edificios;
+      setEdificiosMostrar(filteredEdificios);
+    }, [aula]);
 
     useEffect(() => {
       fetchEdificios();
@@ -201,7 +207,7 @@ export const EspacioComun = ({ onPressCameraButton, imageSource, ...props }) => 
               dropdownStyles={{ borderRadius:6, borderWidth:0, backgroundColor:"#F9F9F9", color:"#8D8D8D" }}
               dropdownItemStyles={{ borderRadius:6, backgroundColor:"#E6E6E6", marginHorizontal:"4%", marginTop:"2%", color:"#8D8D8D" }}
               dropdownTextStyles={{ padding:4, color:"#8D8D8D" }}
-              data={edificios.map(edificio => ({ key: edificio.id.toString(), value: edificio.nombre, id: edificio.id }))}
+              data={edificiosMostrar.map(edificio => ({ key: edificio.id.toString(), value: edificio.nombre, id: edificio.id }))}
               defaultOption={{ key:'1', value:'Seleccione' }}  
               save="value"
               value={selectedEdificio}

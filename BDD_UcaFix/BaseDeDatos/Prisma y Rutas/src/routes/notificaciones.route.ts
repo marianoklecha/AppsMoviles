@@ -12,37 +12,46 @@ const NotificacionesRoute = (prisma: PrismaClient, firebaseAdmin: admin.app.App)
     }
 
     try {
-      const notificaciones = await prisma.notificacion.findMany({
+      const notificaciones = await prisma.notificacion.findFirst({
         where: {
           userId: parseInt(userId),
         }
       });
 
-      if (!notificaciones || notificaciones.length === 0) {
+      if (!notificaciones) {
         return res.status(404).send("No notifications found for this user");
-      }
+      } else {
+        try {
+          const authorFCMToken = await prisma.fCMToken.findFirst({
+            where: {
+              userId: parseInt(userId),
+            },
+          });
 
-      const authorFCMToken = await prisma.fCMToken.findFirst({
-        where: {
-          userId: parseInt(userId),
-        },
-      });
-
-      if (authorFCMToken) {
-        await firebaseAdmin.messaging().send({
-          token: authorFCMToken.device_token,
-          notification: {
-            title: 'Pedido Resuelto',
-            body: 'Tu pedido ha sido resuelto.',
-          },
-        });
-
-        // Delete notifications after sending them
-        await prisma.notificacion.deleteMany({
-          where: {
-            userId: parseInt(userId),
-          },
-        });
+          const pedido = await prisma.pedido.findFirst({
+            where: {
+              id: parseInt((notificaciones.pedidoId as unknown) as string),
+            },
+          });
+    
+          if (authorFCMToken) {
+            await firebaseAdmin.messaging().send({
+              token: authorFCMToken.device_token,
+              notification: {
+                title: '¡Pedido resuelto!',
+                body: 'Tu pedido "' + pedido?.title + '" fue resuelto, gracias por tu ayuda.',
+              },
+            });
+    
+            await prisma.notificacion.deleteMany({
+              where: {
+                userId: parseInt(userId),
+              },
+            });
+          }
+        } catch (error) {
+          console.log(error)
+        }
       }
 
       return res.json(notificaciones);

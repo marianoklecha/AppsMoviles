@@ -27,7 +27,7 @@ const App = () => {
   console.log(loggedInUser)
   React.useEffect(() => {
     const subscription = messaging().onMessage(async remoteMessage => {
-      Alert.alert("Llego una notif", remoteMessage.notification.body)
+      Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body)
     })
     return subscription
   })

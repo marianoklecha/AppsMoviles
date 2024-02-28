@@ -28,10 +28,17 @@ export function AdminProfile(props) {
     }
   };
 
+  const formatDate = (createdAt) => {
+    const date = new Date(createdAt);
+    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    return formattedDate;
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.requestItem}>
       <Text style={styles.requestName}>{item.pedido.title}</Text>
-      <Text style={styles.requestBuilding}>{` ${item.pedido.aula} - ${edificios[item.pedido.edificioId - 1]}`}</Text>
+      <Text style={styles.requestBuilding}>{`${item.pedido.aula} - ${edificios[item.pedido.edificioId - 1]}`}</Text>
+      <Text style={styles.requestBuilding}>{`Fin del arreglo: ${formatDate(item.createdAt)} `}</Text>
     </View>
   );
 
@@ -53,7 +60,7 @@ export function AdminProfile(props) {
           <Text style={styles.email}>{propsUserData.email}</Text>
         </View>
         <View style={styles.containerPedidosComplet}>
-          <Text style={styles.completedRequestsLabel}>Pedidos Completados</Text>
+          <Text style={styles.completedRequestsLabel}>Arreglos que realizaste: {pedidos.length}</Text>
         </View>
         <FlatList
         style = {styles.flatlist}
@@ -97,6 +104,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 16,
   },
   requestItem: {
     marginVertical: 10,
@@ -110,10 +118,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color:'black',
+    textAlign: "center"
   },
   requestBuilding: {
     fontSize: 16,
-    color: "black"
+    color: "black",
+    textAlign: "center"
   },
   containerPedidosComplet:{
     paddingVertical: 10,

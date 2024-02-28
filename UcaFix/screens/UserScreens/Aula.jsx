@@ -73,6 +73,7 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
       if (response.ok) {
         const data = await response.json();
         setEdificios(data);
+
       } else {
         Alert.alert("Error", "Failed to fetch Edificios");
       }
@@ -83,11 +84,19 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
   };
 
   const handleCreatePedido = async () => {
-    if (!aula || !piso || !selectedEdificio || !title || !content) {
-      Alert.alert('Pedido Incompleto', 'Por favor, llene todos los campos y cargue una imagen antes de hacer un pedido.');
+    if (!aula || !selectedEdificio || !title || !content) {
+      Alert.alert('Formulario incompleto', 'Por favor, llene todos los campos y cargue una imagen antes de hacer un pedido.');
       return;
     }
-  
+
+    if(aula.length != 3 || (aula>166 && aula<200)|| (aula>266 && aula<300) || (aula>366 && aula<400) || aula>466){
+      Alert.alert('Número de aula incorrecto', 'Por favor, ingrese un aula existente');
+      return;
+    } else {
+      const piso = aula.startsWith('1') ? '1' : aula.startsWith('2') ? '2' : aula.startsWith('3') ? '3' : '4';
+      setPiso(piso);
+    }
+    
     if (!localImageSource) {
       Alert.alert('Error', 'Por favor, capture una imagen antes de crear el pedido.');
       return;
@@ -170,17 +179,7 @@ export function Aula({ onPressCameraButton, imageSource, ...props }) {
             onChangeText={(aula) => setAula(aula)}
             value={aula}
           />
-
-          <Text style={styles.inputTitle}>Piso</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholder="Ej: 1"
-            placeholderTextColor="#8D8D8D"
-            onChangeText={(piso) => setPiso(piso)}
-            value={piso}
-          />
-
+          
           <Text style={[styles.inputTitle]}>Edificio</Text>
           <SelectList
             search={true}

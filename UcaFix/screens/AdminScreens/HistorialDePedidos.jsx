@@ -103,7 +103,7 @@ export function HistorialDePedidos(props) {
       </View>
 
       <View style={styles.filterContainer}>
-        <Text style={styles.subtitle}>Últimos pedidos</Text> 
+        <Text style={styles.subtitle}>Arreglos realizados</Text> 
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setFilterModalVisible(true)}
@@ -214,14 +214,17 @@ export function HistorialDePedidos(props) {
                 <Text style={styles.pedidoDescripcion}>Descripción del arreglo</Text>
 
                 {item.pedidosResueltos.map((pedidoResuelto, index) => (
+                  <>
                   <Image
+                    key={item.id}
                     style={styles.pedidoImagen}
                     source={{uri: pedidoResuelto.imageFixed}}/>
+                  <Text key={index+1000} style={styles.detailsText}>{pedidoResuelto.comments}</Text>
+                  <Text key={index+2000} style={styles.detailsText}>Fin del arreglo: {formatDate(pedidoResuelto.createdAt)}</Text>
+                  </>
                 ))}
 
-                {item.pedidosResueltos.map((pedidoResuelto, index) => (
-                  <Text key={index+1000} style={styles.detailsText}>{pedidoResuelto.comments}</Text>
-                ))}           
+                        
                 
               </View>
             )}
