@@ -1,17 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
   Text,
   Image,
-  View
+  View,
+  Alert
 } from 'react-native';
-
+const API_URL = "http://localhost:3000";
 export function MainScreen(props) {
     console.log("### MainScreen ###")
+    const userData=props.route.params.userData
     console.log(props.route.params.userData)
-    
+    const fetchNotificaciones = async () => {
+      try {
+        const response = await fetch(API_URL + "/notificaciones/getNotifsByUser?userId="+userData.id);
+        if (response.ok) {
+          const data = await response.json();
+        } else {
+          Alert.alert("Error", "Failed to fetch Notificaciones");
+        }
+      } catch (error) {
+        console.error("Error fetching Notificaciones: ", error);
+        Alert.alert("Error", "An unexpected error occurred");
+      }
+    };
+    useEffect(() => {
+      fetchNotificaciones();
+    }, []);
     return (
       <View style={styles.back}>
         <View style={styles.TitleContainer} >
