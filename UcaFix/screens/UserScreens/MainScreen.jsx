@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -6,37 +6,42 @@ import {
   Text,
   Image,
   View,
-  Modal
+  Alert,
 } from 'react-native';
-
+const API_URL = "http://localhost:3000";
 export function MainScreen(props) {
-    const onTap = (nextScreen) => {
-      props.navigation.navigate(nextScreen);
-    };
-
     console.log("### MainScreen ###")
+    const userData=props.route.params.userData
     console.log(props.route.params.userData)
-    
-    
+    const fetchNotificaciones = async () => {
+      try {
+        const response = await fetch(API_URL + "/notificaciones/getNotifsByUser?userId="+userData.id);
+        if (response.ok) {
+          const data = await response.json();
+        }
+      } catch (error) {
+        console.error("Error fetching Notificaciones: ", error);
+        Alert.alert("Error", "An unexpected error occurred");
+      }
+    };
+    useEffect(() => {
+      fetchNotificaciones();
+    }, []);
     return (
-      
-      
-      // 
       <View style={styles.back}>
-
         <View style={styles.TitleContainer} >
-        <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
-              }}
-            />
-            <Text style={[styles.title]}>UCA FIX</Text>
-            
+          <Image
+            style={styles.UcaLogo}
+            source={{
+              uri: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Universidad_Cat%C3%B3lica_Argentina.png'
+            }}
+          />
+          <Text style={[styles.title]}>UCA FIX</Text>
         </View>
         
         <SafeAreaView style={styles.container}>
-          <Text style={[styles.text]}>Bienvenido/a! </Text> 
+          <Text style={[styles.text]}>Hola, {userData.name}! </Text> 
+
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => props.navigation.navigate('InputClassroomScreen')}>
@@ -47,12 +52,11 @@ export function MainScreen(props) {
               }}
             />
             <Text style={styles.buttonText}>Nuevo pedido</Text>
-            
           </TouchableOpacity>
           
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('Escaner')}>
+            onPress={() => props.navigation.navigate('QRpageUser')}>
            <Image
               style={styles.tinyLogo}
               source={{
@@ -62,13 +66,8 @@ export function MainScreen(props) {
             <Text style={styles.buttonText}>Escanear código QR</Text>
           </TouchableOpacity>
 
-
-          </SafeAreaView>
-
-
-          
+        </SafeAreaView> 
       </View>
-      
     );
   };
   
@@ -140,13 +139,13 @@ export function MainScreen(props) {
       marginTop: '15%'
     },
     UcaLogo:{
-      width: 50,
-      height: 50,
+      width: 60,
+      height: 60,
       marginTop:15,
     },
     footerContainer:{
       flexDirection: 'row', 
-      justifyContent: 'space-between',  // Align items to the right
+      justifyContent: 'space-between',
       backgroundColor: '#2F61AF',
       padding:'2%',
       

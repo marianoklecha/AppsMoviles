@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Keyboard, Animated, Text, Easing, TouchableOpacity, Image, View } from 'react-native';
-
-import { createStackNavigator } from '@react-navigation/stack';
-import Footer from '../Footer';
+import { Keyboard, Animated, Text, TouchableOpacity, Image, View } from 'react-native';
 import styles from '../styles'; 
 import { Aula } from './Aula';
 import { EspacioComun } from './EspacioComun';
@@ -48,7 +45,7 @@ export function InputClassroomScreen(props) {
 
   useEffect(() => {
     console.log("Updated image source INPUTCLASSROOM:", imageSource);
-  }, [imageSource]); // Log when imageSource changes
+  }, [imageSource]); 
 
   const toggleCamera = (input) => {
     setCameraVisible(input);
@@ -66,6 +63,7 @@ export function InputClassroomScreen(props) {
       keyboardDidShowListener.remove();
     };
   }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -80,18 +78,19 @@ export function InputClassroomScreen(props) {
 
       <View style = {styles.topBar}>
         <TouchableOpacity  style={visible ? styles.topBarButton1 : styles.topBarButton2} 
-        onPress={() => { if (!visible) { setVisible(true) }}}>
-            <Text 
-            style={visible ? styles.topBarButtonText1 : styles.topBarButtonText2}
-            >            Aulas            </Text>
+          onPress={() => { if (!visible) { setVisible(true) }}}>
+          <Text 
+          style={visible ? styles.topBarButtonText1 : styles.topBarButtonText2}
+          >            Aulas            </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={visible ? styles.topBarButton2 : styles.topBarButton1} 
-        onPress={() => { if (visible) { setVisible(false)}}}>
-            <Text style={visible ? styles.topBarButtonText2 : styles.topBarButtonText1}
-            >Espacios comunes</Text>
+          onPress={() => { if (visible) { setVisible(false)}}}>
+          <Text style={visible ? styles.topBarButtonText2 : styles.topBarButtonText1}
+          >Espacios comunes</Text>
         </TouchableOpacity>
       </View>
+
       <View style={{ flex: 1}}>
         <FadeInView visible={visible}>
           <Aula {...props} onPressCameraButton={toggleCamera} imageSource={imageSource}></Aula>
@@ -103,8 +102,6 @@ export function InputClassroomScreen(props) {
       </View>
 
       {cameraVisible && <Camara setImageSource={setImageSource} onPressCameraButton={toggleCamera}/>}
-
-      
     </View>
-     );
-    }
+  );
+}

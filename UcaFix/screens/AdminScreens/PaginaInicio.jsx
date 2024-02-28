@@ -9,27 +9,25 @@ import {
 } from 'react-native';
 
 export function PaginaInicio(props) {
-    const onTap = (nextScreen) => {
-      props.navigation.navigate(nextScreen);
-    };
+    const userData=props.route.params.userData
     return (
-      
-      // 
       <View style={styles.back}>
         <View style={styles.TitleContainer}>
-        <Image
-              style={styles.UcaLogo}
-              source={{
-                uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'
-              }}
-            />
-            <Text style={[styles.title]}>UCA FIX</Text>
+          <Image
+            style={styles.UcaLogo}
+            source={{
+              uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAACeUlEQVR4nO2WuWtVQRTGf7jEgOICaiIBF9QymzGCFmJtKsHKzv9BBYugpLG3tHCJgjG+9/KSJmCliKCCCm6NGHBDyW6QZyF6ZeAbOFzu3C1PbPLBcO+dOXO+b86cOXNhBcnYxn/EJaABDAKtBUUPAc+BH8B34BlwAdhVhDwy7R0wkGPeCRFGgXYfWJNnBQ1NuAK8MA5GMsh/y24COAZ0A9/U9xDYINvNWSIGNcmRrwPO6ftrimi/8vPq2wd8SiA/CXzMEtGqsLvJZ7SSNAFDZuVZ5L+M31QMJOzhUuBk+G1yYd9tyB8FyF17TA7cBebVfF68TBCxpDFHtl6rdt/vgY4Y+W09pyiIduBtQMS8+v2+bgSeqO+DIb8I7Nf7a0qgDXgTE3HERKff2G5RLYgMucMpfdcoie1SHykiPvuvAqtitluBV4bcjT+V/emyArwIvx2uXUsg9/BJ6MYvm/13x7s0DgGLcnY9gbwFOAhsUl4cBx7I/idweDnk/cCCnA0HyMcDpfgLcLRZ5DeB1TnIGzrzZ3U6mkJ+K0Be1/g0cM+8d7FM9AJzcngn4UZbC4wZws5Yn6sTfc0gH81JbsdqRoRLzELoM1VuJCHsliBS2FtSbGaBnrzkBwx5KOw1s/JpvdcDIqoan1NUU7FXatPCXo2FvdOIGJNNfE7FRMLdCUGMynA8g3wmluFd6vO1PklEPc9dsCCjHRmrcD8qcXSb6FUTRLRpbDFLwB/V/BB5WjL1GBGVmIgO9bvfsswtmNSEdlPh8mayFTFh/EyaYhbEHvM3a9usTkde9JqcsG1GHKnYqWt2Ssexop/NonB+bsjPZ9WTMn5WwD/FX8VxBfNZiUveAAAAAElFTkSuQmCC'
+            }}
+          />
+          <Text style={[styles.title]}>UCA FIX</Text>
         </View>
+
         <SafeAreaView style={styles.container}>
-          
+          <Text style={[styles.text]}>Hola, {userData.name}! </Text> 
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('ListaPedidos')}>
+            onPress={() => props.navigation.navigate('ListaPedidos')}
+          >
            <Image
               style={styles.tinyLogo}
               source={{
@@ -38,9 +36,10 @@ export function PaginaInicio(props) {
             />
             <Text style={styles.buttonText}>Pedidos pendientes</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.button]}
-            onPress={() => props.navigation.navigate('ElegirEdificio')}>
+            onPress={() => props.navigation.navigate('PisosEdificio')}>
             <Image
               style={styles.tinyLogo}
               source={{
@@ -49,10 +48,11 @@ export function PaginaInicio(props) {
             />
             <Text style={styles.buttonText}>Mapa de pedidos</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => props.navigation.navigate('QRpageAdmin')}>
-            <Image
+           <Image
               style={styles.tinyLogo}
               source={{
                 uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA5UlEQVR4nO2Uyw7EIAhF/f+fvrMZZ9G0w+tiLHISFyYoPQUZo2kaK3Cu7fKhmoiWa7w1cTTfeSIQPsy6Z+c7V8S61z5W9o85RwTOUrN+xKRFJNgVkXBXxBoffSN0EeuynmflSxd52rPzpRFtnW14hQgWrlTKiWS2FlrkD8zxq20jKM+fLTKxJNbguQ87i0QqrsLSCp7SlxG5A8L56P3LQIsE+tbTSt77Yc1XTkQLOx6sx1xWBMG5zmolRFurnMjEK+KNv9IiSGotKf6J7d7IchEJ2rj80iJX0sahErDH7+tFmqYZPz5tSUDqAOA2MAAAAABJRU5ErkJggg==',
@@ -60,6 +60,7 @@ export function PaginaInicio(props) {
             />
             <Text style={styles.buttonText}>Escanear código QR</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.button]}
             onPress={() => props.navigation.navigate('HistorialDePedidos')}>
@@ -72,12 +73,8 @@ export function PaginaInicio(props) {
             <Text style={styles.buttonText}>Pedidos resueltos</Text>
           </TouchableOpacity>
 
-
-          </SafeAreaView>
-
-          
+        </SafeAreaView>
       </View>
-      
     );
   };
   
@@ -89,7 +86,7 @@ export function PaginaInicio(props) {
   
     },
     container: {
-      marginTop:'20%',
+      marginTop:'5%',
       justifyContent: 'center',
       marginHorizontal: '10%',
       //backgroundColor: '#021B6F'
@@ -137,11 +134,12 @@ export function PaginaInicio(props) {
       width: 50,
       height: 50,
       marginTop:15,
-      marginRight:10
+      marginRight:10,
+      tintColor: "black"
     },
     footerContainer:{
       flexDirection: 'row', 
-      justifyContent: 'space-between',  // Align items to the right
+      justifyContent: 'space-between',
       backgroundColor: '#2F61AF',
       padding:'2%',
       

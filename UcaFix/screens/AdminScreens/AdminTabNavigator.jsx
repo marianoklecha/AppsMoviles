@@ -1,24 +1,24 @@
 import React from 'react';
-import { Image, View } from 'react-native';
+import { Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PaginaInicio } from './PaginaInicio';
 import { ListaPedidos } from './ListaPedidos';
 import { AdminProfile } from './AdminProfile';
 import { FinalizarArreglo } from './FinalizarArreglo';
 import { MapaPedidos } from './MapaPedidos';
-import { ElegirEdificio } from './ElegirEdificio';
 import { PisosEdificio } from './PisosEdificio';
 import { QRpageAdmin } from './QRpageAdmin';
 import { EstadisticasAula } from './EstadisticasAula';
+import { HistorialDePedidos } from './HistorialDePedidos';
+import { PedidosPorAula } from './PedidosPorAula';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
 function TabNav({ route }){
   const { userData } = route.params;
+
   return(
     <Stack.Navigator>
       <Stack.Screen name='PaginaInicio' component={PaginaInicio} options={{ headerShown: false }} 
@@ -33,16 +33,20 @@ function TabNav({ route }){
         initialParams={{ userData }}/>
         <Stack.Screen name='PisosEdificio' component={PisosEdificio} options={{ headerShown: false }} 
         initialParams={{ userData }}/>
-        <Stack.Screen name='ElegirEdificio' component={ElegirEdificio} options={{ headerShown: false }} 
-        initialParams={{ userData }}/>
         <Stack.Screen name='QRpageAdmin' component={QRpageAdmin} options={{ headerShown: false }} 
         initialParams={{ userData }}/>
+        <Stack.Screen name='HistorialDePedidos' component={HistorialDePedidos} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        <Stack.Screen name='PedidosPorAula' component={PedidosPorAula} options={{ headerShown: false }} 
+        initialParams={{ userData }}/>
+        
     </Stack.Navigator>
   );
 }
 
 function MyProfileTabNav({ route }){
   const { userData } = route.params;
+
   return(
     <Stack.Navigator>
       <Stack.Screen name="AdminProfile" component={AdminProfile} initialParams={{ userData }} options={{ headerShown: false }}/>
@@ -50,8 +54,10 @@ function MyProfileTabNav({ route }){
     </Stack.Navigator>
   );
 }
+
 function EstadisticaTabAula({ route }){
   const { userData } = route.params;
+  
   return(
     <Stack.Navigator>
       <Stack.Screen name="EstadisticasAulas" component={EstadisticasAula} initialParams={{ userData }} options={{ headerShown: false }}/>
@@ -62,7 +68,7 @@ function EstadisticaTabAula({ route }){
 
 export const AdminTabNavigator = (props) => {
   console.log("### AdminTab ###")
-  const propsUserData = props.route.params.userData;
+  const propsUserData = props.userData;
   console.log(propsUserData)
   return (
     

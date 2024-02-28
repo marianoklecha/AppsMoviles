@@ -18,7 +18,6 @@ export function Escaner() {
   const [lastCode, setLastCode] = React.useState(null)
 
   useEffect(() => {
-    // Pedir permiso de cámara
     requestMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
       if (statuses[PERMISSIONS.ANDROID.CAMERA] === 'granted') {
         setHasPermission(true)
@@ -114,7 +113,6 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    //ADD backgroundColor COLOR GREY
     backgroundColor: '#B2BEB5',
 
     alignSelf: 'center',

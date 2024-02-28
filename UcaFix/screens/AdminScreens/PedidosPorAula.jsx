@@ -6,37 +6,63 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Modal,
   Alert,
   RefreshControl
 } from 'react-native';
 
-const API_URL = "http://localhost:3000";
-
-export function ListaPedidos(props) {
+export function PedidosPorAula(props) {
   const [pedidos, setPedidos] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [filterModalVisible, setFilterModalVisible] = useState(false);
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('notFixed');
+  const [edificio, setEdificio] = useState("");
   const [refreshing, setRefreshing] = React.useState(false);
-
-  const propsUserData = props.route.params.userData;
-  const edificios = ["San Alberto Magno", "Santo Tomas Moro","Santa Maria",  "San Jose"];
+  let pisoDisponible = false;
 
   useEffect(() => {
+    fetchEdificios();
     fetchPedidos();
   }, []);
 
+  const propsUserData = props.route.params.userData;
+  const aulaInfo = props.route.params.aulaInfo;
+  const aula = aulaInfo.aula.toString();
+  const piso = aulaInfo.selectedFloor;
+  const edificioId = aulaInfo.edificioId;
+  if (aula === 'Baño' || aula === 'Biblioteca'){ pisoDisponible = true}
+  console.log(aula);
+  console.log(edificioId);
+  console.log(piso);
+  
+  const fetchEdificios = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/edificios/getEdificios");
+      if (response.ok) {
+        const edificios = await response.json();
+        for (const edificio of edificios) {
+        if (edificio.id === edificioId) {
+        setEdificio(edificio.nombre);
+        console.log(edificio)
+          break;
+        }
+    }
+      } else {
+        Alert.alert("Error", "Failed to fetch Edificios");
+      }
+    } catch (error) {
+      console.error("Error fetching Edificios: ", error);
+      Alert.alert("Error", "An unexpected error occurred");
+    }
+  };
+
   const fetchPedidos = async () => {
     try {
-      const response = await fetch(API_URL + `/pedidos/getPedidosPendientes`);
+      const response = await fetch("http://localhost:3000/pedidos/getPedidosByAula?aula="+ aula +"&edificioId=" + edificioId);
       if (response.ok) {
         const data = await response.json();
         setPedidos(data);
       } else {
         Alert.alert("Error", "Failed to fetch pedidos");
       }
-
     } catch (error) {
       console.error("Error fetching pedidos: ", error);
       Alert.alert("Error", "An unexpected error occurred");
@@ -56,22 +82,9 @@ export function ListaPedidos(props) {
   };
 
   const filteredRequests = pedidos.filter((item) => {
-    if (filter === 'all') {
-      return true;
-    }else if (item.edificioId === 1 && filter === 1) {
-      return true;
-    } else if (item.edificioId === 2 && filter === 2) {
-      return true;
-    }else if (item.edificioId === 3 && filter === 3) {
-      return true;
-    }else if (item.edificioId === 4 && filter === 4) {
-      return true;
-    } else if (item.aula === "Biblioteca" && filter === "Biblioteca") {
-      return true;
-    } else if (item.aula === "Baño" && filter === "Baño") {
+    if (item.fixed === false && filter === 'notFixed') {
       return true;
     }
-    return false;
   });
 
   const formatDate = (createdAt) => {
@@ -90,100 +103,14 @@ export function ListaPedidos(props) {
       </View>
 
       <View style={styles.filterContainer}>
-        <Text style={styles.subtitle}>Últimos pedidos</Text>
-        
-        <TouchableOpacity
-          style={styles.filterButton}
-          onPress={() => setFilterModalVisible(true)}
-        >
-          <Text style={styles.filterButtonText}>Filtro</Text>
-        </TouchableOpacity>
-
-        <Modal
-          animationType="slide-up"
-          transparent={true}
-          visible={filterModalVisible}
-          onRequestClose={() => setFilterModalVisible(!filterModalVisible)}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <TouchableOpacity
-                style={filter === 'all' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter('all');
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Todos</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={filter === 'San Alberto Magno' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(1);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>San Alberto Magno</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={filter === 2 ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(2);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Santo Tomas Moro</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={filter === 3 ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(3);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Santa Maria</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={filter === 4 ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter(4);
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>San Jose</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={filter === 'Biblioteca' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter('Biblioteca');
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Biblioteca</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={filter === 'Baño' ? styles.activeModalButton : styles.modalButton}
-                onPress={() => {
-                  setFilter('Baño');
-                  setFilterModalVisible(!filterModalVisible);
-                }}
-              >
-                <Text style={styles.modalButtonText}>Baño</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+        <Text style={styles.subtitle1}>Pedidos pendientes en:</Text>
+        <Text style={styles.subtitle2}>{aula} - {edificio}</Text>
+        {pisoDisponible && <Text style={styles.subtitle2}>Piso {piso}</Text>}
       </View>
 
       <ScrollView style={styles.scrollView} refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {filteredRequests.map((item) => (
           <TouchableOpacity
             key={item.id}
@@ -193,9 +120,8 @@ export function ListaPedidos(props) {
             <View style={[styles.statusIndicator, { backgroundColor: item.fixed ? 'green' : 'red' }]} />
             
             <View style={styles.requestInfo}>
-              <Text style={styles.requestTitle}>{` ${item.title}`}</Text>
-              <Text style={styles.requestAula}>{` ${item.aula} - ${edificios[item.edificioId - 1]}` }</Text>
-              
+              <Text style={styles.requestText}>{` ${item.title}`}</Text>
+
               {selectedRequest === item.id && (
                 <View style={styles.detailsContainer}>
                   <Image
@@ -209,14 +135,14 @@ export function ListaPedidos(props) {
                 </View>
               )}
             </View>
-           
+            
             {!item.fixed && (
               <TouchableOpacity
-              style={styles.fixButton}
-              onPress={() => props.navigation.navigate('FinalizarArreglo', { pedido: item })}
-            >
-              <Text style={styles.fixButtonText}>Finalizar</Text>
-            </TouchableOpacity>
+                style={styles.fixButton}
+                onPress={() => props.navigation.navigate('FinalizarArreglo', { pedido: item })}
+              >
+                <Text style={styles.fixButtonText}>Finalizar</Text>
+              </TouchableOpacity>
             )}
           </TouchableOpacity>
         ))}
@@ -236,12 +162,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
-  },
-  TitleContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -266,18 +186,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: '2%',
   },
-  filterContainer: {
+  TitleContainer: {
+    marginTop: 20,
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  filterContainer: {
+    flexDirection: 'column',
     justifyContent: 'flex-end',
     margin: 10,
-    
   },
   filterButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#F9F9F9',
-    elevation: 1,
+    backgroundColor: '#F9F9F9'
  
   },
   filterButtonText: {
@@ -288,13 +212,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
-    
   },
   modalContent: {
     backgroundColor: 'white',
     borderRadius: 10,
     padding:10,
-   
   },
   modalButton: {
     paddingVertical: 10,
@@ -302,7 +224,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     backgroundColor: '#D1D1D1',
-    
   },
   activeModalButton: {
     paddingVertical: 10,
@@ -310,7 +231,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     backgroundColor: '#2F61AF',
-    
   },
   modalButtonText: {
     color: 'black',
@@ -319,6 +239,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    marginBottom: 50,
     marginLeft: 15,
     marginRight: 15,
 
@@ -344,37 +265,29 @@ const styles = StyleSheet.create({
     color: 'black',
     
   },
-  
   detailsContainer: {
     flex: 1,
     marginTop: 10,
-   // backgroundColor: "yellow",
     alignItems: "center"
   },
   detailsText: {
     marginBottom: 5,
     color: "black"
   },
-  subtitle:{
+  subtitle1:{
     marginTop: 10,
     marginLeft: 10,
-    flex: 1,
+    fontSize: 15,
+    color: 'black',
+    textAlign: "center"
+  },
+  subtitle2:{
+    marginTop: 10,
+    marginLeft: 10,
     fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
-    
-  },
-  requestTitle: {
-    marginBottom: 5,
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: 'black',
-    
-  },
-  requestAula: {
-    fontSize: 13,
-    color: 'black',
-    
+    textAlign: "center"
   },
   pedidoImagen: {
     width: 80,

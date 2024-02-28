@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
           justifyContent: 'left',
           padding: '3%',
           marginTop: '4%',
+          elevation: 5,
           
         },
         UcaLogo: {
@@ -200,12 +201,57 @@ const styles = StyleSheet.create({
     imagePreviewContainer: {
       marginBottom: 15,
       alignItems: 'center',
+      
+      width: "65%",
+      alignItems: 'center',
+      marginHorizontal: "17.3%"
     },
     imagePreview: {
       width: 200,
       height: 200,
       borderRadius: 10,
       marginTop: 10,
+    },
+    imageGrande: {
+      width: 300,
+      height: 500,
+      marginTop: 10,
+    },
+    buttonCerrar: {
+      padding: 10,
+      marginHorizontal:"20%",
+      borderRadius: 6,
+      backgroundColor: '#A1A1A1',
+      marginTop: 8
+    },
+    buttonTextCerrar: {
+      fontSize: 17,
+      textAlign: 'center',
+      color: 'white',
+      fontWeight: 'bold',
+    },
+    headerAdmin: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'left',
+      padding: '5%',
+      paddingTop: '5%',
+      backgroundColor: "white"
+      
+    },
+    UcaLogoAdmin: {
+      width: 30,
+      height: 30,
+      marginLeft: '5%',
+      marginRight:5
+      
+    },
+    titleAdmin: {
+      fontSize: 30,
+      marginTop: 5,
+      color: 'black',
+      fontWeight: 'bold',
+      marginBottom: '2%',
     },
 
 });

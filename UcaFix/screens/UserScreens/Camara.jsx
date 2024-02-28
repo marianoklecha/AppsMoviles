@@ -13,14 +13,11 @@ import { Camera, useCameraDevice } from 'react-native-vision-camera';
 export function Camara(props) {
   const camera = useRef(null);
   const device = useCameraDevice('back');
-
   const [showCamera, setShowCamera] = useState(false);
   const [hasPermission, setHasPermission] = useState(false)
   const [imageSource, setImageSource] = useState("");
 
-
   useEffect(() => {
-    // Pedir permiso de cámara
     requestMultiple([PERMISSIONS.ANDROID.CAMERA]).then(statuses => {
       if (statuses[PERMISSIONS.ANDROID.CAMERA] === 'granted') {
         setHasPermission(true)
@@ -40,7 +37,6 @@ export function Camara(props) {
       await setImageSource(photo.path);
       props.setImageSource(imageSource);
       setShowCamera(false);
-      //console.log(photo.path);
     }
   };
 
@@ -86,6 +82,7 @@ export function Camara(props) {
               <Text style={{ color: 'white', fontWeight: '500' }}>Volver atrás</Text>
             </TouchableOpacity>
           </View>
+
           <View style={styles.buttonContainer}>
             <View style={styles.buttons}>
               <TouchableOpacity
@@ -112,14 +109,13 @@ export function Camara(props) {
 }
 
 const styles = StyleSheet.create({
-  
   container: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    zIndex: 999, // Ensure camera view is on top
+    zIndex: 999,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -162,7 +158,6 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    //ADD backgroundColor COLOR GREY
     backgroundColor: '#B2BEB5',
 
     alignSelf: 'center',
