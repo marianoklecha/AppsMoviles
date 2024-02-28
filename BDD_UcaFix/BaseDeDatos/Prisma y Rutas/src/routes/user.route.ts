@@ -12,7 +12,7 @@ const UserRoute = (prisma: PrismaClient) => {
   router.get('/login', async (req, res) => {
     const {email, password, fcmToken} = req.query
     if(!email || !password || !fcmToken) {
-      res.status(400).send({error : "Bad request"})
+      res.status(400).send({error : "Error de Bad Request"})
       return
     }
     const user = await prisma.user.findUnique({
@@ -54,7 +54,7 @@ const UserRoute = (prisma: PrismaClient) => {
       });
 
       if (admins.length === 0) {
-          return res.status(404).send("No admins found");
+          return res.status(404).send("No se encontraron admins");
       }
 
       const adminDetails = admins.map(admin => {
@@ -63,8 +63,8 @@ const UserRoute = (prisma: PrismaClient) => {
 
       res.json(adminDetails);
   } catch (error) {
-      console.error("Error fetching admins:", error);
-      res.status(500).send("Internal server error");
+      console.error("Error al hacer el fetch de admins:", error);
+      res.status(500).send("Error del servidor");
   }
 });
 

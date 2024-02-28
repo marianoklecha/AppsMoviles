@@ -8,7 +8,7 @@ const NotificacionesRoute = (prisma: PrismaClient, firebaseAdmin: admin.app.App)
   router.get('/getNotifsByUser', async (req, res) => {
     const userId = req.query.userId as string | undefined;
     if (userId === undefined) {
-      return res.status(400).json({ error: 'User ID is required' });
+      return res.status(400).json({ error: 'Se necesita el ID de usuario' });
     }
 
     try {
@@ -19,7 +19,7 @@ const NotificacionesRoute = (prisma: PrismaClient, firebaseAdmin: admin.app.App)
       });
 
       if (!notificaciones) {
-        return res.status(404).send("No notifications found for this user");
+        return res.status(404).send("No se encontraron notificaciones");
       } else {
         try {
           const authorFCMToken = await prisma.fCMToken.findFirst({
@@ -56,8 +56,8 @@ const NotificacionesRoute = (prisma: PrismaClient, firebaseAdmin: admin.app.App)
 
       return res.json(notificaciones);
     } catch (error) {
-      console.error("Error fetching or sending notifications:", error);
-      return res.status(500).send("Internal server error");
+      console.error("Error al hacer fetch o enviar notificaciones:", error);
+      return res.status(500).send("Error del servidor");
     }
   });
 

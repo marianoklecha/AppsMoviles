@@ -14,7 +14,7 @@ const addRoutes = (app: Express, prisma: PrismaClient) => {
         })
     })
     const admin= require("firebase-admin")
-    // Acá van tus custom routers
+    
     app.use('/pedidos/', PedidosRoute(prisma))
     app.use('/users/', UserRoute(prisma))
     app.use('/edificios/',EdificiosRoute(prisma))

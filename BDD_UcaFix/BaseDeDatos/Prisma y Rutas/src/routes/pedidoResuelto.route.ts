@@ -5,12 +5,10 @@ import admin from "firebase-admin";
 const PedidoResueltoRoute = (prisma: PrismaClient,firebaseAdmin: admin.app.App) => {
     const router = Router();
 
-    // Create PedidoResuelto
     router.post('/pedido-resuelto', async (req, res) => {
         try {
             const { pedidoId, adminId, comments, imageFixed } = req.body;
     
-            // Create PedidoResuelto
             const createdPedidoResuelto = await prisma.pedidoResuelto.create({
                 data: {
                     pedidoId,
@@ -20,13 +18,11 @@ const PedidoResueltoRoute = (prisma: PrismaClient,firebaseAdmin: admin.app.App) 
                 },
             });
     
-            // Check if the created PedidoResuelto exists
             if (createdPedidoResuelto) {
-                // Update Pedido fixed status
                 const updatedPedido = await prisma.pedido.update({
                     where: { id: pedidoId },
                     data: { fixed: true },
-                    include: { author: true }, // Include author to get user ID
+                    include: { author: true },
                 });
 
                 const createdNotificacion = await prisma.notificacion.create({
@@ -38,11 +34,11 @@ const PedidoResueltoRoute = (prisma: PrismaClient,firebaseAdmin: admin.app.App) 
 
                 res.status(201).json(updatedPedido);
             } else {
-                res.status(404).json({ error: 'Pedido not found' });
+                res.status(404).json({ error: 'No se encontro el pedido' });
             }
         } catch (error) {
-            console.error('Error creating Pedido Resuelto:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            console.error('Error al crear Pedido Resuelto:', error);
+            res.status(500).json({ error: 'Error del servidor' });
         }
     });
 

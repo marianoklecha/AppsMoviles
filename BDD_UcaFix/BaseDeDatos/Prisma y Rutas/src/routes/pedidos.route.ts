@@ -33,12 +33,12 @@ const PedidosRoute = (prisma: PrismaClient) => {
     router.get('/getPedidos', async (req, res) => {
         const pedidos = await prisma.pedido.findMany()
         res.json(pedidos)
-      })
+    })
 
     router.get('/getPedidosByUser', async (req, res) => {
         const authorId = req.query.authorId as string | undefined;
             if (authorId === undefined) {
-                return res.status(400).json({ error: 'Author ID is required' });
+                return res.status(400).json({ error: 'Se necesita el Author ID' });
             }
 
         const pedido = await prisma.pedido.findMany({
@@ -51,7 +51,8 @@ const PedidosRoute = (prisma: PrismaClient) => {
             return
         }
         res.json(pedido)
-        })
+    })
+
     router.get('/getPedidosPendientes', async (req, res) => {
         const pedidos = await prisma.pedido.findMany({
             where: {
@@ -60,30 +61,24 @@ const PedidosRoute = (prisma: PrismaClient) => {
         });
         res.json(pedidos)
     })
-        
-        
 
-        router.get('/getPedidosByAula', async (req, res) => {
-            const {aula, edificioId} = req.query
-            const pedido = await prisma.pedido.findMany({
-                where: {
-                edificioId: parseInt(edificioId as string),
-                aula: aula as string
-                }
-            })
-            if(!pedido){
-                res.status(400).send("No se encuentra pedido")
-                return
+    router.get('/getPedidosByAula', async (req, res) => {
+        const {aula, edificioId} = req.query
+        const pedido = await prisma.pedido.findMany({
+            where: {
+            edificioId: parseInt(edificioId as string),
+            aula: aula as string
             }
-            res.json(pedido)
-            })
-        
-
-
-        
+        })
+        if(!pedido){
+            res.status(400).send("No se encuentra pedido")
+            return
+        }
+        res.json(pedido)
+    })
+ 
 
     return router
-    
 }
 
 export default PedidosRoute
